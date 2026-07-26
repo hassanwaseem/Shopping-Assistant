@@ -1,0 +1,22 @@
+[
+ {"name":"Whole milk 1 L","category":"dairy","store":"Eroski","price":1.05,"unit":"1 L"},
+ {"name":"Whole milk 1 L","category":"dairy","store":"Mercadona","price":1.02,"unit":"1 L"},
+ {"name":"Whole milk 1 L","category":"dairy","store":"Carrefour","price":1.09,"unit":"1 L"},
+ {"name":"Chicken breast","category":"meat","store":"Eroski","price":7.45,"unit":"kg"},
+ {"name":"Chicken breast","category":"meat","store":"Mercadona","price":7.10,"unit":"kg"},
+ {"name":"Chicken breast","category":"meat","store":"BM","price":7.90,"unit":"kg"},
+ {"name":"Basmati rice","category":"grains","store":"Eroski","price":2.25,"unit":"1 kg"},
+ {"name":"Basmati rice","category":"grains","store":"Carrefour","price":2.15,"unit":"1 kg"},
+ {"name":"Eggs size M","category":"protein","store":"Mercadona","price":2.35,"unit":"12"},
+ {"name":"Eggs size M","category":"protein","store":"Eroski","price":2.49,"unit":"12"},
+ {"name":"Tomatoes","category":"produce","store":"BM","price":2.39,"unit":"kg"},
+ {"name":"Tomatoes","category":"produce","store":"Eroski","price":2.15,"unit":"kg"},
+ {"name":"Red lentils","category":"legumes","store":"Carrefour","price":1.85,"unit":"500 g"},
+ {"name":"Red lentils","category":"legumes","store":"Eroski","price":1.95,"unit":"500 g"},
+ {"name":"Greek yogurt","category":"dairy","store":"Mercadona","price":1.75,"unit":"4 pack"},
+ {"name":"Greek yogurt","category":"dairy","store":"Eroski","price":1.89,"unit":"4 pack"},
+ {"name":"Frozen mixed vegetables","category":"produce","store":"Lidl","price":1.79,"unit":"1 kg"},
+ {"name":"Frozen mixed vegetables","category":"produce","store":"Carrefour","price":1.95,"unit":"1 kg"},
+ {"name":"Oats","category":"grains","store":"Lidl","price":1.19,"unit":"500 g"},
+ {"name":"Oats","category":"grains","store":"Mercadona","price":1.25,"unit":"500 g"}
+]
