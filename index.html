@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f4ee" />
+  <title>Pamplona Pantry</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Pamplona personal shopping assistant</p>
+      <h1>Pamplona Pantry</h1>
+      <p class="subtitle">Plan the week, estimate calories, compare groceries and buy only what is missing.</p>
+    </div>
+    <button id="resetBtn" class="secondary">Reset demo</button>
+  </header>
+
+  <main>
+    <section class="panel controls-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">1 · Configure</p><h2>Your week</h2></div>
+      </div>
+      <div class="controls-grid">
+        <label>People<input id="peopleInput" type="number" min="1" max="8" value="2"></label>
+        <label>Daily calorie target / person<input id="calorieTargetInput" type="number" min="1200" max="5000" step="50" value="2100"></label>
+        <label>Budget (€)<input id="budgetInput" type="number" min="10" max="1000" step="5" value="90"></label>
+        <label>Diet
+          <select id="dietInput">
+            <option value="balanced">Balanced</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="high-protein">High protein</option>
+          </select>
+        </label>
+      </div>
+      <div class="button-row">
+        <button id="generateBtn">Generate weekly plan</button>
+        <button id="printBtn" class="secondary">Print / save PDF</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">2 · Plan</p><h2>Weekly menu</h2></div><p id="weekSummary" class="muted"></p></div>
+      <div id="mealPlan" class="meal-grid"></div>
+    </section>
+
+    <section class="two-column">
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">3 · Check stock</p><h2>What you already have</h2></div></div>
+        <p class="muted">Tick pantry items to remove them automatically from the shopping list.</p>
+        <div id="pantryList" class="checklist"></div>
+        <div class="inline-add">
+          <input id="customPantryInput" placeholder="Add pantry item…" />
+          <button id="addPantryBtn" class="secondary">Add</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">4 · Buy</p><h2>Trimmed shopping list</h2></div><strong id="estimatedTotal">€0.00</strong></div>
+        <div id="shoppingList" class="shopping-list"></div>
+      </section>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">5 · Compare</p><h2>Supermarket catalogue</h2></div><span class="pill">Local demo data</span></div>
+      <p class="muted">Search the included Pamplona-oriented sample catalogue. Replace or refresh <code>data/products.json</code> with legally obtained supermarket data.</p>
+      <div class="catalogue-toolbar">
+        <input id="productSearch" placeholder="Search milk, rice, tomato…" />
+        <select id="storeFilter"><option value="all">All stores</option></select>
+      </div>
+      <div id="productResults" class="product-results"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Calorie values are estimates, not medical advice. Prices vary by branch, date, loyalty programme and promotion.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
