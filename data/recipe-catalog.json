@@ -1,47 +1,50 @@
 {
-  "schema_version": 1,
-  "total_recipe_count": 1337,
-  "sources": [
-    {
-      "path": "data/recipes.psv",
-      "format": "psv",
-      "recipe_count": 137,
-      "description": "Original curated recipe lookup records"
-    },
-    {
-      "path": "data/expanded-recipes.js",
-      "format": "javascript",
-      "recipe_count": 1200,
-      "description": "Generated backend lookup records from 60 cuisine and cultural profiles"
-    }
+  "schema_version": 2,
+  "active_catalog": [
+    "data/recipe-profiles-1.js",
+    "data/recipe-profiles-2.js",
+    "data/recipes.js"
   ],
-  "expanded_catalog": {
-    "cuisine_profile_count": 60,
-    "templates_per_profile": 20,
-    "meal_type_counts": {
-      "breakfast": 300,
-      "lunch": 300,
-      "dinner": 480,
-      "snack": 120
-    },
-    "validation": {
-      "expected_records": 1200,
-      "unique_ids_required": true,
-      "runtime_assertions_enabled": true
-    }
+  "total_recipe_count": 500,
+  "cuisine_count": 40,
+  "authenticity_mix": {
+    "named_dishes": 123,
+    "cuisine_inspired": 377
   },
-  "record_fields": [
+  "meal_type_counts": {
+    "breakfast": 121,
+    "lunch": 161,
+    "dinner": 177,
+    "snack": 41
+  },
+  "distribution": {
+    "Pakistani": 16,
+    "other_cuisines_minimum": 12,
+    "other_cuisines_maximum": 13
+  },
+  "required_fields": [
     "id",
     "name",
-    "meal_type",
+    "mealType",
+    "cuisine",
+    "region",
+    "authenticity",
     "category",
-    "cuisine_or_cultural_region",
-    "kcal_per_serving",
-    "dietary_tags"
+    "description",
+    "servings",
+    "activeTime",
+    "totalTime",
+    "difficulty",
+    "diets",
+    "allergens",
+    "nutrition",
+    "ingredients",
+    "instructions"
   ],
   "notes": [
-    "Calories are approximate meal-planning estimates.",
-    "Generated variations use an -inspired cuisine label rather than claiming to be canonical traditional recipes.",
-    "The current front end still uses its small built-in recipe array until the expanded lookup is connected."
+    "The active frontend loads this catalogue directly before app.js.",
+    "Each recipe includes at least six structured ingredients and five cooking steps.",
+    "Nutrition values are approximate planning estimates derived from structured ingredient quantities.",
+    "Legacy lookup-only catalogue files remain in the repository but are not used by the active planner."
   ]
 }
