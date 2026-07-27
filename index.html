@@ -2,76 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f7f4ee" />
-  <title>Pantry Planner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#123f35" />
+  <meta name="description" content="A practical household meal planner with nutrition, pantry subtraction, and an editable shopping list." />
+  <title>Meal Planner</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div>
-      <p class="eyebrow">Personal meal and pantry planner</p>
-      <h1>Pantry Planner</h1>
-      <p class="subtitle">Plan meals, track calories, mark what is already at home, and edit the final shopping list.</p>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+  <div id="offlineBanner" class="offline-banner" role="status" hidden>Offline mode · changes remain on this device</div>
+
+  <header class="app-header">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true">M</div>
+      <div>
+        <p class="eyebrow">Our kitchen</p>
+        <h1>Meal Planner</h1>
+      </div>
     </div>
-    <button id="resetBtn" class="secondary">Reset planner</button>
+    <div class="header-actions">
+      <span id="saveStatus" class="save-status" role="status">Saved locally</span>
+      <button id="shareHouseholdBtn" class="button secondary compact-button" type="button">Share pantry</button>
+    </div>
   </header>
 
-  <main>
-    <section class="panel controls-panel">
-      <div class="section-heading"><div><p class="eyebrow">1 · Configure</p><h2>Your week</h2></div></div>
-      <div class="controls-grid three">
-        <label>People<input id="peopleInput" type="number" min="1" max="8" value="2"></label>
-        <label>Daily calorie target / person<input id="calorieTargetInput" type="number" min="1200" max="5000" step="50" value="2100"></label>
-        <label>Diet
-          <select id="dietInput">
-            <option value="balanced">Balanced</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="high-protein">High protein</option>
-          </select>
-        </label>
+  <div class="app-layout">
+    <aside class="desktop-nav" aria-label="Main navigation">
+      <nav id="desktopNav" class="nav-list"></nav>
+      <div class="privacy-card">
+        <strong>Local preview</strong>
+        <p>Your data stays in this browser. Account-based collaboration requires the planned backend phase.</p>
       </div>
-      <div class="button-row">
-        <button id="generateBtn">Generate weekly plan</button>
-        <button id="printBtn" class="secondary">Print / save PDF</button>
+    </aside>
+
+    <main id="mainContent" tabindex="-1">
+      <section id="view-today" class="app-view" data-view="today"></section>
+      <section id="view-plan" class="app-view" data-view="plan" hidden></section>
+      <section id="view-nutrition" class="app-view" data-view="nutrition" hidden></section>
+      <section id="view-pantry" class="app-view" data-view="pantry" hidden></section>
+      <section id="view-shop" class="app-view" data-view="shop" hidden></section>
+      <section id="view-more" class="app-view" data-view="more" hidden></section>
+    </main>
+  </div>
+
+  <nav id="mobileNav" class="mobile-nav" aria-label="Main navigation"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <dialog id="confirmDialog" class="dialog">
+    <form method="dialog">
+      <h2 id="dialogTitle">Confirm action</h2>
+      <p id="dialogBody"></p>
+      <div class="button-row end">
+        <button value="cancel" class="button secondary">Cancel</button>
+        <button id="dialogConfirm" value="confirm" class="button danger">Confirm</button>
       </div>
-    </section>
+    </form>
+  </dialog>
 
-    <section class="panel">
-      <div class="section-heading"><div><p class="eyebrow">2 · Plan</p><h2>Weekly menu</h2></div><p id="weekSummary" class="muted"></p></div>
-      <div id="mealPlan" class="meal-grid"></div>
-    </section>
-
-    <section class="two-column">
-      <section class="panel">
-        <div class="section-heading"><div><p class="eyebrow">3 · Check stock</p><h2>Pantry</h2></div></div>
-        <p class="muted">Tick anything already available. Checked items disappear from the shopping list.</p>
-        <div id="pantryList" class="checklist"></div>
-        <div class="inline-add">
-          <input id="customPantryInput" placeholder="Add pantry item…" />
-          <button id="addPantryBtn" class="secondary">Add</button>
-        </div>
-        <div class="button-row compact">
-          <button id="sharePantryBtn">Share pantry</button>
-          <button id="clearPantryBtn" class="secondary">Clear checks</button>
-        </div>
-        <p id="shareStatus" class="status" aria-live="polite"></p>
-      </section>
-
-      <section class="panel">
-        <div class="section-heading"><div><p class="eyebrow">4 · Buy</p><h2>Editable shopping list</h2></div><span id="shoppingCount" class="pill">0 items</span></div>
-        <p class="muted">Change quantities, add extras, remove rows, and tick items while shopping.</p>
-        <div id="shoppingList" class="shopping-list"></div>
-        <div class="inline-add shopping-add">
-          <input id="customShoppingName" placeholder="Add another item…" />
-          <input id="customShoppingQty" placeholder="Quantity" />
-          <button id="addShoppingBtn" class="secondary">Add</button>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <footer><p>Calorie values are approximate planning estimates and are not medical advice. Pantry data stays in your browser unless you create and share a pantry link.</p></footer>
+  <script src="planner-engine.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

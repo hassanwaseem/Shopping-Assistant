@@ -1,0 +1,7 @@
+{
+  "name": "meal-planner-static-vertical-slice",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
