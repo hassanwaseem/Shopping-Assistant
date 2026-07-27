@@ -82,8 +82,17 @@ function sharePayload(type) {
   return { type: 'shopping', version: 1, items: shoppingRows().map((item) => ({ name: item.name, quantity: item.displayValue, unit: item.displayUnit, checked: item.checked, state: item.state })) };
 }
 
-function shareableShoppingRows() {
-  return shoppingRows()
+function formatSharedQuantity(value, unit) {
+  const numeric = Number(value) || 0;
+  const rounded = unit === 'g' || unit === 'ml' ? Math.round(numeric / 5) * 5 : Math.round(numeric * 10) / 10;
+  if (unit === 'g' && rounded >= 1000) return `${Math.round((rounded / 1000) * 100) / 100} kg`;
+  if (unit === 'ml' && rounded >= 1000) return `${Math.round((rounded / 1000) * 100) / 100} l`;
+  if (unit === 'count') return `${rounded} ${rounded === 1 ? 'item' : 'items'}`;
+  return `${rounded} ${unit}`;
+}
+
+function filterShareRows(rows) {
+  return rows
     .filter((item) => !item.checked)
     .filter((item) => item.state !== 'skipped' && item.state !== 'already-have')
     .sort((a, b) => {
@@ -92,14 +101,18 @@ function shareableShoppingRows() {
     });
 }
 
-function buildShoppingShareText() {
-  const rows = shareableShoppingRows();
-  const lines = [`${state.householdName} shopping list`];
-  if (!rows.length) return `${lines[0]}\n\nNothing is currently needed.`;
+function shareableShoppingRows() {
+  return filterShareRows(shoppingRows());
+}
 
-  lines.push(`${rows.length} item${rows.length === 1 ? '' : 's'} needed`);
+function buildShoppingShareTextFromRows(rows, householdName) {
+  const shareRows = filterShareRows(rows);
+  const lines = [`${householdName} shopping list`];
+  if (!shareRows.length) return `${lines[0]}\n\nNothing is currently needed.`;
+
+  lines.push(`${shareRows.length} item${shareRows.length === 1 ? '' : 's'} needed`);
   let currentCategory = '';
-  for (const item of rows) {
+  for (const item of shareRows) {
     const category = item.category || 'Other';
     if (category !== currentCategory) {
       currentCategory = category;
@@ -109,9 +122,13 @@ function buildShoppingShareText() {
     if (item.checkPantry) flags.push('check pantry');
     if (item.state === 'unavailable') flags.push('unavailable');
     const suffix = flags.length ? ` (${flags.join(', ')})` : '';
-    lines.push(`• ${item.name} — ${displayQuantity(item.displayValue, item.displayUnit)}${suffix}`);
+    lines.push(`• ${item.name} — ${formatSharedQuantity(item.displayValue, item.displayUnit)}${suffix}`);
   }
   return lines.join('\n');
+}
+
+function buildShoppingShareText() {
+  return buildShoppingShareTextFromRows(shareableShoppingRows(), state.householdName);
 }
 
 async function copyShareText(text) {
@@ -213,3 +230,5 @@ function exportData() {
 function updateOnlineState() {
   document.getElementById('offlineBanner').hidden = navigator.onLine;
 }
+
+if (typeof module !== 'undefined') module.exports = { formatSharedQuantity, filterShareRows, buildShoppingShareTextFromRows };
