@@ -1,70 +1,42 @@
-# Pantry Planner
+# Meal Planner
 
-A privacy-first static meal, calorie, pantry, and shopping-list planner.
+A mobile-first household meal-planning vertical slice based on the detailed product, UX, nutrition, pantry, shopping, and architecture specification.
 
-## Features
+## What is implemented in this branch
 
-- Seven-day breakfast, lunch, dinner, and snack plan
-- Balanced, vegetarian, and high-protein modes
-- Household-size and calorie-target controls
-- Per-dish and per-day calorie estimates
-- Consolidated ingredient list for the whole week
-- Pantry checks that automatically trim the shopping list
-- Shareable pantry links, using the device share sheet or clipboard
-- Editable quantities in the final list
-- Extra custom shopping items
-- Removable and checkable shopping rows
-- Browser storage with no account or database
-- Mobile-friendly and printable
-- Backend-ready recipe lookup catalog
+- Today dashboard with meals, preparation cues, shopping status, and nutrition summary
+- Seven-day editable meal plan
+- Balanced, pantry-first, quick-week, batch-cooking, and variety planning modes
+- Temporary protein, fibre, iron, calcium, and vitamin C focus
+- Meal pinning, swapping, skipping, and household serving adjustment
+- Multiple person profiles with different portions and planning targets
+- Deterministic daily and weekly nutrition arithmetic
+- Visible nutrition completeness; missing nutrient values are not converted to zero
+- Pantry items with exact, count, and uncertain status modes
+- Ingredient normalization and pantry subtraction
+- Shopping-list provenance: gross requirement, pantry deduction, source meals, and final amount
+- Editable shopping quantities, manual items, item states, checks, and suppression
+- Manual shopping changes preserved while the plan-derived list refreshes
+- Shareable pantry and shopping snapshots using URL fragments
+- Installable PWA shell and cached active application files
+- Local JSON export
+- Responsive desktop and 360–430 px mobile layouts
+- Pure calculation module with Node unit tests
 
-## Recipe lookup catalog
+## Deliberate limitations
 
-The repository now contains **1,337 recipe lookup records**:
+This repository is still a static GitHub Pages application. It does **not** claim to provide the specification’s production backend yet. The following require the planned Next.js/Supabase phase:
 
-- `data/recipes.psv`: 137 original curated records
-- `data/expanded-recipes.js`: 1,200 additional generated lookup records
-- `data/recipe-catalog.json`: catalog manifest, counts, schema, and source paths
+- Authentication and household invitations
+- Server-enforced roles and Row Level Security
+- Realtime multi-user synchronization
+- PostgreSQL storage and audit history
+- USDA FoodData Central and Open Food Facts mapping
+- Versioned EFSA reference-value seed data
+- Server-side validation and idempotent transactions
+- Durable offline mutation conflict resolution
 
-The expanded catalog covers 60 cuisine and cultural profiles, with the following meal-type distribution:
-
-- 300 breakfasts
-- 300 lunches
-- 480 dinners
-- 120 snacks
-
-Each generated record includes:
-
-- stable recipe ID
-- recipe name
-- meal type
-- category
-- cuisine or cultural region
-- approximate calories per serving
-- dietary tags
-
-Generated variations use an `-inspired` cuisine label. This distinguishes catalog combinations from recipes presented as canonical traditional dishes.
-
-### Backend or Node usage
-
-```js
-const {
-  EXPANDED_RECIPES,
-  EXPANDED_RECIPE_CATALOG_INFO
-} = require("./data/expanded-recipes.js");
-
-console.log(EXPANDED_RECIPES.length); // 1200
-```
-
-The lookup module also exposes the data on `globalThis` when loaded directly in a browser. Runtime assertions verify that exactly 1,200 records are generated and that every generated recipe ID is unique.
-
-The catalog is kept separate from the current front-end recipe array so it can be connected to a future backend or imported into the planner without altering the existing interface first.
-
-## Privacy and sharing
-
-The planner stores its normal state in the browser using `localStorage`. Nothing is uploaded to a server.
-
-When **Share pantry** is pressed, the pantry names and checked items are encoded into the URL fragment after `#pantry=`. A recipient opening that link imports the shared pantry into their browser. The fragment is not sent to GitHub Pages as part of the HTTP request, although anyone holding the link can read its contents.
+The built-in recipe nutrition values are clearly treated as planning estimates for the frontend vertical slice, not production food-composition truth.
 
 ## Run locally
 
@@ -72,15 +44,16 @@ When **Share pantry** is pressed, the pantry names and checked items are encoded
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Open `http://localhost:8000`.
 
-## Deploy with GitHub Pages
+## Tests
 
-1. Open **Settings → Pages**.
-2. Under **Build and deployment**, select **Deploy from a branch**.
-3. Select `main` and `/ (root)`.
-4. Save.
+```bash
+npm test
+```
 
-## Calories
+The tests cover canonical unit normalization, scaled ingredient aggregation, pantry subtraction invariants, uncertain pantry handling, and missing-nutrient semantics.
 
-Calorie values are approximate recipe-level estimates intended for meal-planning convenience, not clinical nutrition or medical use.
+## Deployment
+
+The current production site is served from `main`. Specification-aligned changes should first be reviewed on a branch or pull request before merging into the stable deployment.
