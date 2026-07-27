@@ -5,7 +5,12 @@ A mobile-first household meal-planning vertical slice based on the detailed prod
 ## What is implemented in this branch
 
 - Today dashboard with meals, preparation cues, shopping status, and nutrition summary
-- Seven-day editable meal plan
+- Seven-day editable meal plan with recipe-history diversity penalties
+- Browseable library of 500 complete recipes across 40 cuisines
+- Full frontend recipe details with ingredients, instructions, timings, and nutrition estimates
+- 123 named dishes and 377 clearly identified cuisine-inspired recipes
+- Full frontend recipe details: ingredients, servings, instructions, time and nutrition estimates
+- Cuisine preference in plan generation plus recipe search and filters
 - Balanced, pantry-first, quick-week, batch-cooking, and variety planning modes
 - Temporary protein, fibre, iron, calcium, and vitamin C focus
 - Meal pinning, swapping, skipping, and household serving adjustment
@@ -21,7 +26,8 @@ A mobile-first household meal-planning vertical slice based on the detailed prod
 - Installable PWA shell and cached active application files
 - Local JSON export
 - Responsive desktop and 360–430 px mobile layouts
-- Pure calculation module with Node unit tests
+- Reliable confirmed deletion for pantry items, people and shopping rows
+- Pure calculation and catalogue modules with Node unit tests
 
 ## Deliberate limitations
 
@@ -36,7 +42,7 @@ This repository is still a static GitHub Pages application. It does **not** clai
 - Server-side validation and idempotent transactions
 - Durable offline mutation conflict resolution
 
-The built-in recipe nutrition values are clearly treated as planning estimates for the frontend vertical slice, not production food-composition truth.
+Recipe instructions are original simplified home-cooking instructions. Nutrition is calculated as an approximate planning estimate from structured ingredient quantities; it is not production food-composition or medical data.
 
 ## Run locally
 
@@ -52,7 +58,7 @@ Open `http://localhost:8000`.
 npm test
 ```
 
-The tests cover canonical unit normalization, scaled ingredient aggregation, pantry subtraction invariants, uncertain pantry handling, and missing-nutrient semantics.
+The tests cover canonical unit normalization, scaled ingredient aggregation, pantry subtraction invariants, uncertain pantry handling, missing-nutrient semantics, the exact 500-recipe count, cuisine distribution, recipe completeness, unique IDs, and prohibited-ingredient vocabulary. Browser smoke checks additionally cover desktop and mobile recipe browsing plus pantry/person deletion.
 
 ## Deployment
 
