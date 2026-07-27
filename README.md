@@ -20,7 +20,20 @@ A privacy-first static meal, calorie, pantry, and shopping-list planner.
 
 ## Recipe lookup catalog
 
-`data/recipes.psv` contains 137 recipes covering breakfast, lunch, dinner, and snacks across a broad range of cuisines and cultural regions. The pipe-separated format is easy to parse into a database or API. Each row includes:
+The repository now contains **1,337 recipe lookup records**:
+
+- `data/recipes.psv`: 137 original curated records
+- `data/expanded-recipes.js`: 1,200 additional generated lookup records
+- `data/recipe-catalog.json`: catalog manifest, counts, schema, and source paths
+
+The expanded catalog covers 60 cuisine and cultural profiles, with the following meal-type distribution:
+
+- 300 breakfasts
+- 300 lunches
+- 480 dinners
+- 120 snacks
+
+Each generated record includes:
 
 - stable recipe ID
 - recipe name
@@ -30,7 +43,22 @@ A privacy-first static meal, calorie, pantry, and shopping-list planner.
 - approximate calories per serving
 - dietary tags
 
-The catalog is kept separate from the current front-end recipe array so it can be imported into a future backend without affecting the existing planner.
+Generated variations use an `-inspired` cuisine label. This distinguishes catalog combinations from recipes presented as canonical traditional dishes.
+
+### Backend or Node usage
+
+```js
+const {
+  EXPANDED_RECIPES,
+  EXPANDED_RECIPE_CATALOG_INFO
+} = require("./data/expanded-recipes.js");
+
+console.log(EXPANDED_RECIPES.length); // 1200
+```
+
+The lookup module also exposes the data on `globalThis` when loaded directly in a browser. Runtime assertions verify that exactly 1,200 records are generated and that every generated recipe ID is unique.
+
+The catalog is kept separate from the current front-end recipe array so it can be connected to a future backend or imported into the planner without altering the existing interface first.
 
 ## Privacy and sharing
 
