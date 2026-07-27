@@ -14,7 +14,7 @@ function renderPantry() {
       </form>
     </section>
     <section class="panel">
-      <div class="panel-header"><div><h3>Pantry inventory</h3><p>${state.pantry.length} recorded items · local preview</p></div><button class="button secondary small" type="button" data-action="share-pantry">Share pantry</button></div>
+      <div class="panel-header"><div><h3>Pantry inventory</h3><p>${state.pantry.length} recorded items · share the pantry-trimmed shopping needs as a readable list</p></div><button class="button secondary small" type="button" data-action="share-pantry">Share needed items</button></div>
       <div class="pantry-list">
         ${state.pantry.map((item) => pantryRow(item)).join('') || '<div class="empty-state">No pantry items yet.</div>'}
       </div>
