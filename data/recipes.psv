@@ -1,0 +1,138 @@
+id|name|meal_type|category|cuisine_or_cultural_region|kcal_per_serving|dietary_tags
+shakshuka|Shakshuka|breakfast|Egg dishes|North African|420|vegetarian
+menemen|Menemen|breakfast|Egg dishes|Turkish|390|vegetarian
+masala-omelette|Masala Omelette|breakfast|Egg dishes|Indian|360|vegetarian,high-protein
+congee-with-egg|Congee with Egg|breakfast|Rice porridge|Chinese|330|balanced
+ful-medames|Ful Medames|breakfast|Legume dishes|Egyptian|430|vegan,high-fiber
+arepas-with-black-beans|Arepas with Black Beans|breakfast|Griddle breads|Venezuelan|510|vegetarian
+gallo-pinto|Gallo Pinto|breakfast|Rice and beans|Costa Rican|470|vegan
+chilaquiles-verdes|Chilaquiles Verdes|breakfast|Corn dishes|Mexican|520|vegetarian
+greek-yogurt-walnut-bowl|Greek Yogurt Walnut Bowl|breakfast|Yogurt bowls|Greek|410|vegetarian,high-protein
+overnight-oats-with-apple|Overnight Oats with Apple|breakfast|Oat dishes|European|390|vegetarian,high-fiber
+aloo-paratha-with-yogurt|Aloo Paratha with Yogurt|breakfast|Flatbreads|Pakistani|560|vegetarian
+idli-with-sambar|Idli with Sambar|breakfast|Steamed breads|South Indian|430|vegan,gluten-free
+miso-soup-breakfast-set|Miso Soup Breakfast Set|breakfast|Soup breakfast|Japanese|360|pescatarian
+avocado-toast-with-poached-egg|Avocado Toast with Poached Egg|breakfast|Toast|Contemporary|450|vegetarian,high-protein
+kasha-with-mushrooms|Kasha with Mushrooms|breakfast|Grain dishes|Eastern European|400|vegan
+hummus-and-vegetable-pita|Hummus and Vegetable Pita|breakfast|Sandwiches|Levantine|440|vegan
+akara-with-tomato-relish|Akara with Tomato Relish|breakfast|Bean fritters|West African|480|vegan,gluten-free
+savoury-millet-porridge|Savoury Millet Porridge|breakfast|Porridge|East African|370|vegan,gluten-free
+banana-peanut-porridge|Banana Peanut Porridge|breakfast|Porridge|Caribbean|420|vegan
+tortilla-espanola|Tortilla Española|breakfast|Egg dishes|Spanish|520|vegetarian
+lentil-soup-with-lemon|Lentil Soup with Lemon|lunch|Soups|Turkish|480|vegan,high-fiber
+harira|Harira|lunch|Soups|Moroccan|540|balanced
+minestrone|Minestrone|lunch|Soups|Italian|430|vegan,high-fiber
+tom-yum-goong|Tom Yum Goong|lunch|Soups|Thai|390|pescatarian,gluten-free
+pho-ga|Pho Ga|lunch|Noodle soups|Vietnamese|520|high-protein
+chicken-noodle-soup|Chicken Noodle Soup|lunch|Soups|Jewish-American|470|high-protein
+borscht|Borscht|lunch|Soups|Ukrainian|420|vegetarian
+caldo-verde|Caldo Verde|lunch|Soups|Portuguese|510|balanced
+mercimek-koftesi|Mercimek Köftesi|lunch|Legume patties|Turkish|460|vegan
+falafel-bowl|Falafel Bowl|lunch|Bowls|Levantine|590|vegan
+tabbouleh-with-chickpeas|Tabbouleh with Chickpeas|lunch|Salads|Levantine|450|vegan
+greek-village-salad-with-beans|Greek Village Salad with Beans|lunch|Salads|Greek|480|vegetarian,gluten-free
+nicoise-salad|Niçoise Salad|lunch|Salads|French|560|pescatarian,gluten-free
+cobb-salad|Cobb Salad|lunch|Salads|American|620|high-protein,gluten-free
+som-tam-with-grilled-tofu|Som Tam with Grilled Tofu|lunch|Salads|Thai|430|vegan,gluten-free
+gado-gado|Gado-Gado|lunch|Salads|Indonesian|570|vegetarian,gluten-free
+korean-bibim-guksu|Korean Bibim Guksu|lunch|Noodle salads|Korean|500|vegetarian
+soba-noodle-salad|Soba Noodle Salad|lunch|Noodle salads|Japanese|470|vegan
+banh-mi-tofu|Bánh Mì Tofu|lunch|Sandwiches|Vietnamese|540|vegan
+jerk-chicken-wrap|Jerk Chicken Wrap|lunch|Wraps|Jamaican|590|high-protein
+tuna-melt|Tuna Melt|lunch|Sandwiches|American|610|pescatarian,high-protein
+ploughmans-lunch|Ploughman's Lunch|lunch|Cold plates|British|650|vegetarian
+chickpea-salad-sandwich|Chickpea Salad Sandwich|lunch|Sandwiches|Contemporary|500|vegan
+empanadas-de-humita|Empanadas de Humita|lunch|Pastries|Argentinian|580|vegetarian
+samosa-chaat|Samosa Chaat|lunch|Street food|Indian|620|vegetarian
+pakistani-chana-chaat|Pakistani Chana Chaat|lunch|Street food|Pakistani|430|vegan,gluten-free
+ethiopian-lentil-stew-bowl|Ethiopian Lentil Stew Bowl|lunch|Stews|Ethiopian|520|vegan,gluten-free
+peanut-sweet-potato-soup|Peanut Sweet Potato Soup|lunch|Soups|West African|520|vegan,gluten-free
+ceviche-tostadas|Ceviche Tostadas|lunch|Seafood|Peruvian|480|pescatarian,gluten-free
+quinoa-black-bean-bowl|Quinoa Black Bean Bowl|lunch|Bowls|Andean-inspired|510|vegan,gluten-free
+chicken-biryani|Chicken Biryani|dinner|Rice dishes|Pakistani|760|high-protein
+lamb-rogan-josh|Lamb Rogan Josh|dinner|Curries|Kashmiri|720|high-protein,gluten-free
+palak-paneer|Palak Paneer|dinner|Curries|North Indian|650|vegetarian,gluten-free
+chana-masala|Chana Masala|dinner|Curries|Indian|580|vegan,gluten-free
+dal-tadka|Dal Tadka|dinner|Lentil dishes|Indian|540|vegetarian,gluten-free
+butter-chicken|Butter Chicken|dinner|Curries|Indian|780|high-protein
+kofta-curry|Kofta Curry|dinner|Curries|Pakistani|710|high-protein
+kabuli-pulao|Kabuli Pulao|dinner|Rice dishes|Afghan|750|balanced
+persian-herb-stew|Persian Herb Stew|dinner|Stews|Persian|700|balanced
+fesenjan|Fesenjan|dinner|Stews|Persian|760|high-protein,gluten-free
+mujadara|Mujadara|dinner|Rice and lentils|Levantine|580|vegan
+chicken-shawarma-plate|Chicken Shawarma Plate|dinner|Grilled dishes|Levantine|690|high-protein
+koshari|Koshari|dinner|Rice and lentils|Egyptian|640|vegan
+tagine-of-chicken-and-olives|Tagine of Chicken and Olives|dinner|Tagines|Moroccan|670|high-protein,gluten-free
+couscous-with-seven-vegetables|Couscous with Seven Vegetables|dinner|Grain dishes|Moroccan|590|vegan
+jollof-rice-with-chicken|Jollof Rice with Chicken|dinner|Rice dishes|West African|740|high-protein
+groundnut-stew|Groundnut Stew|dinner|Stews|West African|680|balanced,gluten-free
+ethiopian-doro-wat|Ethiopian Doro Wat|dinner|Stews|Ethiopian|730|high-protein,gluten-free
+misir-wat-with-cabbage|Misir Wat with Cabbage|dinner|Lentil dishes|Ethiopian|610|vegan,gluten-free
+bobotie|Bobotie|dinner|Baked dishes|South African|710|balanced
+cape-malay-vegetable-curry|Cape Malay Vegetable Curry|dinner|Curries|South African|600|vegan,gluten-free
+chicken-adobo|Chicken Adobo|dinner|Braised dishes|Filipino|690|high-protein
+sinigang-na-salmon|Sinigang na Salmon|dinner|Soups|Filipino|560|pescatarian,gluten-free
+beef-rendang|Beef Rendang|dinner|Braised dishes|Indonesian|780|high-protein,gluten-free
+nasi-goreng|Nasi Goreng|dinner|Fried rice|Indonesian|650|balanced
+pad-kra-pao|Pad Kra Pao|dinner|Stir-fries|Thai|670|high-protein
+thai-green-curry|Thai Green Curry|dinner|Curries|Thai|700|balanced,gluten-free
+massaman-tofu-curry|Massaman Tofu Curry|dinner|Curries|Thai|650|vegan,gluten-free
+vietnamese-lemongrass-chicken|Vietnamese Lemongrass Chicken|dinner|Stir-fries|Vietnamese|640|high-protein
+bun-cha|Bún Chả|dinner|Noodle dishes|Vietnamese|690|high-protein
+mapo-tofu|Mapo Tofu|dinner|Tofu dishes|Chinese|620|high-protein
+kung-pao-chicken|Kung Pao Chicken|dinner|Stir-fries|Chinese|660|high-protein
+chinese-tomato-egg-stir-fry|Chinese Tomato Egg Stir-Fry|dinner|Egg dishes|Chinese|520|vegetarian
+japanese-chicken-teriyaki|Japanese Chicken Teriyaki|dinner|Grilled dishes|Japanese|680|high-protein
+salmon-donburi|Salmon Donburi|dinner|Rice bowls|Japanese|710|pescatarian,high-protein
+vegetable-okonomiyaki|Vegetable Okonomiyaki|dinner|Pancakes|Japanese|590|vegetarian
+korean-bulgogi-beef|Korean Bulgogi Beef|dinner|Grilled dishes|Korean|720|high-protein
+bibimbap|Bibimbap|dinner|Rice bowls|Korean|680|balanced
+kimchi-fried-rice|Kimchi Fried Rice|dinner|Fried rice|Korean|590|vegetarian
+spanish-paella-mixta|Spanish Paella Mixta|dinner|Rice dishes|Spanish|720|balanced,gluten-free
+patatas-a-la-riojana|Patatas a la Riojana|dinner|Stews|Spanish|610|balanced,gluten-free
+bacalao-a-la-vizcaina|Bacalao a la Vizcaína|dinner|Seafood|Basque|630|pescatarian,gluten-free
+portuguese-piri-piri-chicken|Portuguese Piri-Piri Chicken|dinner|Grilled dishes|Portuguese|680|high-protein,gluten-free
+italian-chicken-cacciatore|Italian Chicken Cacciatore|dinner|Braised dishes|Italian|650|high-protein,gluten-free
+pasta-alla-norma|Pasta alla Norma|dinner|Pasta|Sicilian|640|vegetarian
+mushroom-risotto|Mushroom Risotto|dinner|Rice dishes|Italian|650|vegetarian,gluten-free
+lasagna-verde|Lasagna Verde|dinner|Baked pasta|Italian|760|vegetarian
+ratatouille-with-white-beans|Ratatouille with White Beans|dinner|Vegetable stews|French|560|vegan,gluten-free
+coq-au-vin|Coq au Vin|dinner|Braised dishes|French|740|high-protein
+hungarian-goulash|Hungarian Goulash|dinner|Stews|Hungarian|700|high-protein
+pierogi-with-potato-and-onion|Pierogi with Potato and Onion|dinner|Dumplings|Polish|680|vegetarian
+swedish-meatballs|Swedish Meatballs|dinner|Meatballs|Swedish|740|high-protein
+greek-chicken-souvlaki|Greek Chicken Souvlaki|dinner|Grilled dishes|Greek|670|high-protein
+moussaka|Moussaka|dinner|Baked dishes|Greek|760|balanced
+turkish-imam-bayildi|Turkish Imam Bayildi|dinner|Stuffed vegetables|Turkish|540|vegan,gluten-free
+pollo-a-la-brasa-bowl|Pollo a la Brasa Bowl|dinner|Roast dishes|Peruvian|700|high-protein,gluten-free
+lomo-saltado|Lomo Saltado|dinner|Stir-fries|Peruvian|760|high-protein
+brazilian-feijoada|Brazilian Feijoada|dinner|Bean stews|Brazilian|780|high-protein,gluten-free
+moqueca-de-peixe|Moqueca de Peixe|dinner|Seafood stews|Brazilian|650|pescatarian,gluten-free
+argentinian-beef-empanadas|Argentinian Beef Empanadas|dinner|Pastries|Argentinian|720|high-protein
+mexican-chicken-enchiladas|Mexican Chicken Enchiladas|dinner|Baked dishes|Mexican|730|high-protein
+black-bean-tacos|Black Bean Tacos|dinner|Tacos|Mexican|590|vegan,gluten-free
+pozole-rojo|Pozole Rojo|dinner|Soups|Mexican|700|high-protein,gluten-free
+cuban-ropa-vieja|Cuban Ropa Vieja|dinner|Braised dishes|Cuban|710|high-protein,gluten-free
+jamaican-curry-goat|Jamaican Curry Goat|dinner|Curries|Jamaican|760|high-protein,gluten-free
+trinidadian-chana-and-aloo|Trinidadian Chana and Aloo|dinner|Curries|Trinidadian|590|vegan,gluten-free
+hawaiian-poke-bowl|Hawaiian Poke Bowl|dinner|Rice bowls|Hawaiian|670|pescatarian,high-protein
+new-zealand-lamb-with-kumara|New Zealand Lamb with Kumara|dinner|Roast dishes|New Zealand|720|high-protein,gluten-free
+australian-pumpkin-lentil-curry|Australian Pumpkin Lentil Curry|dinner|Curries|Australian|590|vegan,gluten-free
+canadian-salmon-maple-mustard|Canadian Salmon Maple Mustard|dinner|Roast dishes|Canadian|690|pescatarian,gluten-free
+turkey-chili|Turkey Chili|dinner|Stews|American|620|high-protein,gluten-free
+mac-and-cheese-with-broccoli|Mac and Cheese with Broccoli|dinner|Pasta|American|720|vegetarian
+cajun-shrimp-and-rice|Cajun Shrimp and Rice|dinner|Rice dishes|Louisiana Creole|650|pescatarian,gluten-free
+red-beans-and-rice|Red Beans and Rice|dinner|Rice and beans|Louisiana Creole|620|balanced,gluten-free
+maori-inspired-hangi-bowl|Māori-Inspired Hāngi Bowl|dinner|Roast dishes|Māori-inspired|700|balanced,gluten-free
+mediterranean-stuffed-peppers|Mediterranean Stuffed Peppers|dinner|Stuffed vegetables|Mediterranean|570|vegetarian,gluten-free
+roasted-vegetable-couscous|Roasted Vegetable Couscous|dinner|Grain dishes|Mediterranean|540|vegan
+protein-yogurt-berry-cup|Protein Yogurt Berry Cup|snack|Cold snacks|Contemporary|220|vegetarian,high-protein,gluten-free
+hummus-with-carrot-sticks|Hummus with Carrot Sticks|snack|Dips|Levantine|230|vegan,gluten-free
+edamame-with-sea-salt|Edamame with Sea Salt|snack|Legume snacks|Japanese|190|vegan,high-protein,gluten-free
+roasted-spiced-chickpeas|Roasted Spiced Chickpeas|snack|Roasted snacks|Middle Eastern-inspired|210|vegan,high-fiber,gluten-free
+apple-with-peanut-butter|Apple with Peanut Butter|snack|Fruit snacks|Contemporary|240|vegan,gluten-free
+mango-chia-pudding|Mango Chia Pudding|snack|Puddings|Southeast Asian-inspired|260|vegan,gluten-free
+date-and-walnut-bites|Date and Walnut Bites|snack|Energy bites|Middle Eastern|250|vegan,gluten-free
+cucumber-labneh-cups|Cucumber Labneh Cups|snack|Cold snacks|Levantine|190|vegetarian,high-protein,gluten-free
+corn-and-lime-cups|Corn and Lime Cups|snack|Street snacks|Mexican-inspired|230|vegetarian,gluten-free
+banana-oat-muffins|Banana Oat Muffins|snack|Baked snacks|Contemporary|260|vegetarian
