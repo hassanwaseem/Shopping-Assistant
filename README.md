@@ -1,4 +1,4 @@
-# Pamplona Pantry
+# Pantry Planner
 
 A privacy-first static meal, calorie, pantry, and shopping-list planner.
 
@@ -16,6 +16,21 @@ A privacy-first static meal, calorie, pantry, and shopping-list planner.
 - Removable and checkable shopping rows
 - Browser storage with no account or database
 - Mobile-friendly and printable
+- Backend-ready recipe lookup catalog
+
+## Recipe lookup catalog
+
+`data/recipes.psv` contains 137 recipes covering breakfast, lunch, dinner, and snacks across a broad range of cuisines and cultural regions. The pipe-separated format is easy to parse into a database or API. Each row includes:
+
+- stable recipe ID
+- recipe name
+- meal type
+- category
+- cuisine or cultural region
+- approximate calories per serving
+- dietary tags
+
+The catalog is kept separate from the current front-end recipe array so it can be imported into a future backend without affecting the existing planner.
 
 ## Privacy and sharing
 
