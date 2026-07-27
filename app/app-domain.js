@@ -82,15 +82,63 @@ function sharePayload(type) {
   return { type: 'shopping', version: 1, items: shoppingRows().map((item) => ({ name: item.name, quantity: item.displayValue, unit: item.displayUnit, checked: item.checked, state: item.state })) };
 }
 
-async function shareData(type) {
-  const payload = sharePayload(type);
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-  const url = `${location.origin}${location.pathname}#share=${encoded}`;
-  const title = type === 'pantry' ? `${state.householdName} pantry` : `${state.householdName} shopping list`;
+function shareableShoppingRows() {
+  return shoppingRows()
+    .filter((item) => !item.checked)
+    .filter((item) => item.state !== 'skipped' && item.state !== 'already-have')
+    .sort((a, b) => {
+      const categoryOrder = String(a.category || 'Other').localeCompare(String(b.category || 'Other'));
+      return categoryOrder || a.name.localeCompare(b.name);
+    });
+}
+
+function buildShoppingShareText() {
+  const rows = shareableShoppingRows();
+  const lines = [`${state.householdName} shopping list`];
+  if (!rows.length) return `${lines[0]}\n\nNothing is currently needed.`;
+
+  lines.push(`${rows.length} item${rows.length === 1 ? '' : 's'} needed`);
+  let currentCategory = '';
+  for (const item of rows) {
+    const category = item.category || 'Other';
+    if (category !== currentCategory) {
+      currentCategory = category;
+      lines.push('', category);
+    }
+    const flags = [];
+    if (item.checkPantry) flags.push('check pantry');
+    if (item.state === 'unavailable') flags.push('unavailable');
+    const suffix = flags.length ? ` (${flags.join(', ')})` : '';
+    lines.push(`• ${item.name} — ${displayQuantity(item.displayValue, item.displayUnit)}${suffix}`);
+  }
+  return lines.join('\n');
+}
+
+async function copyShareText(text) {
+  if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  textarea.remove();
+  if (!copied) throw new Error('Copy command failed');
+}
+
+async function shareData() {
+  const title = `${state.householdName} shopping list`;
+  const text = buildShoppingShareText();
   try {
-    if (navigator.share) await navigator.share({ title, text: title, url });
-    else await navigator.clipboard.writeText(url);
-    showToast(navigator.share ? 'Share sheet opened.' : 'Share link copied.');
+    if (navigator.share) {
+      await navigator.share({ title, text });
+      showToast('Share sheet opened with the needed-items list.');
+    } else {
+      await copyShareText(text);
+      showToast('Needed-items list copied.');
+    }
   } catch (error) {
     if (error.name !== 'AbortError') showToast('Sharing was not available.');
   }
