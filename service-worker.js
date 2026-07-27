@@ -1,4 +1,4 @@
-const CACHE = 'meal-planner-v5';
+const CACHE = 'meal-planner-v6';
 const APP_SHELL = ['./', './index.html', './styles.css', './recipe-styles.css', './planner-engine.js', './data/recipe-profiles-1.js', './data/recipe-profiles-2.js', './data/recipes.js', './app/app-core.js', './app/app-views-primary.js', './app/app-views-lists.js', './app/app-views-recipes.js', './app/app-domain.js', './app/app-main.js', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)));
