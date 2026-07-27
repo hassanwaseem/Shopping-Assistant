@@ -9,6 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="recipe-styles.css" />
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Skip to content</a>
@@ -40,6 +41,7 @@
     <main id="mainContent" tabindex="-1">
       <section id="view-today" class="app-view" data-view="today"></section>
       <section id="view-plan" class="app-view" data-view="plan" hidden></section>
+      <section id="view-recipes" class="app-view" data-view="recipes" hidden></section>
       <section id="view-nutrition" class="app-view" data-view="nutrition" hidden></section>
       <section id="view-pantry" class="app-view" data-view="pantry" hidden></section>
       <section id="view-shop" class="app-view" data-view="shop" hidden></section>
@@ -51,17 +53,29 @@
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
   <dialog id="confirmDialog" class="dialog">
-    <form method="dialog">
+    <div>
       <h2 id="dialogTitle">Confirm action</h2>
       <p id="dialogBody"></p>
       <div class="button-row end">
-        <button value="cancel" class="button secondary">Cancel</button>
-        <button id="dialogConfirm" value="confirm" class="button danger">Confirm</button>
+        <button id="dialogCancel" type="button" class="button secondary">Cancel</button>
+        <button id="dialogConfirm" type="button" class="button danger">Confirm</button>
       </div>
-    </form>
+    </div>
+  </dialog>
+
+  <dialog id="recipeDialog" class="dialog recipe-dialog">
+    <div id="recipeDialogContent"></div>
   </dialog>
 
   <script src="planner-engine.js"></script>
-  <script src="app.js"></script>
+  <script src="data/recipe-profiles-1.js"></script>
+  <script src="data/recipe-profiles-2.js"></script>
+  <script src="data/recipes.js"></script>
+  <script src="app/app-core.js"></script>
+  <script src="app/app-views-primary.js"></script>
+  <script src="app/app-views-lists.js"></script>
+  <script src="app/app-views-recipes.js"></script>
+  <script src="app/app-domain.js"></script>
+  <script src="app/app-main.js"></script>
 </body>
 </html>
