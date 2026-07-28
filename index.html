@@ -13,7 +13,7 @@
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Skip to content</a>
-  <div id="offlineBanner" class="offline-banner" role="status" hidden>Offline mode · changes remain on this device</div>
+  <div id="offlineBanner" class="offline-banner" role="status" hidden>Offline mode · the app remains available</div>
 
   <header class="app-header">
     <div class="brand-block">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="header-actions">
-      <span id="saveStatus" class="save-status" role="status">Saved locally</span>
+      <span id="saveStatus" class="save-status" role="status">Saved</span>
       <button id="shareHouseholdBtn" class="button secondary compact-button" type="button">Share needed items</button>
     </div>
   </header>
@@ -32,10 +32,6 @@
   <div class="app-layout">
     <aside class="desktop-nav" aria-label="Main navigation">
       <nav id="desktopNav" class="nav-list"></nav>
-      <div class="privacy-card">
-        <strong>Local preview</strong>
-        <p>Your data stays in this browser. Account-based collaboration requires the planned backend phase.</p>
-      </div>
     </aside>
 
     <main id="mainContent" tabindex="-1">
@@ -77,6 +73,7 @@
   <script src="app/app-views-lists.js"></script>
   <script src="app/app-views-recipes.js"></script>
   <script src="app/app-domain.js"></script>
+  <script src="app/end-user-polish.js"></script>
   <script src="app/app-main.js"></script>
 </body>
 </html>
