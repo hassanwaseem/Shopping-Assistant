@@ -1,4 +1,4 @@
-const CACHE = 'meal-planner-v9';
+const CACHE = 'meal-planner-v10';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,6 +9,7 @@ const APP_SHELL = [
   './data/recipe-profiles-2.js',
   './data/recipes.js',
   './data/recipe-expansion.js',
+  './data/recipe-quality.js',
   './app/app-core.js',
   './app/app-views-primary.js',
   './app/app-views-lists.js',
