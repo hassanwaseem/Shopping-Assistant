@@ -97,38 +97,20 @@ function openRecipe(recipeId) {
 
 function renderMore() {
   document.getElementById('view-more').innerHTML = `
-    <div class="view-header"><div><p class="eyebrow">Household and settings</p><h2>Profiles, targets and implementation status</h2><p>Person profiles are separate from account membership, as required by the product model.</p></div></div>
+    <div class="view-header"><div><p class="eyebrow">Household settings</p><h2>Manage your household</h2><p>Update profiles, nutrition targets, recipes and personal data.</p></div></div>
     <section class="panel warm-panel">
       <div class="panel-header"><div><h3>Recipe library</h3><p>${RECIPES.length} complete recipes across ${CUISINES.length} cuisines, with ingredients and cooking instructions.</p></div><button class="button secondary" type="button" data-action="navigate" data-view="recipes">Browse recipes</button></div>
     </section>
     <section class="panel">
-      <div class="panel-header"><div><h3>Person profiles</h3><p>Targets are planning defaults and remain editable.</p></div><button class="button secondary small" type="button" data-action="add-person">Add person</button></div>
+      <div class="panel-header"><div><h3>Person profiles</h3><p>Set portions and nutrition targets for everyone included in the plan.</p></div><button class="button secondary small" type="button" data-action="add-person">Add person</button></div>
       <div class="grid two">${state.people.map((person) => profileCard(person)).join('')}</div>
     </section>
-    <section class="panel soft-panel">
-      <div class="panel-header"><div><h3>What this branch implements</h3><p>A working static vertical slice, not a fabricated production backend.</p></div></div>
-      <div class="implementation-list">
-        ${implementationItem('500-recipe categorized library with complete instructions', 'Implemented')}
-        ${implementationItem('Responsive app shell and mobile navigation', 'Implemented')}
-        ${implementationItem('Editable seven-day plan with pin, swap, skip and portions', 'Implemented')}
-        ${implementationItem('Daily and weekly nutrition calculations', 'Implemented')}
-        ${implementationItem('Exact and uncertain pantry states', 'Implemented')}
-        ${implementationItem('Pantry-trimmed shopping list with provenance', 'Implemented')}
-        ${implementationItem('PWA shell and offline read/edit resilience', 'Implemented')}
-        ${implementationItem('Supabase accounts, roles, realtime and RLS', 'Backend phase')}
-        ${implementationItem('USDA/OFF food mapping and EFSA seed data', 'Backend phase')}
-      </div>
-    </section>
     <section class="panel">
-      <div class="panel-header"><div><h3>Data controls</h3><p>The preview stores data in localStorage.</p></div></div>
-      <div class="button-row"><button class="button secondary" type="button" data-action="export-data">Export household JSON</button><button class="button danger" type="button" data-action="reset-data">Reset local data</button></div>
+      <div class="panel-header"><div><h3>Data and privacy</h3><p>Download a household backup or clear the information saved in the meal planner.</p></div></div>
+      <div class="button-row"><button class="button secondary" type="button" data-action="export-data">Download household backup</button><button class="button danger" type="button" data-action="reset-data">Clear household data</button></div>
     </section>`;
 }
 
 function profileCard(person) {
   return `<article class="profile-card" data-person-id="${h(person.id)}"><div class="profile-title"><h3>${h(person.name)}</h3>${state.people.length > 1 ? `<button class="icon-button" type="button" data-action="delete-person" data-person-id="${h(person.id)}" aria-label="Remove ${h(person.name)}">×</button>` : ''}</div><div class="profile-fields"><label>Name<input value="${h(person.name)}" data-action="edit-person" data-person-id="${h(person.id)}" data-field="name" /></label><label>Energy target<input type="number" value="${h(person.targetKcal)}" data-action="edit-person" data-person-id="${h(person.id)}" data-field="targetKcal" /></label><label>Portion multiplier<input type="number" min="0.25" step="0.05" value="${h(person.portion)}" data-action="edit-person" data-person-id="${h(person.id)}" data-field="portion" /></label><label>Protein target (g)<input type="number" value="${h(person.proteinTarget)}" data-action="edit-person" data-person-id="${h(person.id)}" data-field="proteinTarget" /></label><label>Fibre target (g)<input type="number" value="${h(person.fibreTarget)}" data-action="edit-person" data-person-id="${h(person.id)}" data-field="fibreTarget" /></label><label>Iron target (mg)<input type="number" value="${h(person.ironTarget)}" data-action="edit-person" data-person-id="${h(person.id)}" data-field="ironTarget" /></label></div></article>`;
-}
-
-function implementationItem(label, status) {
-  return `<div class="implementation-item"><span>${h(label)}</span><strong>${h(status)}</strong></div>`;
 }
