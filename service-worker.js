@@ -1,4 +1,4 @@
-const CACHE = 'meal-planner-v8';
+const CACHE = 'meal-planner-v9';
 const APP_SHELL = [
   './',
   './index.html',
