@@ -35,6 +35,7 @@ function pantryRow(item) {
 
 function renderShop() {
   const rows = shoppingRows();
+  const selectedMeals = selectedShoppingEntries().filter((entry) => !entry.skipped);
   const filtered = rows.filter((item) => {
     const filter = state.shopping.filter || 'all';
     if (filter === 'unchecked') return !item.checked;
@@ -48,8 +49,11 @@ function renderShop() {
   }, {});
   const categories = Object.keys(grouped).sort();
   const remaining = rows.filter((item) => !item.checked && item.state !== 'skipped').length;
+  const emptyMessage = selectedMeals.length
+    ? 'The selected recipes are fully covered by the pantry.'
+    : 'No planned recipes are contributing ingredients yet. Use “Add to shopping list” beside any recipe in the weekly plan.';
   document.getElementById('view-shop').innerHTML = `
-    <div class="view-header"><div><p class="eyebrow">Active shopping list</p><h2>Trimmed, traceable and editable</h2><p>Every generated line preserves gross need, pantry deduction and source meals.</p></div><button class="button secondary" type="button" data-action="print">Print list</button></div>
+    <div class="view-header"><div><p class="eyebrow">Active shopping list</p><h2>Shop only for the recipes you choose</h2><p>${selectedMeals.length} planned recipe${selectedMeals.length === 1 ? '' : 's'} selected. Ingredients are combined and trimmed against the pantry.</p></div><div class="button-row"><button class="button secondary" type="button" data-action="navigate" data-view="plan">Choose recipes</button><button class="button secondary" type="button" data-action="print">Print list</button></div></div>
     <section class="panel soft-panel">
       <div class="shopping-toolbar">
         <input id="shoppingSearch" placeholder="Search shopping list" value="${h(state.shopping.search || '')}" />
@@ -65,9 +69,9 @@ function renderShop() {
       </form>
     </section>
     <section class="panel">
-      <div class="panel-header"><div><h3>${remaining} items remaining</h3><p>Manual changes are preserved when the list refreshes.</p></div><button class="button secondary small" type="button" data-action="complete-shopping">Complete checked items</button></div>
+      <div class="panel-header"><div><h3>${remaining} items remaining</h3><p>Manual items remain on the list when recipe selections change.</p></div><button class="button secondary small" type="button" data-action="complete-shopping">Complete checked items</button></div>
       <div class="shopping-groups">
-        ${categories.map((category) => shoppingCategory(category, grouped[category])).join('') || '<div class="empty-state">The current plan is fully covered by the pantry.</div>'}
+        ${categories.map((category) => shoppingCategory(category, grouped[category])).join('') || `<div class="empty-state">${h(emptyMessage)}</div>`}
       </div>
     </section>`;
 }
@@ -87,9 +91,15 @@ function shoppingRow(item) {
   return `<article class="shopping-row ${item.checked ? 'checked' : ''}">
     <input class="check-control" type="checkbox" ${item.checked ? 'checked' : ''} data-action="toggle-shopping" data-item-id="${h(item.id)}" aria-label="Check ${h(item.name)}" />
     <div class="shopping-name"><strong>${h(item.name)}${item.manual ? '<span class="manual-badge">manual</span>' : ''}</strong><span>${sources.length ? `For ${h(sources.join(', '))}` : 'Added by household'}</span></div>
-    <div class="quantity-editor"><input type="number" min="0" step="0.1" value="${h(item.displayValue)}" data-action="edit-shopping-quantity" data-item-id="${h(item.id)}" data-manual="${item.manual}" aria-label="Quantity for ${h(item.name)}" /><select data-action="edit-shopping-unit" data-item-id="${h(item.id)}" data-manual="${item.manual}" aria-label="Unit for ${h(item.name)}">${option('g', 'g', item.displayUnit)}${option('ml', 'ml', item.displayUnit)}${option('count', 'count', item.displayUnit)}</select></div>
+    <div class="quantity-editor"><input type="number" min="0" step="0.1" value="${h(item.displayValue)}" data-action="edit-shopping-quantity" data-item-id="${h(item.id)}" data-manual="${item.manual}" aria-label="Quantity for ${h(item.name)}" /><select data-action="edit-shopping-unit" data-item-id="${h(item.id)}" data-manual="${item.manual}" aria-label="Unit for ${h(item.name)}">${shoppingUnitOptions(item.displayUnit)}</select></div>
     <select class="shopping-state" data-action="change-shopping-state" data-item-id="${h(item.id)}" aria-label="State for ${h(item.name)}">${option('needed', 'Needed', item.state)}${option('unavailable', 'Unavailable', item.state)}${option('skipped', 'Skipped', item.state)}${option('already-have', 'Already have', item.state)}</select>
     <button type="button" class="icon-button" data-action="remove-shopping" data-item-id="${h(item.id)}" data-manual="${item.manual}" aria-label="Remove ${h(item.name)}">×</button>
     <div class="shopping-derivation">${h(derivation)}${item.manualOverride ? ' · manual override preserved' : ''}</div>
   </article>`;
+}
+
+function shoppingUnitOptions(selected) {
+  const common = ['g', 'kg', 'ml', 'l', 'count', 'tsp', 'tbsp', 'cup', 'piece', 'clove', 'small', 'medium', 'large', 'handful', 'bunch', 'pinch', 'packet', 'tin', 'set', 'as needed'];
+  const units = common.includes(selected) ? common : [selected, ...common];
+  return units.map((unit) => option(unit, unit, selected)).join('');
 }

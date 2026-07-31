@@ -26,6 +26,17 @@ test('aggregates scaled recipe requirements', () => {
   assert.equal(result.find((x) => x.foodId === 'water').gross, 1000);
 });
 
+test('only explicitly selected plan entries contribute ingredients', () => {
+  const plan = [
+    { id: 'monday-stew', recipeId: 'stew', cookServings: 2, day: 'Mon', slot: 'Dinner' },
+    { id: 'tuesday-stew', recipeId: 'stew', cookServings: 4, day: 'Tue', slot: 'Dinner' },
+  ];
+  assert.deepEqual(engine.filterSelectedPlanEntries(plan, []), []);
+  const selected = engine.filterSelectedPlanEntries(plan, ['tuesday-stew']);
+  assert.deepEqual(selected.map((entry) => entry.id), ['tuesday-stew']);
+  assert.equal(engine.aggregateIngredients(selected, recipes).find((item) => item.foodId === 'lentils').gross, 400);
+});
+
 test('pantry subtraction never creates a negative shopping quantity', () => {
   const aggregate = [{ key: 'lentils::g', foodId: 'lentils', name: 'Lentils', category: 'Dry goods', gross: 400, unit: 'g', sourceMeals: [] }];
   const result = engine.subtractPantry(aggregate, [{ id: 'p1', foodId: 'lentils', name: 'Lentils', mode: 'exact', quantity: 1000, unit: 'g' }]);

@@ -11,7 +11,7 @@
     const planHelp = document.querySelector('#view-plan .plan-controls + .help');
     if (planHelp) {
       planHelp.textContent =
-        'Dietary pattern, cuisine and nutrition preferences guide suggestions. Review ingredient lists carefully when planning for allergies.';
+        'Dietary pattern, regional preference and nutrition focus guide suggestions. A new plan starts with no recipes added to the shopping list.';
     }
 
     const pantryHeader = document.querySelector('#view-pantry .view-header');
@@ -37,8 +37,9 @@
       const description = shopHeader.querySelector('p:not(.eyebrow)');
       if (title) title.textContent = 'Shop with a clear, editable list';
       if (description) {
+        const selectedCount = selectedShoppingEntries().filter((entry) => !entry.skipped).length;
         description.textContent =
-          'Quantities already account for pantry items and remain easy to adjust before or during shopping.';
+          `${selectedCount} planned recipe${selectedCount === 1 ? '' : 's'} selected. Only those recipes contribute ingredients, and pantry amounts are deducted before the list is shown.`;
       }
     }
 

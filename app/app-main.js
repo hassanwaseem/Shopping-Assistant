@@ -8,7 +8,7 @@ document.addEventListener('click', async (event) => {
   if (action === 'generate-plan') {
     state.preferences.mode = document.getElementById('planningMode').value;
     state.preferences.diet = document.getElementById('dietMode').value;
-    state.preferences.cuisine = document.getElementById('cuisineMode').value;
+    state.preferences.region = document.getElementById('regionMode').value;
     state.preferences.focus = document.getElementById('nutrientFocus').value;
     state.preferences.focusStrength = document.getElementById('focusStrength').value;
     return generatePlan({ preservePinned: true });
@@ -30,6 +30,7 @@ document.addEventListener('click', async (event) => {
   if (action === 'recipe-page') { recipeBrowser.page = Math.max(0, Number(target.dataset.page) || 0); return renderRecipes(); }
   if (action === 'swap-meal') return swapMeal(target.dataset.entryId);
   if (action === 'adjust-serving') return adjustServing(target.dataset.entryId, Number(target.dataset.delta));
+  if (action === 'toggle-meal-shopping') return toggleMealShopping(target.dataset.entryId);
   if (action === 'toggle-skip') {
     const entry = findEntry(target.dataset.entryId);
     if (entry) entry.skipped = !entry.skipped;
@@ -184,7 +185,22 @@ window.addEventListener('offline', updateOnlineState);
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./service-worker.js').catch(() => {});
 
-importSharedData();
-ensurePlan();
-updateOnlineState();
-renderAll();
+async function boot() {
+  try {
+    const recipes = await window.PakistaniRecipeAdapter.load('./data/pakistani-recipes.json');
+    installRecipes(recipes);
+    importSharedData();
+    ensurePlan();
+    updateOnlineState();
+    renderAll();
+  } catch (error) {
+    console.error(error);
+    document.getElementById('view-today').innerHTML = `
+      <div class="empty-state recipe-load-error">
+        <h2>Recipes could not be loaded</h2>
+        <p>Please refresh the page. Your saved household information has not been changed.</p>
+      </div>`;
+  }
+}
+
+boot();

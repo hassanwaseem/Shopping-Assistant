@@ -49,6 +49,29 @@ function adjustServing(id, delta) {
   renderAll();
 }
 
+function mealIsInShoppingList(id) {
+  return state.shopping.selectedEntryIds.includes(id);
+}
+
+function toggleMealShopping(id) {
+  const entry = findEntry(id);
+  if (!entry || entry.skipped) return;
+  const selected = new Set(state.shopping.selectedEntryIds);
+  const recipe = RECIPE_MAP[entry.recipeId];
+  if (selected.has(id)) {
+    selected.delete(id);
+    audit('meal_removed_from_shopping', `${entry.day} ${entry.slot}: ${recipe.name}`);
+    showToast(`${recipe.name} removed from the shopping list.`);
+  } else {
+    selected.add(id);
+    audit('meal_added_to_shopping', `${entry.day} ${entry.slot}: ${recipe.name}`);
+    showToast(`${recipe.name} added to the shopping list.`);
+  }
+  state.shopping.selectedEntryIds = [...selected];
+  saveState('Shopping selection updated');
+  renderAll();
+}
+
 function addPantry(form) {
   const data = new FormData(form);
   const name = String(data.get('name') || '').trim();
@@ -84,6 +107,7 @@ function sharePayload(type) {
 
 function formatSharedQuantity(value, unit) {
   const numeric = Number(value) || 0;
+  if (unit === 'as needed') return 'as needed';
   const rounded = unit === 'g' || unit === 'ml' ? Math.round(numeric / 5) * 5 : Math.round(numeric * 10) / 10;
   if (unit === 'g' && rounded >= 1000) return `${Math.round((rounded / 1000) * 100) / 100} kg`;
   if (unit === 'ml' && rounded >= 1000) return `${Math.round((rounded / 1000) * 100) / 100} l`;

@@ -5,7 +5,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const MASS_UNITS = { g: 1, kg: 1000 };
+  const MASS_UNITS = { mg: 0.001, g: 1, kg: 1000, oz: 28.3495, lb: 453.592 };
   const VOLUME_UNITS = { ml: 1, l: 1000 };
 
   function round(value, digits = 1) {
@@ -34,6 +34,11 @@
     };
   }
 
+  function filterSelectedPlanEntries(planEntries, selectedEntryIds) {
+    const selected = new Set(Array.isArray(selectedEntryIds) ? selectedEntryIds : []);
+    return (planEntries || []).filter((entry) => selected.has(entry.id));
+  }
+
   function aggregateIngredients(planEntries, recipeMap) {
     const aggregated = new Map();
     for (const entry of planEntries) {
@@ -44,6 +49,7 @@
         if (ingredient.optional && entry.omittedIngredients?.includes(ingredient.id)) continue;
         const scaled = scaleIngredient(ingredient, servings, recipe.servings);
         const normalized = normalizeQuantity(scaled.quantity, scaled.unit, scaled.conversion);
+        if (!normalized) continue;
         const key = `${ingredient.foodId || ingredient.name.toLowerCase()}::${normalized.unit}`;
         if (!aggregated.has(key)) {
           aggregated.set(key, {
@@ -148,7 +154,7 @@
 
   function chooseRecipe(recipes, options) {
     const eligible = recipes.filter((recipe) => {
-      if (recipe.mealType !== options.mealType) return false;
+      if (!(recipe.mealSlots?.includes(options.mealType) || recipe.mealType === options.mealType)) return false;
       if (options.diet && options.diet !== 'balanced' && !recipe.diets?.includes(options.diet)) return false;
       if (options.maxTime && options.strictTime && recipe.activeTime > options.maxTime) return false;
       const allergens = new Set(options.allergens || []);
@@ -162,6 +168,7 @@
 
   return {
     normalizeQuantity,
+    filterSelectedPlanEntries,
     aggregateIngredients,
     subtractPantry,
     sumNutrition,

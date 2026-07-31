@@ -66,20 +66,21 @@ function renderPlan() {
   const dates = weekDates();
   const totalMeals = state.plan.filter((entry) => !entry.skipped).length;
   const cookingEvents = state.plan.filter((entry) => !entry.skipped && entry.type !== 'leftover').length;
+  const shoppingMeals = selectedShoppingEntries().filter((entry) => !entry.skipped).length;
   document.getElementById('view-plan').innerHTML = `
-    <div class="view-header"><div><p class="eyebrow">Weekly planner</p><h2>Plan meals without losing control</h2><p>Suggestions remain editable. Pinned meals survive regeneration.</p></div></div>
+    <div class="view-header"><div><p class="eyebrow">Pakistani weekly planner</p><h2>Choose meals first, then build your shopping list</h2><p>Suggestions remain editable. Ingredients are added only for the recipes you select.</p></div></div>
     <section class="panel soft-panel">
       <div class="plan-controls">
         <label>Planning mode<select id="planningMode">
           ${option('balanced', 'Balanced', state.preferences.mode)}${option('pantry', 'Use pantry first', state.preferences.mode)}${option('quick', 'Quick week', state.preferences.mode)}${option('batch', 'Batch cooking', state.preferences.mode)}${option('variety', 'High variety', state.preferences.mode)}
         </select></label>
         <label>Dietary pattern<select id="dietMode">${option('balanced', 'Balanced', state.preferences.diet)}${option('vegetarian', 'Vegetarian', state.preferences.diet)}${option('vegan', 'Vegan', state.preferences.diet)}${option('high-protein', 'High protein', state.preferences.diet)}</select></label>
-        <label>Cuisine preference<select id="cuisineMode">${option('all', 'Any cuisine', state.preferences.cuisine || 'all')}${CUISINES.map((cuisine) => option(cuisine, cuisine, state.preferences.cuisine || 'all')).join('')}</select></label>
+        <label>Regional preference<select id="regionMode">${option('all', 'Any region', state.preferences.region || 'all')}${REGIONS.map((region) => option(region, region, state.preferences.region || 'all')).join('')}</select></label>
         <label>Nutrient focus<select id="nutrientFocus">${option('none', 'No temporary focus', state.preferences.focus)}${option('protein', 'Protein', state.preferences.focus)}${option('fibre', 'Fibre', state.preferences.focus)}${option('iron', 'Iron', state.preferences.focus)}${option('calcium', 'Calcium', state.preferences.focus)}${option('vitaminC', 'Vitamin C', state.preferences.focus)}</select></label>
         <label>Focus strength<select id="focusStrength">${option('gentle', 'Gentle', state.preferences.focusStrength)}${option('moderate', 'Moderate', state.preferences.focusStrength)}${option('strong', 'Strong', state.preferences.focusStrength)}</select></label>
         <button class="button" type="button" data-action="generate-plan">Suggest meals</button>
       </div>
-      <p class="help">Allergies and exclusions should become hard constraints in the backend phase. This preview currently applies the selected dietary pattern and time preference.</p>
+      <p class="help">Generating a new plan clears recipe shopping selections. Manual shopping items remain unchanged.</p>
     </section>
     <div class="week-strip" role="tablist" aria-label="Week days">
       ${dates.map((date, index) => `<button type="button" class="day-tab ${state.selectedPlanDay === index ? 'active' : ''}" data-action="select-day" data-day-index="${index}" role="tab" aria-selected="${state.selectedPlanDay === index}"><span>${h(formatDate(date, { weekday: 'short' }))}</span><strong>${h(formatDate(date, { day: 'numeric' }))}</strong></button>`).join('')}
@@ -96,7 +97,7 @@ function renderPlan() {
       <div class="stat-grid">
         <article class="stat-card"><small>Planned entries</small><strong>${totalMeals}</strong><span>Across seven days</span></article>
         <article class="stat-card"><small>Cooking events</small><strong>${cookingEvents}</strong><span>Leftovers can reduce this later</span></article>
-        <article class="stat-card"><small>Pinned meals</small><strong>${state.plan.filter((entry) => entry.pinned).length}</strong><span>Protected on regeneration</span></article>
+        <article class="stat-card"><small>Shopping selections</small><strong>${shoppingMeals}</strong><span>Recipes currently contributing ingredients</span></article>
         <article class="stat-card"><small>Nutrition data</small><strong>${engine.completeness(state.plan, RECIPE_MAP).score}%</strong><span>${h(engine.completeness(state.plan, RECIPE_MAP).status)}</span></article>
       </div>
     </section>`;
@@ -105,10 +106,11 @@ function renderPlan() {
 function mealCard(entry) {
   const recipe = RECIPE_MAP[entry.recipeId];
   const totalServings = Object.values(entry.people).reduce((sum, value) => sum + Number(value), 0);
+  const inShoppingList = mealIsInShoppingList(entry.id);
   return `<div class="meal-card ${entry.skipped ? 'muted' : ''}" data-entry-id="${h(entry.id)}">
     <div class="meal-card-header"><span class="meal-slot">${h(entry.slot)}</span><button type="button" class="icon-button ${entry.pinned ? 'active' : ''}" data-action="toggle-pin" data-entry-id="${h(entry.id)}" aria-label="${entry.pinned ? 'Unpin' : 'Pin'} ${h(recipe.name)}">${entry.pinned ? '◆' : '◇'}</button></div>
     <strong class="meal-name">${h(entry.skipped ? 'Meal skipped' : recipe.name)}</strong>
-    ${entry.skipped ? '<span class="meal-meta">No ingredients or nutrition allocated</span>' : `<span class="meal-meta">${h(recipe.cuisine)} · ${recipe.activeTime} min active · ${recipe.nutrition.kcal} kcal/serving</span><span class="reason">${h(entry.reason || reasonFor(recipe))}</span>`}
+    ${entry.skipped ? '<span class="meal-meta">No ingredients or nutrition allocated</span>' : `<span class="meal-meta">${h(recipe.region)} · ${recipe.activeTime} min active · ${recipe.nutrition.kcal} kcal/serving</span><span class="reason">${h(entry.reason || reasonFor(recipe))}</span>`}
     <div class="portion-control" aria-label="Household serving adjustment">
       <button type="button" data-action="adjust-serving" data-entry-id="${h(entry.id)}" data-delta="-0.25" aria-label="Reduce servings">−</button>
       <span>${totalServings.toFixed(2)} servings</span>
@@ -119,6 +121,7 @@ function mealCard(entry) {
       <button class="button secondary small" type="button" data-action="swap-meal" data-entry-id="${h(entry.id)}">Swap</button>
       <button class="button ghost small" type="button" data-action="toggle-skip" data-entry-id="${h(entry.id)}">${entry.skipped ? 'Restore' : 'Skip'}</button>
     </div>
+    ${entry.skipped ? '' : `<button class="button small shopping-select ${inShoppingList ? 'selected' : ''}" type="button" data-action="toggle-meal-shopping" data-entry-id="${h(entry.id)}" aria-pressed="${inShoppingList}">${inShoppingList ? '✓ Added to shopping list' : 'Add to shopping list'}</button>`}
   </div>`;
 }
 

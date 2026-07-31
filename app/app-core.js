@@ -26,16 +26,45 @@ const NUTRIENT_META = {
   vitaminC: { label: 'Vitamin C', unit: 'mg', decimals: 0 },
 };
 
-const RECIPES = Array.isArray(window.MEAL_PLANNER_RECIPES) ? window.MEAL_PLANNER_RECIPES : [];
-const RECIPE_MAP = Object.fromEntries(RECIPES.map((recipe) => [recipe.id, recipe]));
-const CUISINES = [...new Set(RECIPES.map((recipe) => recipe.cuisine))].sort((a, b) => a.localeCompare(b));
+let RECIPES = [];
+let RECIPE_MAP = {};
+let CUISINES = [];
+let REGIONS = [];
+let DISH_TYPES = [];
+let MAIN_INGREDIENTS = [];
 
 let state = loadState();
 let activeView = 'today';
 let activeNutritionPerson = state.people[0]?.id || 'p1';
 let toastTimer;
 let pendingConfirmResolve = null;
-const recipeBrowser = { search: '', cuisine: 'all', mealType: 'all', diet: 'all', page: 0, pageSize: 24 };
+const recipeBrowser = {
+  search: '',
+  region: 'all',
+  dishType: 'all',
+  mainIngredient: 'all',
+  diet: 'all',
+  maxTime: 'all',
+  page: 0,
+  pageSize: 24,
+};
+
+function installRecipes(recipes) {
+  RECIPES = Array.isArray(recipes) ? recipes : [];
+  RECIPE_MAP = Object.fromEntries(RECIPES.map((recipe) => [recipe.id, recipe]));
+  CUISINES = [...new Set(RECIPES.map((recipe) => recipe.cuisine))].sort((a, b) => a.localeCompare(b));
+  REGIONS = [...new Set(RECIPES.map((recipe) => recipe.region))].sort((a, b) => {
+    if (a === 'Pakistan-wide') return -1;
+    if (b === 'Pakistan-wide') return 1;
+    if (a === 'Afghanistan') return 1;
+    if (b === 'Afghanistan') return -1;
+    return a.localeCompare(b);
+  });
+  DISH_TYPES = (window.PakistaniRecipeAdapter?.DISH_TYPES || [])
+    .filter((type) => RECIPES.some((recipe) => recipe.dishType === type));
+  MAIN_INGREDIENTS = (window.PakistaniRecipeAdapter?.MAIN_INGREDIENTS || [])
+    .filter((type) => RECIPES.some((recipe) => recipe.mainIngredient === type));
+}
 
 function uid(prefix) {
   return `${prefix}-${crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`}`;
@@ -50,7 +79,10 @@ function mondayOf(date = new Date()) {
 }
 
 function isoDate(date) {
-  return date.toISOString().slice(0, 10);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function weekDates(start = state.weekStart) {
@@ -71,7 +103,7 @@ function defaultState() {
       { id: 'p1', name: 'Person 1', targetKcal: 2100, proteinTarget: 85, fibreTarget: 30, ironTarget: 11, calciumTarget: 950, vitaminCTarget: 95, portion: 1 },
       { id: 'p2', name: 'Person 2', targetKcal: 1850, proteinTarget: 72, fibreTarget: 25, ironTarget: 16, calciumTarget: 950, vitaminCTarget: 95, portion: 0.85 },
     ],
-    preferences: { mode: 'balanced', diet: 'balanced', cuisine: 'all', focus: 'none', focusStrength: 'moderate', maxTime: 35, strictTime: false, allergens: [] },
+    preferences: { mode: 'balanced', diet: 'balanced', region: 'all', focus: 'none', focusStrength: 'moderate', maxTime: 35, strictTime: false, allergens: [] },
     weekStart,
     plan: [],
     pantry: [
@@ -80,7 +112,7 @@ function defaultState() {
       { id: 'pantry-onions', foodId: 'onions', name: 'Onions', mode: 'count', quantity: 3, unit: 'count', storage: 'Cupboard', status: 'low' },
       { id: 'pantry-spinach', foodId: 'spinach', name: 'Spinach', mode: 'status', quantity: null, unit: 'g', storage: 'Freezer', status: 'low' },
     ],
-    shopping: { overrides: {}, suppressed: [], checked: [], states: {}, manualItems: [] },
+    shopping: { overrides: {}, suppressed: [], checked: [], states: {}, manualItems: [], selectedEntryIds: [] },
     selectedPlanDay: 0,
     audit: [],
   };
@@ -107,7 +139,14 @@ function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
     if (!saved || saved.version !== 3) return fallback;
-    return { ...fallback, ...saved, preferences: { ...fallback.preferences, ...saved.preferences }, shopping: { ...fallback.shopping, ...saved.shopping } };
+    const merged = {
+      ...fallback,
+      ...saved,
+      preferences: { ...fallback.preferences, ...saved.preferences },
+      shopping: { ...fallback.shopping, ...saved.shopping },
+    };
+    if (!Array.isArray(merged.shopping.selectedEntryIds)) merged.shopping.selectedEntryIds = [];
+    return merged;
   } catch {
     return fallback;
   }
@@ -143,6 +182,7 @@ function formatDate(date, options = { weekday: 'short', day: 'numeric', month: '
 
 function displayQuantity(value, unit) {
   const numeric = Number(value);
+  if (unit === 'as needed') return 'as needed';
   const rounded = unit === 'g' || unit === 'ml' ? Math.round(numeric / 5) * 5 : engine.round(numeric, 1);
   if (unit === 'g' && rounded >= 1000) return `${engine.round(rounded / 1000, 2)} kg`;
   if (unit === 'ml' && rounded >= 1000) return `${engine.round(rounded / 1000, 2)} l`;
@@ -155,7 +195,7 @@ function focusWeight() {
 }
 
 function reasonFor(recipe) {
-  if (state.preferences.cuisine && state.preferences.cuisine !== 'all' && recipe.cuisine === state.preferences.cuisine) return `Matches the ${state.preferences.cuisine} cuisine preference`;
+  if (state.preferences.region && state.preferences.region !== 'all' && recipe.region === state.preferences.region) return `Matches the ${state.preferences.region} regional preference`;
   if (state.preferences.focus !== 'none') return `Strong ${NUTRIENT_META[state.preferences.focus]?.label.toLowerCase() || state.preferences.focus} contribution`;
   if (state.preferences.mode === 'pantry') return 'Prioritizes ingredients already recorded at home';
   if (state.preferences.mode === 'quick') return `Fits the ${state.preferences.maxTime}-minute active-time preference`;
@@ -165,10 +205,10 @@ function reasonFor(recipe) {
 
 function rankedRecipes(mealType, recentIds = []) {
   const recentRecipes = recentIds.map((id) => RECIPE_MAP[id]).filter(Boolean);
-  const recentCuisineCounts = recentRecipes.reduce((map, recipe) => map.set(recipe.cuisine, (map.get(recipe.cuisine) || 0) + 1), new Map());
+  const recentRegionCounts = recentRecipes.reduce((map, recipe) => map.set(recipe.region, (map.get(recipe.region) || 0) + 1), new Map());
   const lastTwo = recentRecipes.slice(-2);
   return RECIPES
-    .filter((recipe) => recipe.mealType === mealType)
+    .filter((recipe) => recipe.mealSlots?.includes(mealType) || recipe.mealType === mealType)
     .filter((recipe) => state.preferences.diet === 'balanced' || recipe.diets.includes(state.preferences.diet))
     .filter((recipe) => !recipe.allergens.some((allergen) => state.preferences.allergens.includes(allergen)))
     .filter((recipe) => !state.preferences.strictTime || recipe.activeTime <= state.preferences.maxTime)
@@ -182,9 +222,9 @@ function rankedRecipes(mealType, recentIds = []) {
         pantryItems: state.pantry,
         recentRecipeIds: recentIds,
       });
-      if (state.preferences.cuisine && state.preferences.cuisine !== 'all' && recipe.cuisine === state.preferences.cuisine) score += 42;
+      if (state.preferences.region && state.preferences.region !== 'all' && recipe.region === state.preferences.region) score += 42;
       if (recentIds.slice(-84).includes(recipe.id)) score -= 48;
-      score -= (recentCuisineCounts.get(recipe.cuisine) || 0) * 4;
+      score -= (recentRegionCounts.get(recipe.region) || 0) * 4;
       if (lastTwo.some((item) => item.primaryProtein === recipe.primaryProtein && recipe.primaryProtein !== 'mixed')) score -= 16;
       if (lastTwo.some((item) => item.method === recipe.method)) score -= 8;
       return { recipe, score };
@@ -198,6 +238,7 @@ function generatePlan({ preservePinned = true } = {}) {
   const previousRecipeIds = state.plan.filter((entry) => !entry.skipped && RECIPE_MAP[entry.recipeId]).map((entry) => entry.recipeId);
   state.recipeHistory = [...(state.recipeHistory || []), ...previousRecipeIds].slice(-84);
   state.generationCount = Number(state.generationCount || 0) + 1;
+  state.shopping.selectedEntryIds = [];
   const recent = [...state.recipeHistory];
   const next = [];
   for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
@@ -266,7 +307,8 @@ function targetFor(person, nutrient) {
 }
 
 function shoppingRows() {
-  const aggregate = engine.aggregateIngredients(state.plan, RECIPE_MAP);
+  const selectedPlan = engine.filterSelectedPlanEntries(state.plan, state.shopping.selectedEntryIds);
+  const aggregate = engine.aggregateIngredients(selectedPlan, RECIPE_MAP);
   const trimmed = engine.subtractPantry(aggregate, state.pantry);
   const generated = trimmed
     .filter((item) => item.net > 0 || item.checkPantry)
@@ -301,4 +343,8 @@ function shoppingRows() {
     manualOverride: false,
   }));
   return [...generated, ...manual];
+}
+
+function selectedShoppingEntries() {
+  return engine.filterSelectedPlanEntries(state.plan, state.shopping.selectedEntryIds);
 }
