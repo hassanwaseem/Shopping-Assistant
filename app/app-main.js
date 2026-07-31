@@ -27,7 +27,7 @@ document.addEventListener('click', async (event) => {
     return renderAll();
   }
   if (action === 'view-recipe') return openRecipe(target.dataset.recipeId);
-  if (action === 'recipe-page') { recipeBrowser.page = Math.max(0, Number(target.dataset.page) || 0); return renderRecipes(); }
+  if (action === 'recipe-page') { recipeBrowser.page = Math.max(0, Number(target.dataset.page) || 0); return renderRecipeResults(); }
   if (action === 'swap-meal') return swapMeal(target.dataset.entryId);
   if (action === 'adjust-serving') return adjustServing(target.dataset.entryId, Number(target.dataset.delta));
   if (action === 'toggle-meal-shopping') return toggleMealShopping(target.dataset.entryId);
@@ -92,7 +92,7 @@ document.addEventListener('change', (event) => {
   if (action === 'recipe-filter') {
     recipeBrowser[target.dataset.field] = target.value;
     recipeBrowser.page = 0;
-    return renderRecipes();
+    return renderRecipeResults();
   }
   if (action === 'update-use-soon') {
     const item = state.pantry.find((row) => row.id === target.dataset.pantryId);
@@ -140,7 +140,7 @@ document.addEventListener('input', (event) => {
   if (event.target.id === 'recipeSearch') {
     recipeBrowser.search = event.target.value;
     recipeBrowser.page = 0;
-    renderRecipes();
+    renderRecipeResults();
     return;
   }
   if (event.target.id === 'shoppingSearch') {
@@ -156,12 +156,6 @@ document.addEventListener('submit', (event) => {
 });
 
 document.addEventListener('change', (event) => {
-  if (event.target.id === 'recipeSearch') {
-    recipeBrowser.search = event.target.value;
-    recipeBrowser.page = 0;
-    renderRecipes();
-    return;
-  }
   if (event.target.id === 'shoppingSearch') {
     state.shopping.search = event.target.value;
     saveState();

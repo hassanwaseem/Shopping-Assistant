@@ -32,32 +32,45 @@ function filteredRecipes() {
 function renderRecipes() {
   const view = document.getElementById('view-recipes');
   if (!view) return;
+  if (!document.getElementById('recipeSearch')) {
+    view.innerHTML = `
+      <div class="view-header"><div><p class="eyebrow">Pakistani recipe library</p><h2>Browse complete recipes</h2><p>Explore regional dishes, ingredients, full cooking methods and nutrition estimates.</p></div></div>
+      <section class="panel soft-panel">
+        <div class="recipe-filters">
+          <label class="recipe-search-field">Search<input id="recipeSearch" type="search" value="${h(recipeBrowser.search)}" placeholder="Dish, ingredient, family or region" /></label>
+          <label>Region<select data-action="recipe-filter" data-field="region">${option('all', 'All regions', recipeBrowser.region)}${REGIONS.map((region) => option(region, region, recipeBrowser.region)).join('')}</select></label>
+          <label>Dish type<select data-action="recipe-filter" data-field="dishType">${option('all', 'All dish types', recipeBrowser.dishType)}${DISH_TYPES.map((type) => option(type, type, recipeBrowser.dishType)).join('')}</select></label>
+          <label>Main ingredient<select data-action="recipe-filter" data-field="mainIngredient">${option('all', 'Any main ingredient', recipeBrowser.mainIngredient)}${MAIN_INGREDIENTS.map((type) => option(type, type, recipeBrowser.mainIngredient)).join('')}</select></label>
+          <label>Diet<select data-action="recipe-filter" data-field="diet">${option('all', 'All dietary patterns', recipeBrowser.diet)}${option('vegetarian', 'Vegetarian', recipeBrowser.diet)}${option('vegan', 'Vegan', recipeBrowser.diet)}${option('high-protein', 'High protein', recipeBrowser.diet)}</select></label>
+          <label>Total time<select data-action="recipe-filter" data-field="maxTime">${option('all', 'Any cooking time', recipeBrowser.maxTime)}${option('30', 'Up to 30 minutes', recipeBrowser.maxTime)}${option('60', 'Up to 1 hour', recipeBrowser.maxTime)}${option('120', 'Up to 2 hours', recipeBrowser.maxTime)}</select></label>
+        </div>
+        <p id="recipeResultSummary" class="help"></p>
+      </section>
+      <div id="recipeResults" class="recipe-grid"></div>
+      <div id="recipePagination" class="pagination" aria-label="Recipe pages"></div>`;
+  }
+  renderRecipeResults();
+}
+
+function renderRecipeResults() {
   const filtered = filteredRecipes();
   const pageCount = Math.max(1, Math.ceil(filtered.length / recipeBrowser.pageSize));
   recipeBrowser.page = Math.min(recipeBrowser.page, pageCount - 1);
   const start = recipeBrowser.page * recipeBrowser.pageSize;
   const visible = filtered.slice(start, start + recipeBrowser.pageSize);
-  view.innerHTML = `
-    <div class="view-header"><div><p class="eyebrow">Pakistani recipe library</p><h2>${RECIPES.length} complete recipes</h2><p>Explore regional dishes, ingredients, full cooking methods and nutrition estimates.</p></div></div>
-    <section class="panel soft-panel">
-      <div class="recipe-filters">
-        <label class="recipe-search-field">Search<input id="recipeSearch" type="search" value="${h(recipeBrowser.search)}" placeholder="Dish, ingredient, family or region" /></label>
-        <label>Region<select data-action="recipe-filter" data-field="region">${option('all', 'All regions', recipeBrowser.region)}${REGIONS.map((region) => option(region, region, recipeBrowser.region)).join('')}</select></label>
-        <label>Dish type<select data-action="recipe-filter" data-field="dishType">${option('all', 'All dish types', recipeBrowser.dishType)}${DISH_TYPES.map((type) => option(type, type, recipeBrowser.dishType)).join('')}</select></label>
-        <label>Main ingredient<select data-action="recipe-filter" data-field="mainIngredient">${option('all', 'Any main ingredient', recipeBrowser.mainIngredient)}${MAIN_INGREDIENTS.map((type) => option(type, type, recipeBrowser.mainIngredient)).join('')}</select></label>
-        <label>Diet<select data-action="recipe-filter" data-field="diet">${option('all', 'All dietary patterns', recipeBrowser.diet)}${option('vegetarian', 'Vegetarian', recipeBrowser.diet)}${option('vegan', 'Vegan', recipeBrowser.diet)}${option('high-protein', 'High protein', recipeBrowser.diet)}</select></label>
-        <label>Total time<select data-action="recipe-filter" data-field="maxTime">${option('all', 'Any cooking time', recipeBrowser.maxTime)}${option('30', 'Up to 30 minutes', recipeBrowser.maxTime)}${option('60', 'Up to 1 hour', recipeBrowser.maxTime)}${option('120', 'Up to 2 hours', recipeBrowser.maxTime)}</select></label>
-      </div>
-      <p class="help">${filtered.length} matching recipes · showing ${filtered.length ? start + 1 : 0}–${Math.min(start + recipeBrowser.pageSize, filtered.length)}</p>
-    </section>
-    <div class="recipe-grid">
-      ${visible.map((recipe) => recipeCard(recipe)).join('') || '<div class="empty-state">No recipes match these filters.</div>'}
-    </div>
-    <div class="pagination" aria-label="Recipe pages">
-      <button class="button secondary" type="button" data-action="recipe-page" data-page="${recipeBrowser.page - 1}" ${recipeBrowser.page === 0 ? 'disabled' : ''}>Previous</button>
-      <span>Page ${recipeBrowser.page + 1} of ${pageCount}</span>
-      <button class="button secondary" type="button" data-action="recipe-page" data-page="${recipeBrowser.page + 1}" ${recipeBrowser.page >= pageCount - 1 ? 'disabled' : ''}>Next</button>
-    </div>`;
+  const summary = document.getElementById('recipeResultSummary');
+  const results = document.getElementById('recipeResults');
+  const pagination = document.getElementById('recipePagination');
+  if (!summary || !results || !pagination) return;
+  summary.textContent = filtered.length
+    ? `Showing recipes ${start + 1}–${Math.min(start + recipeBrowser.pageSize, filtered.length)}`
+    : 'No matching recipes';
+  results.innerHTML = visible.map((recipe) => recipeCard(recipe)).join('')
+    || '<div class="empty-state">No recipes match these filters.</div>';
+  pagination.innerHTML = `
+    <button class="button secondary" type="button" data-action="recipe-page" data-page="${recipeBrowser.page - 1}" ${recipeBrowser.page === 0 ? 'disabled' : ''}>Previous</button>
+    <span>Page ${recipeBrowser.page + 1} of ${pageCount}</span>
+    <button class="button secondary" type="button" data-action="recipe-page" data-page="${recipeBrowser.page + 1}" ${recipeBrowser.page >= pageCount - 1 ? 'disabled' : ''}>Next</button>`;
 }
 
 function recipeCard(recipe) {
@@ -130,7 +143,7 @@ function renderMore() {
   document.getElementById('view-more').innerHTML = `
     <div class="view-header"><div><p class="eyebrow">Household settings</p><h2>Manage your household</h2><p>Update profiles, nutrition targets, recipes and personal data.</p></div></div>
     <section class="panel warm-panel">
-      <div class="panel-header"><div><h3>Pakistani recipe library</h3><p>${RECIPES.length} complete Pakistani and Afghan recipes across ${REGIONS.length} regional labels, with ingredients and cooking instructions.</p></div><button class="button secondary" type="button" data-action="navigate" data-view="recipes">Browse recipes</button></div>
+      <div class="panel-header"><div><h3>Pakistani recipe library</h3><p>Pakistani, Afghan and Pakistani-home-style dishes with complete ingredients and cooking instructions.</p></div><button class="button secondary" type="button" data-action="navigate" data-view="recipes">Browse recipes</button></div>
     </section>
     <section class="panel">
       <div class="panel-header"><div><h3>Person profiles</h3><p>Set portions and nutrition targets for everyone included in the plan.</p></div><button class="button secondary small" type="button" data-action="add-person">Add person</button></div>

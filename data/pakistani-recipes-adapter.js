@@ -14,6 +14,7 @@
     'Breads',
     'Snacks & street food',
     'Sides & vegetables',
+    'Pasta, macaroni & lasagna',
     'Desserts',
     'Drinks',
   ];
@@ -82,14 +83,16 @@
   }
 
   function dishTypeFor(source) {
+    if (DISH_TYPES.includes(source.dish_type)) return source.dish_type;
     const category = searchable(source.category);
     const text = searchable(`${source.name} ${source.dish_family || ''} ${source.category || ''}`);
 
     if (/beverage|drinks?/.test(category) || /\b(chai|tea|kahwa|kehwa|lassi|sharbat|drink)\b/.test(text)) return 'Drinks';
-    if (/dessert/.test(category) || /\b(halwa|kheer|kulfi|gulab jamun|jalebi|seviyan|sheer khurma|mithai|pudding|zarda|cake|rusk|biscuit|cookie)\b/.test(text)) return 'Desserts';
+    if (/dessert/.test(category) || /\b(halwa|kheer|kulfi|gulab jamun|jalebi|seviyan|sheer khurma|mithai|pudding|zarda|cake|rusk|biscuit|cookie|brownie|muffin|banana bread|trifle|tiramisu|sweet dish)\b/.test(text)) return 'Desserts';
     if (/breakfast/.test(category) || /\b(nashta|breakfast|halwa puri|anda paratha|anday wala paratha|egg bhurji|khagina|omelette|omelet)\b/.test(text)) return 'Breakfast';
     if (/appetizer|snack|kebab/.test(category) || /\b(chaat|kebab|kabab|tikka|pakora|samosas?|gol gapp|bun kebab|fritter|cutlet)\b/.test(text)) return 'Snacks & street food';
     if (/naan|roti|bread/.test(category) || /\b(naan|roti|chapati|paratha|puri|sheermal|kulcha|flatbread)\b/.test(text)) return 'Breads';
+    if (/\b(pasta|macaroni|spaghetti|lasagna|lasagne|fettuccine|penne)\b/.test(text)) return 'Pasta, macaroni & lasagna';
     if (/\b(biryani|pulao|pilaf|khichdi|khichri|tehri|fried rice|rice)\b/.test(text)) return 'Rice & biryani';
     if (/daal/.test(category) || /\b(daal|dal|lentil|chana|cholay|chole|rajma|lobia|black-eyed pea|chickpea)\b/.test(text)) return 'Daal & legumes';
     if (/side|salad/.test(category) || /\b(chutney|raita|achar|pickle|salad|bhujia|sabzi|bharta)\b/.test(text)) return 'Sides & vegetables';
@@ -104,6 +107,7 @@
   }
 
   function mainIngredientFor(source) {
+    if (MAIN_INGREDIENTS.includes(source.main_ingredient)) return source.main_ingredient;
     const text = combinedRecipeText(source);
     if (/\b(chicken|murgh|murghi)\b/.test(text)) return 'Chicken';
     if (/\b(beef|gaaye|gaye)\b/.test(text)) return 'Beef';
@@ -169,8 +173,8 @@
     const text = searchable(`${name} ${sourceText || ''}`);
     if (/\b(chicken|beef|mutton|lamb|goat|meat|fish|prawn|shrimp|kaleji|liver)\b/.test(text)) return 'Meat, fish & alternatives';
     if (/\b(milk|yogurt|yoghurt|dahi|cream|butter|ghee|paneer|cheese|khoya|mawa|egg)\b/.test(text)) return 'Dairy & alternatives';
-    if (/\b(flour|atta|maida|rice|chawal|daal|dal|lentil|chickpea|bean|sugar|semolina|sooji|vermicelli|oats)\b/.test(text)) return 'Dry goods';
-    if (/\b(naan|roti|chapati|bread|bun|papri)\b/.test(text)) return 'Bakery';
+    if (/\b(flour|atta|maida|rice|chawal|daal|dal|lentil|chickpea|bean|sugar|semolina|sooji|vermicelli|oats|pasta|macaroni|spaghetti|lasagna|lasagne|noodles|breadcrumbs|baking powder|baking soda|cocoa|chocolate)\b/.test(text)) return 'Dry goods';
+    if (/\b(naan|roti|chapati|bread|bun|papri|cake|cookie|biscuit|ladyfingers?)\b/.test(text)) return 'Bakery';
     if (/\b(oil|salt|pepper|chilli|masala|turmeric|haldi|cumin|zeera|coriander powder|spice|vinegar|mustard|saffron|cardamom|cinnamon|clove|pickle)\b/.test(text)) return 'Spices & condiments';
     if (/\b(tin|canned)\b/.test(text)) return 'Canned foods';
     return 'Produce';
@@ -248,7 +252,7 @@
 
   function mealSlotsFor(dishType, source) {
     if (dishType === 'Breakfast') return ['breakfast'];
-    if (['Main dishes', 'Curries & stews', 'Rice & biryani', 'Daal & legumes'].includes(dishType)) return ['lunch', 'dinner'];
+    if (['Main dishes', 'Curries & stews', 'Rice & biryani', 'Daal & legumes', 'Pasta, macaroni & lasagna'].includes(dishType)) return ['lunch', 'dinner'];
     if (dishType === 'Sides & vegetables' && /main course|vegetarian recipes|curries/i.test(String(source.category || ''))) return ['lunch', 'dinner'];
     return [];
   }
@@ -306,6 +310,7 @@
       Breads: 'bread',
       'Snacks & street food': 'snack or street-food dish',
       'Sides & vegetables': 'side or vegetable dish',
+      'Pasta, macaroni & lasagna': 'pasta, macaroni or lasagna dish',
       Desserts: 'dessert',
       Drinks: 'drink',
     }[dishType] || 'dish';
@@ -338,16 +343,16 @@
       mealSlots,
       cuisine,
       region,
-      authenticity: 'traditional',
+      authenticity: String(source.authenticity || 'traditional'),
       category: dishType,
       dishType,
       mainIngredient,
-      description: recipeDescription(source, cuisine, region, dishType, mainIngredient),
+      description: String(source.culinary_context || recipeDescription(source, cuisine, region, dishType, mainIngredient)),
       servings,
       activeTime,
       totalTime,
       difficulty: ['easy', 'medium', 'hard'].includes(source.difficulty) ? source.difficulty : 'medium',
-      batchFriendly: servings >= 4 && ['Main dishes', 'Curries & stews', 'Rice & biryani', 'Daal & legumes'].includes(dishType),
+      batchFriendly: servings >= 4 && ['Main dishes', 'Curries & stews', 'Rice & biryani', 'Daal & legumes', 'Pasta, macaroni & lasagna'].includes(dishType),
       freezerFriendly: ['Curries & stews', 'Daal & legumes'].includes(dishType),
       diets: dietaryTagsFor(source),
       allergens: Array.isArray(source.allergens) ? source.allergens.map((value) => String(value)) : [],

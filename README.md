@@ -6,7 +6,7 @@ A mobile-first Pakistani household meal planner with a regional recipe library, 
 
 - Today dashboard with meals, preparation cues, shopping status, and nutrition summary
 - Seven-day editable meal plan
-- 501 complete Pakistani and Afghan recipe variants loaded from `data/pakistani-recipes.json`
+- 698 complete Pakistani, Afghan, and Pakistani-home-style recipe variants loaded from `data/pakistani-recipes.json`
 - Pakistani-focused filtering by region, dish type, main ingredient, dietary pattern, and cooking time
 - Balanced, pantry-first, quick-week, batch-cooking, and variety planning modes
 - Temporary protein, fibre, iron, calcium, and vitamin C focus
