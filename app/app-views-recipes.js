@@ -94,10 +94,6 @@ function openRecipe(recipeId) {
       <summary>${h(method.label || `Alternate method ${index + 1}`)}</summary>
       <ol class="instruction-list">${(method.instructions || []).map((step) => `<li>${h(step)}</li>`).join('')}</ol>
     </details>`).join('');
-  const sourceLinks = recipe.sources
-    .filter((source, index, sources) => source.url && sources.findIndex((item) => item.url === source.url) === index)
-    .map((source) => `<a href="${h(source.url)}" target="_blank" rel="noopener noreferrer">${h(source.source_name || 'Recipe source')}</a>`)
-    .join('');
   content.innerHTML = `
     <div class="recipe-dialog-header">
       <div><p class="eyebrow">${h(recipe.region)} · ${h(recipe.dishType)}</p><h2>${h(recipe.name)}</h2><p>${h(recipe.description)}</p></div>
@@ -130,9 +126,6 @@ function openRecipe(recipeId) {
       </div>
       <p class="help">Nutrition is an approximate planning estimate. Confidence: ${h(recipe.nutritionConfidence)}.</p>
     </section>`;
-  if (sourceLinks) {
-    content.insertAdjacentHTML('beforeend', `<section class="recipe-sources"><h3>Recipe sources</h3><div class="source-links">${sourceLinks}</div></section>`);
-  }
   const close = () => dialog.close();
   document.getElementById('recipeDialogClose').addEventListener('click', close, { once: true });
   if (typeof dialog.showModal === 'function') dialog.showModal();
