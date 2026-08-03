@@ -33,9 +33,6 @@
 .alternate-method { margin-top: 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); }
 .alternate-method summary { cursor: pointer; font-weight: 800; }
 .alternate-method .instruction-list { margin-top: 14px; }
-.recipe-sources { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
-.source-links { display: flex; flex-wrap: wrap; gap: 8px; }
-.source-links a { border-radius: 999px; padding: 7px 10px; background: var(--accent-soft); color: var(--accent-strong); font-size: .78rem; font-weight: 800; text-decoration: none; }
 .meal-actions { flex-wrap: wrap; }
 .shopping-select { width: 100%; margin-top: 8px; }
 .shopping-select.selected { border: 1px solid #a9cfc1; background: var(--accent-soft); color: var(--accent-strong); }
