@@ -11,13 +11,34 @@ const recipes = adapter.adaptDataset(source);
 
 test('loads the complete validated Pakistani collection', () => {
   assert.equal(recipes.length, source.variant_model.recipe_variant_count);
-  assert.equal(recipes.length, 698);
+  assert.equal(recipes.length, 4247);
   assert.equal(new Set(recipes.map((recipe) => recipe.id)).size, recipes.length);
   assert.ok(recipes.every((recipe) => ['Pakistani', 'Afghan'].includes(recipe.cuisine)));
   assert.ok(recipes.some((recipe) => recipe.cuisine === 'Afghan'));
   assert.ok(recipes.some((recipe) => /aloo paratha/i.test(recipe.name)));
   assert.equal(recipes.find((recipe) => recipe.name === 'Chapli Kabab Recipe').cuisine, 'Pakistani');
   assert.ok(recipes.some((recipe) => recipe.name === 'Kashmiri Chai'));
+});
+
+test('represents every imported Food Fusion recipe once and preserves duplicates as alternate methods', () => {
+  const sourceRecipes = source.dish_families.flatMap((family) => family.variants || []);
+  const foodFusionSources = sourceRecipes.flatMap((recipe) => (recipe.source_attributions || [])
+    .filter((entry) => entry.source_name === 'Food Fusion')
+    .map((entry) => ({ recipe, entry })));
+  const foodFusionIds = foodFusionSources.map(({ entry }) => entry.source_record_id);
+  const foodFusionAlternateMethods = sourceRecipes.flatMap((recipe) => (recipe.alternate_methods || [])
+    .filter((method) => method.label.startsWith('Food Fusion alternate method')));
+
+  assert.equal(source.source_inventory['Food Fusion'].recipe_records_imported, 3615);
+  assert.equal(foodFusionSources.length, 3615);
+  assert.equal(new Set(foodFusionIds).size, 3615);
+  assert.equal(foodFusionAlternateMethods.length, 66);
+  assert.ok(foodFusionSources.every(({ entry }) => !entry.url && !entry.source_url));
+  assert.ok(foodFusionAlternateMethods.every((method) => (
+    Array.isArray(method.instructions)
+    && method.instructions.length > 0
+    && method.source_urls.length === 0
+  )));
 });
 
 test('includes Pakistani-home-style pasta and desserts with planner-ready metadata', () => {

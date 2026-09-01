@@ -57,6 +57,24 @@ npm test
 
 The tests cover Pakistani dataset adaptation, filter taxonomy, dietary-tag correction, explicit meal selection for shopping, unit normalization, ingredient aggregation, pantry subtraction, and missing-nutrient semantics.
 
+## Food Fusion import
+
+The Food Fusion collection remains separate from the main recipe dataset. Run the resumable, rate-limited importer with:
+
+```bash
+npm run scrape:foodfusion
+```
+
+It writes `data/foodfusion-recipes.json` and `data/foodfusion-import-report.json`. The importer excludes images and individual source-page links from recipe objects, retains structured ingredient facts, creates concise independent directions from functional method facts, and reports every page it cannot parse. Use `node scripts/scrape-foodfusion.cjs --help` for retry, concurrency, checkpoint, and limited-run options.
+
+After reviewing the standalone import, merge it into the primary collection with:
+
+```bash
+npm run merge:foodfusion
+```
+
+The merge keeps the existing recipe schema, adds new dish families, and stores duplicate recipes as `alternate_methods`. It writes an auditable summary to `data/foodfusion-merge-report.json` and verifies that every accepted Food Fusion source record is represented exactly once.
+
 ## Deployment
 
 The current production site is served from `main`. Specification-aligned changes should first be reviewed on a branch or pull request before merging into the stable deployment.

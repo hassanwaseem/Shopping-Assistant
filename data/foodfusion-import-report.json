@@ -1,0 +1,357 @@
+{
+  "generated_at": "2026-08-31T20:39:08.003Z",
+  "duration_seconds": 43,
+  "source_records_reported": 3667,
+  "records_requested": 3667,
+  "parsed_count": 3615,
+  "failure_count": 52,
+  "images_downloaded": 0,
+  "source_links_stored_in_recipe_objects": 0,
+  "servings": {
+    "source_reported": 1134,
+    "estimated_or_defaulted": 2481
+  },
+  "times": {
+    "derived_from_explicit_method_durations": 3321,
+    "unavailable": 294
+  },
+  "instruction_policy": {
+    "method": "independent concise formulation from functional cooking facts",
+    "maximum_words_per_recipe": 195,
+    "exact_copies_rejected": true,
+    "high_fourgram_overlap_threshold": 0.72
+  },
+  "run_options": {
+    "concurrency": 3,
+    "delay_ms_per_worker": 180,
+    "checkpoint_writes": 1,
+    "limited_run": false
+  },
+  "failure_reasons": {
+    "ingredients_label_missing": 39,
+    "instructions_high_overlap_0.851": 1,
+    "instructions_high_overlap_0.808": 1,
+    "instructions_high_overlap_0.771": 1,
+    "instructions_high_overlap_0.748": 1,
+    "instructions_high_overlap_0.736": 1,
+    "instructions_high_overlap_0.798": 1,
+    "ingredients_empty": 2,
+    "instructions_word_budget_exceeded": 3,
+    "instructions_high_overlap_0.750": 1,
+    "directions_label_missing": 1
+  },
+  "failures": [
+    {
+      "source_record_id": 733,
+      "title": "Buffalo Chicken Shots",
+      "url": "https://foodfusion.com/recipe/buffalo-chicken-shots-recipe/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 776,
+      "title": "How to make a WaterMelon Basket",
+      "url": "https://foodfusion.com/recipe/make-watermelon-basket/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 1273,
+      "title": "Chocolate Milkshake & Ganache",
+      "url": "https://foodfusion.com/recipe/chocolate-milkshake-ganache-recipe/",
+      "reason": "instructions_high_overlap_0.851"
+    },
+    {
+      "source_record_id": 1388,
+      "title": "Chicken Fajita Pasta",
+      "url": "https://foodfusion.com/recipe/chicken-fajita-pasta-recipe/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 1419,
+      "title": "Masala Mutton Leg Roast",
+      "url": "https://foodfusion.com/recipe/masala-mutton-leg-roast-recipe/",
+      "reason": "instructions_high_overlap_0.808"
+    },
+    {
+      "source_record_id": 1432,
+      "title": "Brain Masala (Maghaz Fry)",
+      "url": "https://foodfusion.com/recipe/brain-masala-maghaz-fry-recipe/",
+      "reason": "instructions_high_overlap_0.771"
+    },
+    {
+      "source_record_id": 1440,
+      "title": "Beef Pasanday",
+      "url": "https://foodfusion.com/recipe/beef-pasanday-recipe/",
+      "reason": "instructions_high_overlap_0.748"
+    },
+    {
+      "source_record_id": 1461,
+      "title": "Beef Resha Kabab",
+      "url": "https://foodfusion.com/recipe/beef-resha-kabab/",
+      "reason": "instructions_high_overlap_0.736"
+    },
+    {
+      "source_record_id": 2039,
+      "title": "Hyderabadi Dum Chicken",
+      "url": "https://foodfusion.com/recipe/hyderabadi-dum-chicken/",
+      "reason": "instructions_high_overlap_0.798"
+    },
+    {
+      "source_record_id": 3922,
+      "title": "4 Tasty Snack Recipes",
+      "url": "https://foodfusion.com/recipe/4-tasty-snack-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 3959,
+      "title": "Kids Lunch Box Recipe",
+      "url": "https://foodfusion.com/recipe/kids-lunch-box-recipe/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 4074,
+      "title": "6 Must Try Pasta Recipes",
+      "url": "https://foodfusion.com/recipe/6-must-try-pasta-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 4279,
+      "title": "6 Must try Chicken Biryani Recipes",
+      "url": "https://foodfusion.com/recipe/6-must-try-chicken-biryani-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5058,
+      "title": "Top Soup Recipes",
+      "url": "https://foodfusion.com/recipe/top-soup-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5059,
+      "title": "Top 6 Fish Recipes",
+      "url": "https://foodfusion.com/recipe/top-6-fish-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5067,
+      "title": "Must try Sandwich Recipes",
+      "url": "https://foodfusion.com/recipe/must-try-sandwich-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5236,
+      "title": "Traditional Dawat Recipes",
+      "url": "https://foodfusion.com/recipe/traditional-dawat-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5241,
+      "title": "6 Karahi recipes",
+      "url": "https://foodfusion.com/recipe/6-karahi-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5242,
+      "title": "6 Qeema (Mince)",
+      "url": "https://foodfusion.com/recipe/6-qeema-mince/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5302,
+      "title": "Easy Cake recipe Ideas for Special Day",
+      "url": "https://foodfusion.com/recipe/easy-cake-recipe-ideas-special-day/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5531,
+      "title": "6 Homemade Recipes",
+      "url": "https://foodfusion.com/recipe/6-homemade-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5623,
+      "title": "8 Starters and Appetizer",
+      "url": "https://foodfusion.com/recipe/8-starters-and-appetizer/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 5993,
+      "title": "Make & Freeze Ramzan Recipes",
+      "url": "https://foodfusion.com/recipe/make-freeze-ramzan-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 6122,
+      "title": "6 Make & Freeze Ramzan Recipes",
+      "url": "https://foodfusion.com/recipe/6-make-freeze-ramzan-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 7430,
+      "title": "Complete Pizza 101 wtih Saima",
+      "url": "https://foodfusion.com/recipe/complete-pizza-101-wtih-saima/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 11256,
+      "title": "Mango Shake & Mango Storage",
+      "url": "https://foodfusion.com/recipe/mango-shake-mango-storage/",
+      "reason": "ingredients_empty"
+    },
+    {
+      "source_record_id": 13058,
+      "title": "8 Unique samosa folding Techniques",
+      "url": "https://foodfusion.com/recipe/8-unique-samosa-folding-techniques/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 13248,
+      "title": "Multi purpose dough",
+      "url": "https://foodfusion.com/recipe/multi-purpose-dough/",
+      "reason": "instructions_word_budget_exceeded"
+    },
+    {
+      "source_record_id": 14854,
+      "title": "Mint Margarita",
+      "url": "https://foodfusion.com/recipe/mint-mojito/",
+      "reason": "instructions_high_overlap_0.750"
+    },
+    {
+      "source_record_id": 16509,
+      "title": "Bubble/Boba Milk Tea 3 Ways from scratch",
+      "url": "https://foodfusion.com/recipe/bubble-boba-milk-tea-3-ways-from-scratch/",
+      "reason": "instructions_word_budget_exceeded"
+    },
+    {
+      "source_record_id": 21036,
+      "title": "3 Quick & Easy Sandwich Recipes",
+      "url": "https://foodfusion.com/recipe/3-quick-easy-sandwich-recipes/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 21272,
+      "title": "Make & Freeze Tikka Nuggets Fried and Air Fried",
+      "url": "https://foodfusion.com/recipe/make-freeze-tikka-nuggets-fried-and-air-fried/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 22119,
+      "title": "Lemon Mirch Chicken Tikka",
+      "url": "https://foodfusion.com/recipe/lemon-mirch-chicken-tikka/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 24734,
+      "title": "10 Super Easy ways To Cut A Watermelon",
+      "url": "https://foodfusion.com/recipe/watermelon-cutting-technique/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 25860,
+      "title": "Sticky Toffee Date Pudding Dessert",
+      "url": "https://foodfusion.com/recipe/sticky-toffee-pudding/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 27339,
+      "title": "Sizzling Gulab Jamun",
+      "url": "https://foodfusion.com/recipe/sizzling-gulab-jamun/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 27599,
+      "title": "Dahi Phulki Chaat with Storable Phulki Method",
+      "url": "https://foodfusion.com/recipe/dahi-phulki-chaat-with-storable-method/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 27744,
+      "title": "Nutritious Lobia & Veg Kabab",
+      "url": "https://foodfusion.com/recipe/nutritious-lobia-veg-kabab/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 28528,
+      "title": "Beef Brain Masala with 2 Brain Cleaning Methods",
+      "url": "https://foodfusion.com/recipe/brain-cleaning-with-beef-brain-masala/",
+      "reason": "ingredients_empty"
+    },
+    {
+      "source_record_id": 29850,
+      "title": "Brazilian Coconut Cold Cake",
+      "url": "https://foodfusion.com/recipe/brazilian-coconut-cold-cake/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 30089,
+      "title": "Make & Freeze Malai Qeema Triangle Paratha",
+      "url": "https://foodfusion.com/recipe/make-freeze-malai-qeema-triangle-paratha/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 30117,
+      "title": "Cake Rusk Three Milk Cake",
+      "url": "https://foodfusion.com/recipe/cake-rusk-three-milk-cake/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 30289,
+      "title": "Crispy Wontons",
+      "url": "https://foodfusion.com/recipe/crispy-wontons/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 30295,
+      "title": "Pre-Prep Ramadan Essentials Pack Make & Store",
+      "url": "https://foodfusion.com/recipe/pre-prep-ramadan-essentials-pack-make-store/",
+      "reason": "instructions_word_budget_exceeded"
+    },
+    {
+      "source_record_id": 30336,
+      "title": "Achari Aloo Katli",
+      "url": "https://foodfusion.com/recipe/achari-aloo-katli/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 30567,
+      "title": "4 Essential Tips to For Perfect Creamy Fruit Chaat",
+      "url": "https://foodfusion.com/recipe/4-essential-tips-to-for-perfect-creamy-fruit-chaat/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 31619,
+      "title": "One Pan Crispy Potatoes with Eggs",
+      "url": "https://foodfusion.com/recipe/one-pan-crispy-potatoes-with-eggs/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 32357,
+      "title": "Special Daal Fry",
+      "url": "https://foodfusion.com/recipe/special-daal-fry-tadka/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 33447,
+      "title": "Dhuwandaar Chicken Koyla Karahi",
+      "url": "https://foodfusion.com/recipe/dhuwandaar-chicken-karahi/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 34089,
+      "title": "Beijing Beef Rice Bowl",
+      "url": "https://foodfusion.com/recipe/beijing-beef-rice-bowl/",
+      "reason": "ingredients_label_missing"
+    },
+    {
+      "source_record_id": 34460,
+      "title": "Creamy Mango Agua Fresca",
+      "url": "https://foodfusion.com/recipe/creamy-mango-agua-fresca/",
+      "reason": "directions_label_missing"
+    },
+    {
+      "source_record_id": 34827,
+      "title": "Cocoberry Paradise Mousse",
+      "url": "https://foodfusion.com/recipe/cocoberry-paradise-mousse/",
+      "reason": "ingredients_label_missing"
+    }
+  ]
+}
