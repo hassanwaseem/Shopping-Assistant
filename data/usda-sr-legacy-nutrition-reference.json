@@ -1,0 +1,4379 @@
+{
+  "schema_version": "1.0.0",
+  "source": "USDA FoodData Central SR Legacy, April 2018 final release",
+  "source_url": "https://fdc.nal.usda.gov/download-datasets/",
+  "nutrient_basis": "Values are per 100 g edible portion.",
+  "generated_on": "2026-09-01",
+  "profiles": {
+    "oil": {
+      "key": "oil",
+      "fdc_id": 172370,
+      "description": "Oil, vegetable, soybean, refined",
+      "protein_g": 0,
+      "fiber_g": 0,
+      "iron_mg": 0.02,
+      "sodium_mg": 0,
+      "vitamin_c_mg": 0,
+      "fat_g": 100,
+      "carbs_g": 0,
+      "kcal": 884,
+      "calcium_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tablespoon",
+          "grams": 13.6
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 218
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "teaspoon",
+          "grams": 4.5
+        }
+      ]
+    },
+    "olive_oil": {
+      "key": "olive_oil",
+      "fdc_id": 171413,
+      "description": "Oil, olive, salad or cooking",
+      "fat_g": 100,
+      "carbs_g": 0,
+      "kcal": 884,
+      "calcium_mg": 1,
+      "iron_mg": 0.56,
+      "sodium_mg": 2,
+      "protein_g": 0,
+      "fiber_g": 0,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tablespoon",
+          "grams": 13.5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 216
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 4.5
+        }
+      ]
+    },
+    "butter": {
+      "key": "butter",
+      "fdc_id": 173430,
+      "description": "Butter, without salt",
+      "calcium_mg": 24,
+      "kcal": 717,
+      "iron_mg": 0.02,
+      "fat_g": 81.11,
+      "carbs_g": 0.06,
+      "protein_g": 0.85,
+      "fiber_g": 0,
+      "vitamin_c_mg": 0,
+      "sodium_mg": 11,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "pat (1\" sq, 1/3\" high)",
+          "grams": 5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 14.2
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 227
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "stick",
+          "grams": 113
+        }
+      ]
+    },
+    "salted_butter": {
+      "key": "salted_butter",
+      "fdc_id": 173410,
+      "description": "Butter, salted",
+      "fiber_g": 0,
+      "iron_mg": 0.02,
+      "sodium_mg": 643,
+      "kcal": 717,
+      "fat_g": 81.11,
+      "carbs_g": 0.06,
+      "vitamin_c_mg": 0,
+      "protein_g": 0.85,
+      "calcium_mg": 24,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "pat (1\" sq, 1/3\" high)",
+          "grams": 5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 14.2
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 227
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "stick",
+          "grams": 113
+        }
+      ]
+    },
+    "ghee": {
+      "key": "ghee",
+      "fdc_id": 173412,
+      "description": "Butter oil, anhydrous",
+      "fiber_g": 0,
+      "kcal": 876,
+      "carbs_g": 0,
+      "calcium_mg": 4,
+      "fat_g": 99.48,
+      "vitamin_c_mg": 0,
+      "protein_g": 0.28,
+      "iron_mg": 0,
+      "sodium_mg": 2,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 12.8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 205
+        }
+      ]
+    },
+    "margarine": {
+      "key": "margarine",
+      "fdc_id": 172347,
+      "description": "Margarine, regular, 80% fat, composite, tub, with salt",
+      "iron_mg": 0,
+      "sodium_mg": 657,
+      "protein_g": 0.22,
+      "calcium_mg": 3,
+      "fat_g": 80.17,
+      "carbs_g": 0.75,
+      "kcal": 713,
+      "vitamin_c_mg": 0.1,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 14.2
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 227
+        }
+      ]
+    },
+    "mayonnaise": {
+      "key": "mayonnaise",
+      "fdc_id": 171009,
+      "description": "Salad dressing, mayonnaise, regular",
+      "vitamin_c_mg": 0,
+      "iron_mg": 0.21,
+      "sodium_mg": 635,
+      "protein_g": 0.96,
+      "fat_g": 74.85,
+      "carbs_g": 0.57,
+      "kcal": 680,
+      "calcium_mg": 8,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 13.8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 220
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "packet",
+          "grams": 10
+        }
+      ]
+    },
+    "sugar": {
+      "key": "sugar",
+      "fdc_id": 169655,
+      "description": "Sugars, granulated",
+      "protein_g": 0,
+      "iron_mg": 0.05,
+      "sodium_mg": 1,
+      "fat_g": 0,
+      "kcal": 387,
+      "calcium_mg": 1,
+      "carbs_g": 99.98,
+      "fiber_g": 0,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "serving packet",
+          "grams": 2.8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 4.2
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 200
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "serving 1 cube",
+          "grams": 2.3
+        }
+      ]
+    },
+    "brown_sugar": {
+      "key": "brown_sugar",
+      "fdc_id": 168833,
+      "description": "Sugars, brown",
+      "fat_g": 0,
+      "carbs_g": 98.09,
+      "kcal": 380,
+      "calcium_mg": 83,
+      "vitamin_c_mg": 0,
+      "protein_g": 0.12,
+      "fiber_g": 0,
+      "iron_mg": 0.71,
+      "sodium_mg": 28,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp unpacked",
+          "grams": 3
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup packed",
+          "grams": 220
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup unpacked",
+          "grams": 145
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp packed",
+          "grams": 4.6
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp brownulated",
+          "grams": 3.2
+        }
+      ]
+    },
+    "honey": {
+      "key": "honey",
+      "fdc_id": 169640,
+      "description": "Honey",
+      "protein_g": 0.3,
+      "fiber_g": 0.2,
+      "iron_mg": 0.42,
+      "sodium_mg": 4,
+      "vitamin_c_mg": 0.5,
+      "fat_g": 0,
+      "carbs_g": 82.4,
+      "kcal": 304,
+      "calcium_mg": 6,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 339
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 21
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "packet (0.5 oz)",
+          "grams": 14
+        }
+      ]
+    },
+    "molasses": {
+      "key": "molasses",
+      "fdc_id": 168820,
+      "description": "Molasses",
+      "carbs_g": 74.73,
+      "kcal": 290,
+      "iron_mg": 4.72,
+      "sodium_mg": 37,
+      "fat_g": 0.1,
+      "calcium_mg": 205,
+      "vitamin_c_mg": 0,
+      "fiber_g": 0,
+      "protein_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 337
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "serving 1 tbsp",
+          "grams": 20
+        }
+      ]
+    },
+    "wheat_flour": {
+      "key": "wheat_flour",
+      "fdc_id": 168894,
+      "description": "Wheat flour, white, all-purpose, enriched, bleached",
+      "fiber_g": 2.7,
+      "iron_mg": 4.64,
+      "sodium_mg": 2,
+      "protein_g": 10.33,
+      "vitamin_c_mg": 0,
+      "fat_g": 0.98,
+      "carbs_g": 76.31,
+      "kcal": 364,
+      "calcium_mg": 15,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 125
+        }
+      ]
+    },
+    "whole_wheat_flour": {
+      "key": "whole_wheat_flour",
+      "fdc_id": 168944,
+      "description": "Wheat flour, whole-grain, soft wheat",
+      "vitamin_c_mg": 0,
+      "protein_g": 9.61,
+      "fiber_g": 13.1,
+      "iron_mg": 3.71,
+      "sodium_mg": 3,
+      "calcium_mg": 33,
+      "fat_g": 1.95,
+      "carbs_g": 74.48,
+      "kcal": 332
+    },
+    "chickpea_flour": {
+      "key": "chickpea_flour",
+      "fdc_id": 174288,
+      "description": "Chickpea flour (besan)",
+      "carbs_g": 57.82,
+      "kcal": 387,
+      "protein_g": 22.39,
+      "vitamin_c_mg": 0,
+      "fiber_g": 10.8,
+      "iron_mg": 4.86,
+      "sodium_mg": 64,
+      "fat_g": 6.69,
+      "calcium_mg": 45,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 92
+        }
+      ]
+    },
+    "rice_flour": {
+      "key": "rice_flour",
+      "fdc_id": 168898,
+      "description": "Rice flour, brown",
+      "fiber_g": 4.6,
+      "iron_mg": 1.98,
+      "sodium_mg": 8,
+      "protein_g": 7.23,
+      "vitamin_c_mg": 0,
+      "fat_g": 2.78,
+      "carbs_g": 76.48,
+      "kcal": 363,
+      "calcium_mg": 11,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 158
+        }
+      ]
+    },
+    "cornstarch": {
+      "key": "cornstarch",
+      "fdc_id": 169698,
+      "description": "Cornstarch",
+      "fat_g": 0.05,
+      "carbs_g": 91.27,
+      "kcal": 381,
+      "calcium_mg": 2,
+      "protein_g": 0.26,
+      "fiber_g": 0.9,
+      "iron_mg": 0.47,
+      "sodium_mg": 9,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 128
+        }
+      ]
+    },
+    "semolina": {
+      "key": "semolina",
+      "fdc_id": 169715,
+      "description": "Semolina, enriched",
+      "protein_g": 12.68,
+      "vitamin_c_mg": 0,
+      "fiber_g": 3.9,
+      "iron_mg": 4.36,
+      "sodium_mg": 1,
+      "fat_g": 1.05,
+      "carbs_g": 72.83,
+      "kcal": 360,
+      "calcium_mg": 17,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 167
+        }
+      ]
+    },
+    "oats": {
+      "key": "oats",
+      "fdc_id": 173904,
+      "description": "Cereals, oats, regular and quick, not fortified, dry",
+      "vitamin_c_mg": 0,
+      "fiber_g": 10.1,
+      "iron_mg": 4.25,
+      "fat_g": 6.52,
+      "carbs_g": 67.7,
+      "kcal": 379,
+      "calcium_mg": 52,
+      "sodium_mg": 6,
+      "protein_g": 13.15,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 81
+        },
+        {
+          "amount": 0.33,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 27
+        }
+      ]
+    },
+    "white_rice": {
+      "key": "white_rice",
+      "fdc_id": 168877,
+      "description": "Rice, white, long-grain, regular, raw, enriched",
+      "fat_g": 0.66,
+      "carbs_g": 79.95,
+      "kcal": 365,
+      "calcium_mg": 28,
+      "protein_g": 7.13,
+      "vitamin_c_mg": 0,
+      "fiber_g": 1.3,
+      "iron_mg": 4.31,
+      "sodium_mg": 5,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 185
+        }
+      ]
+    },
+    "brown_rice": {
+      "key": "brown_rice",
+      "fdc_id": 169703,
+      "description": "Rice, brown, long-grain, raw (Includes foods for USDA's Food Distribution Program)",
+      "calcium_mg": 9,
+      "fat_g": 3.2,
+      "carbs_g": 76.25,
+      "kcal": 367,
+      "fiber_g": 3.6,
+      "iron_mg": 1.29,
+      "sodium_mg": 5,
+      "protein_g": 7.54,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 185
+        }
+      ]
+    },
+    "pasta": {
+      "key": "pasta",
+      "fdc_id": 169736,
+      "description": "Pasta, dry, enriched",
+      "sodium_mg": 6,
+      "calcium_mg": 21,
+      "iron_mg": 3.3,
+      "carbs_g": 74.67,
+      "kcal": 371,
+      "vitamin_c_mg": 0,
+      "fat_g": 1.51,
+      "fiber_g": 3.2,
+      "protein_g": 13.04,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup spaghetti",
+          "grams": 91
+        },
+        {
+          "amount": 2,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 57
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup elbows",
+          "grams": 122
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup penne",
+          "grams": 95
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup farfalle",
+          "grams": 81
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup rotini",
+          "grams": 96
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup shells",
+          "grams": 64
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup lasagna",
+          "grams": 90
+        }
+      ]
+    },
+    "noodles": {
+      "key": "noodles",
+      "fdc_id": 169731,
+      "description": "Noodles, egg, dry, enriched",
+      "carbs_g": 71.27,
+      "kcal": 384,
+      "iron_mg": 4.01,
+      "vitamin_c_mg": 0,
+      "fiber_g": 3.3,
+      "sodium_mg": 21,
+      "protein_g": 14.16,
+      "fat_g": 4.44,
+      "calcium_mg": 35,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 38
+        },
+        {
+          "amount": 2,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 57
+        }
+      ]
+    },
+    "white_bread": {
+      "key": "white_bread",
+      "fdc_id": 174924,
+      "description": "Bread, white, commercially prepared (includes soft bread crumbs)",
+      "fiber_g": 2.7,
+      "fat_g": 3.33,
+      "carbs_g": 49.42,
+      "kcal": 266,
+      "calcium_mg": 144,
+      "protein_g": 8.85,
+      "iron_mg": 3.61,
+      "sodium_mg": 490,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice",
+          "grams": 29
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, crumbs",
+          "grams": 45
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, cubes",
+          "grams": 35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, large",
+          "grams": 30
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice",
+          "grams": 25
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice crust not eaten",
+          "grams": 12
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, thin",
+          "grams": 20
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice thin, crust not eaten",
+          "grams": 9
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, very thin",
+          "grams": 15
+        }
+      ]
+    },
+    "breadcrumbs": {
+      "key": "breadcrumbs",
+      "fdc_id": 174924,
+      "description": "Bread, white, commercially prepared (includes soft bread crumbs)",
+      "fiber_g": 2.7,
+      "fat_g": 3.33,
+      "carbs_g": 49.42,
+      "kcal": 266,
+      "calcium_mg": 144,
+      "protein_g": 8.85,
+      "iron_mg": 3.61,
+      "sodium_mg": 490,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice",
+          "grams": 29
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, crumbs",
+          "grams": 45
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, cubes",
+          "grams": 35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, large",
+          "grams": 30
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice",
+          "grams": 25
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice crust not eaten",
+          "grams": 12
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, thin",
+          "grams": 20
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice thin, crust not eaten",
+          "grams": 9
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, very thin",
+          "grams": 15
+        }
+      ]
+    },
+    "biscuit": {
+      "key": "biscuit",
+      "fdc_id": 174950,
+      "description": "Cookies, butter, commercially prepared, enriched",
+      "fiber_g": 0.8,
+      "protein_g": 6.1,
+      "vitamin_c_mg": 0,
+      "iron_mg": 2.22,
+      "fat_g": 18.8,
+      "carbs_g": 68.9,
+      "kcal": 467,
+      "calcium_mg": 29,
+      "sodium_mg": 282,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cookie",
+          "grams": 5
+        }
+      ]
+    },
+    "milk": {
+      "key": "milk",
+      "fdc_id": 171265,
+      "description": "Milk, whole, 3.25% milkfat, with added vitamin D",
+      "fat_g": 3.25,
+      "carbs_g": 4.8,
+      "kcal": 61,
+      "fiber_g": 0,
+      "iron_mg": 0.03,
+      "sodium_mg": 43,
+      "protein_g": 3.15,
+      "vitamin_c_mg": 0,
+      "calcium_mg": 113,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 244
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fl oz",
+          "grams": 30.5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 15
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "quart",
+          "grams": 976
+        }
+      ]
+    },
+    "yogurt": {
+      "key": "yogurt",
+      "fdc_id": 171284,
+      "description": "Yogurt, plain, whole milk",
+      "kcal": 61,
+      "protein_g": 3.47,
+      "fiber_g": 0,
+      "iron_mg": 0.05,
+      "sodium_mg": 46,
+      "vitamin_c_mg": 0.5,
+      "fat_g": 3.25,
+      "carbs_g": 4.66,
+      "calcium_mg": 121,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "container (6 oz)",
+          "grams": 170
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "container (8 oz)",
+          "grams": 227
+        },
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "container (4 oz)",
+          "grams": 113
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup (8 fl oz)",
+          "grams": 245
+        }
+      ]
+    },
+    "cream": {
+      "key": "cream",
+      "fdc_id": 170859,
+      "description": "Cream, fluid, heavy whipping",
+      "fat_g": 36.08,
+      "kcal": 340,
+      "calcium_mg": 66,
+      "sodium_mg": 27,
+      "iron_mg": 0.1,
+      "protein_g": 2.84,
+      "fiber_g": 0,
+      "vitamin_c_mg": 0.6,
+      "carbs_g": 2.84,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, whipped",
+          "grams": 120
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, fluid (yields 2 cups whipped)",
+          "grams": 238
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 15
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fl oz",
+          "grams": 29.8
+        }
+      ]
+    },
+    "condensed_milk": {
+      "key": "condensed_milk",
+      "fdc_id": 171275,
+      "description": "Milk, canned, condensed, sweetened",
+      "kcal": 321,
+      "fat_g": 8.7,
+      "carbs_g": 54.4,
+      "calcium_mg": 284,
+      "protein_g": 7.91,
+      "fiber_g": 0,
+      "iron_mg": 0.19,
+      "sodium_mg": 127,
+      "vitamin_c_mg": 2.6,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fl oz",
+          "grams": 38.2
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 306
+        }
+      ]
+    },
+    "milk_powder": {
+      "key": "milk_powder",
+      "fdc_id": 170876,
+      "description": "Milk, dry, whole, with added vitamin D",
+      "kcal": 496,
+      "protein_g": 26.32,
+      "fiber_g": 0,
+      "iron_mg": 0.47,
+      "sodium_mg": 371,
+      "vitamin_c_mg": 8.6,
+      "fat_g": 26.71,
+      "carbs_g": 38.42,
+      "calcium_mg": 912,
+      "portions": [
+        {
+          "amount": 0.25,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 32
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 128
+        }
+      ]
+    },
+    "cheddar": {
+      "key": "cheddar",
+      "fdc_id": 173414,
+      "description": "Cheese, cheddar (Includes foods for USDA's Food Distribution Program)",
+      "calcium_mg": 710,
+      "carbs_g": 3.37,
+      "kcal": 403,
+      "vitamin_c_mg": 0,
+      "protein_g": 22.87,
+      "fat_g": 33.31,
+      "sodium_mg": 653,
+      "iron_mg": 0.14,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, diced",
+          "grams": 132
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, melted",
+          "grams": 244
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, shredded",
+          "grams": 113
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cubic inch",
+          "grams": 17
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice (1 oz)",
+          "grams": 28
+        }
+      ]
+    },
+    "mozzarella": {
+      "key": "mozzarella",
+      "fdc_id": 170845,
+      "description": "Cheese, mozzarella, whole milk",
+      "vitamin_c_mg": 0,
+      "iron_mg": 0.44,
+      "protein_g": 22.17,
+      "calcium_mg": 505,
+      "sodium_mg": 486,
+      "fat_g": 22.14,
+      "carbs_g": 2.4,
+      "kcal": 299,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, shredded",
+          "grams": 112
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 6,
+          "unit": "undetermined",
+          "description": "slices",
+          "grams": 170
+        }
+      ]
+    },
+    "cream_cheese": {
+      "key": "cream_cheese",
+      "fdc_id": 173418,
+      "description": "Cheese, cream",
+      "iron_mg": 0.11,
+      "protein_g": 6.15,
+      "fat_g": 34.44,
+      "carbs_g": 5.52,
+      "kcal": 350,
+      "calcium_mg": 97,
+      "vitamin_c_mg": 0,
+      "sodium_mg": 314,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 14.5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 232
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp, whipped",
+          "grams": 10
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cubic inch",
+          "grams": 16
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "package, small (3 oz)",
+          "grams": 85
+        }
+      ]
+    },
+    "cottage_cheese": {
+      "key": "cottage_cheese",
+      "fdc_id": 172179,
+      "description": "Cheese, cottage, creamed, large or small curd",
+      "carbs_g": 3.38,
+      "kcal": 98,
+      "iron_mg": 0.07,
+      "protein_g": 11.12,
+      "fat_g": 4.3,
+      "calcium_mg": 83,
+      "sodium_mg": 315,
+      "vitamin_c_mg": 0,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 4,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 113
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, large curd (not packed)",
+          "grams": 210
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, small curd (not packed)",
+          "grams": 225
+        }
+      ]
+    },
+    "egg": {
+      "key": "egg",
+      "fdc_id": 171287,
+      "description": "Egg, whole, raw, fresh",
+      "kcal": 143,
+      "protein_g": 12.56,
+      "iron_mg": 1.75,
+      "sodium_mg": 142,
+      "calcium_mg": 56,
+      "fat_g": 9.51,
+      "carbs_g": 0.72,
+      "vitamin_c_mg": 0,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large",
+          "grams": 50
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "extra large",
+          "grams": 56
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "jumbo",
+          "grams": 63
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup (4.86 large eggs)",
+          "grams": 243
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium",
+          "grams": 44
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small",
+          "grams": 38
+        }
+      ]
+    },
+    "chicken": {
+      "key": "chicken",
+      "fdc_id": 171052,
+      "description": "Chicken, broilers or fryers, meat only, raw",
+      "fat_g": 3.08,
+      "carbs_g": 0,
+      "kcal": 119,
+      "calcium_mg": 12,
+      "protein_g": 21.39,
+      "fiber_g": 0,
+      "iron_mg": 0.89,
+      "sodium_mg": 77,
+      "vitamin_c_mg": 2.3,
+      "portions": [
+        {
+          "amount": 4,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 113
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "unit (yield from 1 lb ready-to-cook chicken)",
+          "grams": 197
+        },
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "chicken, bone and skin removed",
+          "grams": 329
+        }
+      ]
+    },
+    "chicken_dark": {
+      "key": "chicken_dark",
+      "fdc_id": 171447,
+      "description": "Chicken, broilers or fryers, meat and skin, raw",
+      "fiber_g": 0,
+      "iron_mg": 0.9,
+      "sodium_mg": 70,
+      "protein_g": 18.6,
+      "fat_g": 15.06,
+      "carbs_g": 0,
+      "kcal": 215,
+      "calcium_mg": 11,
+      "vitamin_c_mg": 1.6,
+      "portions": [
+        {
+          "amount": 4,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 113
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "unit (yield from 1 lb ready-to-cook chicken)",
+          "grams": 276
+        },
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "chicken, bone removed",
+          "grams": 460
+        }
+      ]
+    },
+    "beef": {
+      "key": "beef",
+      "fdc_id": 171796,
+      "description": "Beef, ground, 85% lean meat / 15% fat, raw (Includes foods for USDA's Food Distribution Program)",
+      "fiber_g": 0,
+      "vitamin_c_mg": 0,
+      "calcium_mg": 15,
+      "fat_g": 15,
+      "protein_g": 18.59,
+      "iron_mg": 2.09,
+      "sodium_mg": 66,
+      "carbs_g": 0,
+      "kcal": 215,
+      "portions": [
+        {
+          "amount": 4,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 113
+        }
+      ]
+    },
+    "lamb": {
+      "key": "lamb",
+      "fdc_id": 174370,
+      "description": "Lamb, ground, raw",
+      "fat_g": 23.41,
+      "carbs_g": 0,
+      "kcal": 282,
+      "calcium_mg": 16,
+      "protein_g": 16.56,
+      "fiber_g": 0,
+      "iron_mg": 1.55,
+      "sodium_mg": 59,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 4,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 113
+        }
+      ]
+    },
+    "fish": {
+      "key": "fish",
+      "fdc_id": 175176,
+      "description": "Fish, tilapia, raw",
+      "calcium_mg": 10,
+      "fat_g": 1.7,
+      "protein_g": 20.08,
+      "iron_mg": 0.56,
+      "sodium_mg": 52,
+      "vitamin_c_mg": 0,
+      "fiber_g": 0,
+      "carbs_g": 0,
+      "kcal": 96,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fillet",
+          "grams": 116
+        }
+      ]
+    },
+    "shrimp": {
+      "key": "shrimp",
+      "fdc_id": 174210,
+      "description": "Crustaceans, shrimp, mixed species, raw (may contain additives to retain moisture)",
+      "fat_g": 1.01,
+      "carbs_g": 0.91,
+      "kcal": 71,
+      "calcium_mg": 54,
+      "vitamin_c_mg": 0,
+      "iron_mg": 0.21,
+      "sodium_mg": 566,
+      "protein_g": 13.61,
+      "fiber_g": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium",
+          "grams": 6
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small",
+          "grams": 5
+        },
+        {
+          "amount": 3,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 85
+        },
+        {
+          "amount": 4,
+          "unit": "undetermined",
+          "description": "large",
+          "grams": 28
+        }
+      ]
+    },
+    "tuna": {
+      "key": "tuna",
+      "fdc_id": 171986,
+      "description": "Fish, tuna, light, canned in water, without salt, drained solids",
+      "protein_g": 25.51,
+      "iron_mg": 1.53,
+      "fat_g": 0.82,
+      "calcium_mg": 11,
+      "kcal": 116,
+      "sodium_mg": 50,
+      "carbs_g": 0,
+      "fiber_g": 0,
+      "vitamin_c_mg": 0,
+      "portions": [
+        {
+          "amount": 3,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 85
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "can",
+          "grams": 165
+        }
+      ]
+    },
+    "onion": {
+      "key": "onion",
+      "fdc_id": 170000,
+      "description": "Onions, raw",
+      "calcium_mg": 23,
+      "fat_g": 0.1,
+      "carbs_g": 9.34,
+      "kcal": 40,
+      "vitamin_c_mg": 7.4,
+      "protein_g": 1.1,
+      "fiber_g": 1.7,
+      "iron_mg": 0.21,
+      "sodium_mg": 4,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped",
+          "grams": 160
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 115
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp chopped",
+          "grams": 10
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large",
+          "grams": 150
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, large (1/4\" thick)",
+          "grams": 38
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (2-1/2\" dia)",
+          "grams": 110
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, medium (1/8\" thick)",
+          "grams": 14
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small",
+          "grams": 70
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, thin",
+          "grams": 9
+        },
+        {
+          "amount": 10,
+          "unit": "undetermined",
+          "description": "rings",
+          "grams": 60
+        }
+      ]
+    },
+    "tomato": {
+      "key": "tomato",
+      "fdc_id": 170457,
+      "description": "Tomatoes, red, ripe, raw, year round average",
+      "vitamin_c_mg": 13.7,
+      "carbs_g": 3.89,
+      "kcal": 18,
+      "calcium_mg": 10,
+      "fat_g": 0.2,
+      "fiber_g": 1.2,
+      "iron_mg": 0.27,
+      "sodium_mg": 5,
+      "protein_g": 0.88,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup cherry tomatoes",
+          "grams": 149
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped or sliced",
+          "grams": 180
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "Italian tomato",
+          "grams": 62
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cherry",
+          "grams": 17
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large whole (3\" dia)",
+          "grams": 182
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium whole (2-3/5\" dia)",
+          "grams": 123
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, medium (1/4\" thick)",
+          "grams": 20
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "plum tomato",
+          "grams": 62
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small whole (2-2/5\" dia)",
+          "grams": 91
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, thick/large (1/2\" thick)",
+          "grams": 27
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "wedge (1/4 of medium tomato)",
+          "grams": 31
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, thin/small",
+          "grams": 15
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 148
+        }
+      ]
+    },
+    "potato": {
+      "key": "potato",
+      "fdc_id": 170026,
+      "description": "Potatoes, flesh and skin, raw",
+      "fat_g": 0.09,
+      "calcium_mg": 12,
+      "kcal": 77,
+      "vitamin_c_mg": 19.7,
+      "sodium_mg": 6,
+      "protein_g": 2.05,
+      "fiber_g": 2.1,
+      "iron_mg": 0.81,
+      "carbs_g": 17.49,
+      "portions": [
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "cup, diced",
+          "grams": 75
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "Potato large (3\" to 4-1/4\" dia)",
+          "grams": 369
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "Potato medium (2-1/4\" to 3-1/4\" dia)",
+          "grams": 213
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "Potato small (1-3/4\" to 2-1/2\" dia)",
+          "grams": 170
+        }
+      ]
+    },
+    "sweet_potato": {
+      "key": "sweet_potato",
+      "fdc_id": 168482,
+      "description": "Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",
+      "fiber_g": 3,
+      "carbs_g": 20.12,
+      "kcal": 86,
+      "vitamin_c_mg": 2.4,
+      "sodium_mg": 55,
+      "fat_g": 0.05,
+      "calcium_mg": 30,
+      "iron_mg": 0.61,
+      "protein_g": 1.57,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, cubes",
+          "grams": 133
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "sweetpotato, 5\" long",
+          "grams": 130
+        }
+      ]
+    },
+    "carrot": {
+      "key": "carrot",
+      "fdc_id": 170393,
+      "description": "Carrots, raw",
+      "iron_mg": 0.3,
+      "sodium_mg": 69,
+      "vitamin_c_mg": 5.9,
+      "protein_g": 0.93,
+      "fat_g": 0.24,
+      "calcium_mg": 33,
+      "carbs_g": 9.58,
+      "kcal": 41,
+      "fiber_g": 2.8,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup chopped",
+          "grams": 128
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup grated",
+          "grams": 110
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup strips or slices",
+          "grams": 122
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (7-1/4\" to 8-/1/2\" long)",
+          "grams": 72
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium",
+          "grams": 61
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (5-1/2\" long)",
+          "grams": 50
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice",
+          "grams": 3
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "strip large (3\" long)",
+          "grams": 7
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "strip medium",
+          "grams": 4
+        }
+      ]
+    },
+    "bell_pepper": {
+      "key": "bell_pepper",
+      "fdc_id": 170427,
+      "description": "Peppers, sweet, green, raw",
+      "calcium_mg": 10,
+      "fat_g": 0.17,
+      "protein_g": 0.86,
+      "fiber_g": 1.7,
+      "iron_mg": 0.34,
+      "sodium_mg": 3,
+      "vitamin_c_mg": 80.4,
+      "carbs_g": 4.64,
+      "kcal": 20,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped",
+          "grams": 149
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 92
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 9.3
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (2-1/4 per lb, approx 3-3/4\" long, 3\" dia)",
+          "grams": 164
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (approx 2-3/4\" long, 2-1/2\" dia)",
+          "grams": 119
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "ring (3\" dia, 1/4\" thick)",
+          "grams": 10
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small",
+          "grams": 74
+        },
+        {
+          "amount": 10,
+          "unit": "undetermined",
+          "description": "strips",
+          "grams": 27
+        }
+      ]
+    },
+    "spinach": {
+      "key": "spinach",
+      "fdc_id": 168462,
+      "description": "Spinach, raw",
+      "calcium_mg": 99,
+      "protein_g": 2.86,
+      "iron_mg": 2.71,
+      "sodium_mg": 79,
+      "vitamin_c_mg": 28.1,
+      "fiber_g": 2.2,
+      "fat_g": 0.39,
+      "carbs_g": 3.63,
+      "kcal": 23,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 30
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "bunch",
+          "grams": 340
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf",
+          "grams": 10
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "package (10 oz)",
+          "grams": 284
+        }
+      ]
+    },
+    "cabbage": {
+      "key": "cabbage",
+      "fdc_id": 169975,
+      "description": "Cabbage, raw",
+      "fat_g": 0.1,
+      "carbs_g": 5.8,
+      "kcal": 25,
+      "calcium_mg": 40,
+      "vitamin_c_mg": 36.6,
+      "protein_g": 1.28,
+      "fiber_g": 2.5,
+      "iron_mg": 0.47,
+      "sodium_mg": 18,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped",
+          "grams": 89
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, shredded",
+          "grams": 70
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head, large (about 7\" dia)",
+          "grams": 1248
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf, large",
+          "grams": 33
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head, medium (about 5-3/4\" dia)",
+          "grams": 908
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf, medium",
+          "grams": 23
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head, small (about 4-1/2\" dia)",
+          "grams": 714
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf",
+          "grams": 15
+        }
+      ]
+    },
+    "cauliflower": {
+      "key": "cauliflower",
+      "fdc_id": 169986,
+      "description": "Cauliflower, raw",
+      "carbs_g": 4.97,
+      "kcal": 25,
+      "protein_g": 1.92,
+      "fiber_g": 2,
+      "iron_mg": 0.42,
+      "sodium_mg": 30,
+      "vitamin_c_mg": 48.2,
+      "fat_g": 0.28,
+      "calcium_mg": 22,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup chopped (1/2\" pieces)",
+          "grams": 107
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "floweret",
+          "grams": 13
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head large (6-7\" dia.)",
+          "grams": 840
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head medium (5-6\" dia.)",
+          "grams": 588
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head small (4\" dia.)",
+          "grams": 265
+        }
+      ]
+    },
+    "cucumber": {
+      "key": "cucumber",
+      "fdc_id": 168409,
+      "description": "Cucumber, with peel, raw",
+      "carbs_g": 3.63,
+      "kcal": 15,
+      "sodium_mg": 2,
+      "calcium_mg": 16,
+      "fat_g": 0.11,
+      "vitamin_c_mg": 2.8,
+      "fiber_g": 0.5,
+      "iron_mg": 0.28,
+      "protein_g": 0.65,
+      "portions": [
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "cup slices",
+          "grams": 52
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cucumber (8-1/4\")",
+          "grams": 301
+        }
+      ]
+    },
+    "mushroom": {
+      "key": "mushroom",
+      "fdc_id": 169251,
+      "description": "Mushrooms, white, raw",
+      "fiber_g": 1,
+      "fat_g": 0.34,
+      "calcium_mg": 3,
+      "vitamin_c_mg": 2.1,
+      "iron_mg": 0.5,
+      "sodium_mg": 5,
+      "protein_g": 3.09,
+      "carbs_g": 3.26,
+      "kcal": 22,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, pieces or slices",
+          "grams": 70
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, whole",
+          "grams": 96
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large",
+          "grams": 23
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium",
+          "grams": 18
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice",
+          "grams": 6
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small",
+          "grams": 10
+        },
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "cup pieces",
+          "grams": 35
+        }
+      ]
+    },
+    "peas": {
+      "key": "peas",
+      "fdc_id": 170419,
+      "description": "Peas, green, raw",
+      "carbs_g": 14.45,
+      "kcal": 81,
+      "protein_g": 5.42,
+      "iron_mg": 1.47,
+      "sodium_mg": 5,
+      "vitamin_c_mg": 40,
+      "fat_g": 0.4,
+      "calcium_mg": 25,
+      "fiber_g": 5.7,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 145
+        }
+      ]
+    },
+    "corn": {
+      "key": "corn",
+      "fdc_id": 169998,
+      "description": "Corn, sweet, yellow, raw",
+      "fiber_g": 2,
+      "iron_mg": 0.52,
+      "sodium_mg": 15,
+      "protein_g": 3.27,
+      "fat_g": 1.35,
+      "calcium_mg": 2,
+      "carbs_g": 18.7,
+      "kcal": 86,
+      "vitamin_c_mg": 6.8,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 145
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "ear, large (7-3/4\" to 9\" long) yields",
+          "grams": 143
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "ear, medium (6-3/4\" to 7-1/2\" long) yields",
+          "grams": 102
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "ear, small (5-1/2\" to 6-1/2\" long)",
+          "grams": 73
+        }
+      ]
+    },
+    "eggplant": {
+      "key": "eggplant",
+      "fdc_id": 169228,
+      "description": "Eggplant, raw",
+      "vitamin_c_mg": 2.2,
+      "calcium_mg": 9,
+      "fat_g": 0.18,
+      "carbs_g": 5.88,
+      "kcal": 25,
+      "fiber_g": 3,
+      "iron_mg": 0.23,
+      "sodium_mg": 2,
+      "protein_g": 0.98,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, cubes",
+          "grams": 82
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "eggplant, peeled (yield from 1-1/4 lb)",
+          "grams": 458
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "eggplant, unpeeled (approx 1-1/4 lb)",
+          "grams": 548
+        }
+      ]
+    },
+    "okra": {
+      "key": "okra",
+      "fdc_id": 169260,
+      "description": "Okra, raw",
+      "fiber_g": 3.2,
+      "protein_g": 1.93,
+      "vitamin_c_mg": 23,
+      "iron_mg": 0.62,
+      "sodium_mg": 7,
+      "calcium_mg": 82,
+      "fat_g": 0.19,
+      "carbs_g": 7.45,
+      "kcal": 33,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 100
+        },
+        {
+          "amount": 8,
+          "unit": "undetermined",
+          "description": "pods (3\" long)",
+          "grams": 95
+        }
+      ]
+    },
+    "pumpkin": {
+      "key": "pumpkin",
+      "fdc_id": 168448,
+      "description": "Pumpkin, raw",
+      "carbs_g": 6.5,
+      "fiber_g": 0.5,
+      "kcal": 26,
+      "fat_g": 0.1,
+      "calcium_mg": 21,
+      "protein_g": 1,
+      "iron_mg": 0.8,
+      "sodium_mg": 1,
+      "vitamin_c_mg": 9,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup (1\" cubes)",
+          "grams": 116
+        }
+      ]
+    },
+    "chickpeas": {
+      "key": "chickpeas",
+      "fdc_id": 173756,
+      "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, raw",
+      "calcium_mg": 57,
+      "carbs_g": 62.95,
+      "kcal": 378,
+      "fiber_g": 12.2,
+      "iron_mg": 4.31,
+      "protein_g": 20.47,
+      "sodium_mg": 24,
+      "vitamin_c_mg": 4,
+      "fat_g": 6.04,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 200
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 12.5
+        }
+      ]
+    },
+    "lentils": {
+      "key": "lentils",
+      "fdc_id": 172420,
+      "description": "Lentils, raw",
+      "fat_g": 1.06,
+      "sodium_mg": 6,
+      "fiber_g": 10.7,
+      "iron_mg": 6.51,
+      "protein_g": 24.63,
+      "vitamin_c_mg": 4.5,
+      "carbs_g": 63.35,
+      "kcal": 352,
+      "calcium_mg": 35,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 192
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tablespoon",
+          "grams": 12
+        }
+      ]
+    },
+    "kidney_beans": {
+      "key": "kidney_beans",
+      "fdc_id": 173744,
+      "description": "Beans, kidney, red, mature seeds, raw",
+      "carbs_g": 61.29,
+      "kcal": 337,
+      "protein_g": 22.53,
+      "fiber_g": 15.2,
+      "iron_mg": 6.69,
+      "sodium_mg": 12,
+      "vitamin_c_mg": 4.5,
+      "fat_g": 1.06,
+      "calcium_mg": 83,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 184
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 12.2
+        }
+      ]
+    },
+    "mung_beans": {
+      "key": "mung_beans",
+      "fdc_id": 174256,
+      "description": "Mung beans, mature seeds, raw",
+      "carbs_g": 62.62,
+      "kcal": 347,
+      "protein_g": 23.86,
+      "fiber_g": 16.3,
+      "iron_mg": 6.74,
+      "sodium_mg": 15,
+      "vitamin_c_mg": 4.8,
+      "fat_g": 1.15,
+      "calcium_mg": 132,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 207
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 13
+        }
+      ]
+    },
+    "black_gram": {
+      "key": "black_gram",
+      "fdc_id": 174256,
+      "description": "Mung beans, mature seeds, raw",
+      "carbs_g": 62.62,
+      "kcal": 347,
+      "protein_g": 23.86,
+      "fiber_g": 16.3,
+      "iron_mg": 6.74,
+      "sodium_mg": 15,
+      "vitamin_c_mg": 4.8,
+      "fat_g": 1.15,
+      "calcium_mg": 132,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 207
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 13
+        }
+      ]
+    },
+    "apple": {
+      "key": "apple",
+      "fdc_id": 171688,
+      "description": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+      "carbs_g": 13.81,
+      "kcal": 52,
+      "fat_g": 0.17,
+      "calcium_mg": 6,
+      "fiber_g": 2.4,
+      "iron_mg": 0.12,
+      "sodium_mg": 1,
+      "protein_g": 0.26,
+      "vitamin_c_mg": 4.6,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, quartered or chopped",
+          "grams": 125
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup slices",
+          "grams": 109
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (3-1/4\" dia)",
+          "grams": 223
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (3\" dia)",
+          "grams": 182
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (2-3/4\" dia)",
+          "grams": 149
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "extra small (2-1/2\" dia)",
+          "grams": 101
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 242
+        }
+      ]
+    },
+    "banana": {
+      "key": "banana",
+      "fdc_id": 173944,
+      "description": "Bananas, raw",
+      "carbs_g": 22.84,
+      "kcal": 89,
+      "vitamin_c_mg": 8.7,
+      "fiber_g": 2.6,
+      "iron_mg": 0.26,
+      "sodium_mg": 1,
+      "protein_g": 1.09,
+      "calcium_mg": 5,
+      "fat_g": 0.33,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, mashed",
+          "grams": 225
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 150
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "extra small (less than 6\" long)",
+          "grams": 81
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (6\" to 6-7/8\" long)",
+          "grams": 101
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (7\" to 7-7/8\" long)",
+          "grams": 118
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (8\" to 8-7/8\" long)",
+          "grams": 136
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "extra large (9\" or longer)",
+          "grams": 152
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 126
+        }
+      ]
+    },
+    "mango": {
+      "key": "mango",
+      "fdc_id": 169910,
+      "description": "Mangos, raw",
+      "fat_g": 0.38,
+      "calcium_mg": 11,
+      "protein_g": 0.82,
+      "vitamin_c_mg": 36.4,
+      "fiber_g": 1.6,
+      "iron_mg": 0.16,
+      "sodium_mg": 1,
+      "carbs_g": 14.98,
+      "kcal": 60,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup pieces",
+          "grams": 165
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit without refuse",
+          "grams": 336
+        }
+      ]
+    },
+    "orange": {
+      "key": "orange",
+      "fdc_id": 169097,
+      "description": "Oranges, raw, all commercial varieties",
+      "calcium_mg": 40,
+      "fat_g": 0.12,
+      "carbs_g": 11.75,
+      "kcal": 47,
+      "vitamin_c_mg": 53.2,
+      "fiber_g": 2.4,
+      "iron_mg": 0.1,
+      "sodium_mg": 0,
+      "protein_g": 0.94,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sections",
+          "grams": 180
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (3-1/16\" dia)",
+          "grams": 184
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (2-3/8\" dia)",
+          "grams": 96
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit (2-5/8\" dia)",
+          "grams": 131
+        }
+      ]
+    },
+    "lemon": {
+      "key": "lemon",
+      "fdc_id": 167746,
+      "description": "Lemons, raw, without peel",
+      "protein_g": 1.1,
+      "vitamin_c_mg": 53,
+      "fiber_g": 2.8,
+      "iron_mg": 0.6,
+      "sodium_mg": 2,
+      "fat_g": 0.3,
+      "carbs_g": 9.32,
+      "kcal": 29,
+      "calcium_mg": 26,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sections",
+          "grams": 212
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit (2-1/8\" dia)",
+          "grams": 58
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit (2-3/8\" dia)",
+          "grams": 84
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "wedge or slice (1/8 of one 2-1/8\" dia lemon)",
+          "grams": 7
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 58
+        }
+      ]
+    },
+    "lemon_juice": {
+      "key": "lemon_juice",
+      "fdc_id": 167747,
+      "description": "Lemon juice, raw",
+      "vitamin_c_mg": 38.7,
+      "protein_g": 0.35,
+      "fiber_g": 0.3,
+      "iron_mg": 0.08,
+      "sodium_mg": 1,
+      "calcium_mg": 6,
+      "fat_g": 0.24,
+      "carbs_g": 6.9,
+      "kcal": 22,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 244
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fl oz",
+          "grams": 30.5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "lemon yields",
+          "grams": 48
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "wedge yields",
+          "grams": 5.9
+        }
+      ]
+    },
+    "dates": {
+      "key": "dates",
+      "fdc_id": 171726,
+      "description": "Dates, deglet noor",
+      "carbs_g": 75.03,
+      "kcal": 282,
+      "fat_g": 0.39,
+      "calcium_mg": 39,
+      "protein_g": 2.45,
+      "fiber_g": 8,
+      "iron_mg": 1.02,
+      "sodium_mg": 2,
+      "vitamin_c_mg": 0.4,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped",
+          "grams": 147
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "date, pitted",
+          "grams": 7.1
+        }
+      ]
+    },
+    "raisins": {
+      "key": "raisins",
+      "fdc_id": 168165,
+      "description": "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)",
+      "fiber_g": 4.5,
+      "iron_mg": 1.79,
+      "sodium_mg": 26,
+      "protein_g": 3.3,
+      "fat_g": 0.25,
+      "carbs_g": 79.32,
+      "calcium_mg": 62,
+      "kcal": 299,
+      "vitamin_c_mg": 2.3,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, packed",
+          "grams": 165
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup (not packed)",
+          "grams": 145
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "miniature box (.5 oz)",
+          "grams": 14
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small box (1.5 oz)",
+          "grams": 43
+        },
+        {
+          "amount": 50,
+          "unit": "undetermined",
+          "description": "raisins",
+          "grams": 26
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz (60 raisins)",
+          "grams": 28.35
+        }
+      ]
+    },
+    "coconut": {
+      "key": "coconut",
+      "fdc_id": 170169,
+      "description": "Nuts, coconut meat, raw",
+      "fiber_g": 9,
+      "iron_mg": 2.43,
+      "sodium_mg": 20,
+      "protein_g": 3.33,
+      "vitamin_c_mg": 3.3,
+      "fat_g": 33.49,
+      "carbs_g": 15.23,
+      "kcal": 354,
+      "calcium_mg": 14,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, shredded",
+          "grams": 80
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium",
+          "grams": 397
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "piece (2\" x 2\" x 1/2\")",
+          "grams": 45
+        }
+      ]
+    },
+    "coconut_milk": {
+      "key": "coconut_milk",
+      "fdc_id": 170172,
+      "description": "Nuts, coconut milk, raw (liquid expressed from grated meat and water)",
+      "vitamin_c_mg": 2.8,
+      "protein_g": 2.29,
+      "fiber_g": 2.2,
+      "iron_mg": 1.64,
+      "sodium_mg": 15,
+      "fat_g": 23.84,
+      "carbs_g": 5.54,
+      "kcal": 230,
+      "calcium_mg": 16,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 240
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 15
+        }
+      ]
+    },
+    "strawberry": {
+      "key": "strawberry",
+      "fdc_id": 167762,
+      "description": "Strawberries, raw",
+      "fat_g": 0.3,
+      "fiber_g": 2,
+      "protein_g": 0.67,
+      "vitamin_c_mg": 58.8,
+      "sodium_mg": 1,
+      "calcium_mg": 16,
+      "carbs_g": 7.68,
+      "kcal": 32,
+      "iron_mg": 0.41,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, halves",
+          "grams": 152
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, pureed",
+          "grams": 232
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 166
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, whole",
+          "grams": 144
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "extra large (1-5/8\" dia)",
+          "grams": 27
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (1-3/8\" dia)",
+          "grams": 18
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (1-1/4\" dia)",
+          "grams": 12
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "pint as purchased, yields",
+          "grams": 357
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (1\" dia)",
+          "grams": 7
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 147
+        }
+      ]
+    },
+    "pineapple": {
+      "key": "pineapple",
+      "fdc_id": 169124,
+      "description": "Pineapple, raw, all varieties",
+      "vitamin_c_mg": 47.8,
+      "protein_g": 0.54,
+      "iron_mg": 0.29,
+      "sodium_mg": 1,
+      "calcium_mg": 13,
+      "fat_g": 0.12,
+      "fiber_g": 1.4,
+      "carbs_g": 13.12,
+      "kcal": 50,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chunks",
+          "grams": 165
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit",
+          "grams": 905
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice (4-2/3\" dia x 3/4\" thick)",
+          "grams": 166
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice (3-1/2\" dia x 3/4\" thick)",
+          "grams": 84
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "slice, thin (3-1/2\" dia x 1/2\" thick)",
+          "grams": 56
+        }
+      ]
+    },
+    "watermelon": {
+      "key": "watermelon",
+      "fdc_id": 167765,
+      "description": "Watermelon, raw",
+      "protein_g": 0.61,
+      "fiber_g": 0.4,
+      "iron_mg": 0.24,
+      "vitamin_c_mg": 8.1,
+      "calcium_mg": 7,
+      "fat_g": 0.15,
+      "carbs_g": 7.55,
+      "kcal": 30,
+      "sodium_mg": 1,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, balls",
+          "grams": 154
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, diced",
+          "grams": 152
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "melon (15\" long x 7-1/2\" dia)",
+          "grams": 4518
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "wedge (approx 1/16 of melon)",
+          "grams": 286
+        },
+        {
+          "amount": 10,
+          "unit": "undetermined",
+          "description": "watermelon balls",
+          "grams": 122
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 280
+        }
+      ]
+    },
+    "papaya": {
+      "key": "papaya",
+      "fdc_id": 169926,
+      "description": "Papayas, raw",
+      "protein_g": 0.47,
+      "fiber_g": 1.7,
+      "iron_mg": 0.25,
+      "sodium_mg": 8,
+      "vitamin_c_mg": 60.9,
+      "fat_g": 0.26,
+      "calcium_mg": 20,
+      "carbs_g": 10.82,
+      "kcal": 43,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup 1\" pieces",
+          "grams": 145
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, mashed",
+          "grams": 230
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit, small",
+          "grams": 157
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit, large",
+          "grams": 781
+        }
+      ]
+    },
+    "avocado": {
+      "key": "avocado",
+      "fdc_id": 171705,
+      "description": "Avocados, raw, all commercial varieties",
+      "vitamin_c_mg": 10,
+      "protein_g": 2,
+      "fiber_g": 6.7,
+      "iron_mg": 0.55,
+      "sodium_mg": 7,
+      "fat_g": 14.66,
+      "calcium_mg": 12,
+      "carbs_g": 8.53,
+      "kcal": 160,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, cubes",
+          "grams": 150
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, pureed",
+          "grams": 230
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 146
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "avocado, NS as to Florida or California",
+          "grams": 201
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA Serving",
+          "grams": 50
+        }
+      ]
+    },
+    "almonds": {
+      "key": "almonds",
+      "fdc_id": 170567,
+      "description": "Nuts, almonds",
+      "protein_g": 21.15,
+      "fiber_g": 12.5,
+      "iron_mg": 3.71,
+      "fat_g": 49.93,
+      "carbs_g": 21.55,
+      "kcal": 579,
+      "calcium_mg": 269,
+      "vitamin_c_mg": 0,
+      "sodium_mg": 1,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, whole",
+          "grams": 143
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 92
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, slivered",
+          "grams": 108
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, ground",
+          "grams": 95
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz (23 whole kernels)",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "almond",
+          "grams": 1.2
+        }
+      ]
+    },
+    "cashews": {
+      "key": "cashews",
+      "fdc_id": 170162,
+      "description": "Nuts, cashew nuts, raw",
+      "vitamin_c_mg": 0.5,
+      "protein_g": 18.22,
+      "iron_mg": 6.68,
+      "sodium_mg": 12,
+      "calcium_mg": 37,
+      "fat_g": 43.85,
+      "carbs_g": 30.19,
+      "kcal": 553,
+      "fiber_g": 3.3,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        }
+      ]
+    },
+    "pistachios": {
+      "key": "pistachios",
+      "fdc_id": 170184,
+      "description": "Nuts, pistachio nuts, raw",
+      "iron_mg": 3.92,
+      "sodium_mg": 1,
+      "vitamin_c_mg": 5.6,
+      "calcium_mg": 105,
+      "fat_g": 45.32,
+      "carbs_g": 27.17,
+      "kcal": 560,
+      "fiber_g": 10.6,
+      "protein_g": 20.16,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 123
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz (49 kernels)",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "kernel",
+          "grams": 0.7
+        }
+      ]
+    },
+    "walnuts": {
+      "key": "walnuts",
+      "fdc_id": 170187,
+      "description": "Nuts, walnuts, english",
+      "calcium_mg": 98,
+      "carbs_g": 13.71,
+      "kcal": 654,
+      "protein_g": 15.23,
+      "fiber_g": 6.7,
+      "iron_mg": 2.91,
+      "sodium_mg": 2,
+      "vitamin_c_mg": 1.3,
+      "fat_g": 65.21,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped",
+          "grams": 117
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, ground",
+          "grams": 80
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, in shell, edible yield (7 nuts)",
+          "grams": 28
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup shelled (50 halves)",
+          "grams": 100
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup pieces or chips",
+          "grams": 120
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz (14 halves)",
+          "grams": 28.35
+        }
+      ]
+    },
+    "peanuts": {
+      "key": "peanuts",
+      "fdc_id": 172430,
+      "description": "Peanuts, all types, raw",
+      "fiber_g": 8.5,
+      "sodium_mg": 18,
+      "vitamin_c_mg": 0,
+      "iron_mg": 4.58,
+      "protein_g": 25.8,
+      "calcium_mg": 92,
+      "fat_g": 49.24,
+      "carbs_g": 16.13,
+      "kcal": 567,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 146
+        }
+      ]
+    },
+    "sesame": {
+      "key": "sesame",
+      "fdc_id": 170150,
+      "description": "Seeds, sesame seeds, whole, dried",
+      "protein_g": 17.73,
+      "fiber_g": 11.8,
+      "iron_mg": 14.55,
+      "sodium_mg": 11,
+      "vitamin_c_mg": 0,
+      "fat_g": 49.67,
+      "carbs_g": 23.45,
+      "kcal": 573,
+      "calcium_mg": 975,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 144
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 9
+        }
+      ]
+    },
+    "sunflower": {
+      "key": "sunflower",
+      "fdc_id": 170562,
+      "description": "Seeds, sunflower seed kernels, dried",
+      "protein_g": 20.78,
+      "fiber_g": 8.6,
+      "iron_mg": 5.25,
+      "sodium_mg": 9,
+      "fat_g": 51.46,
+      "calcium_mg": 78,
+      "vitamin_c_mg": 1.4,
+      "carbs_g": 20,
+      "kcal": 584,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, with hulls, edible yield",
+          "grams": 46
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 140
+        }
+      ]
+    },
+    "flax": {
+      "key": "flax",
+      "fdc_id": 169414,
+      "description": "Seeds, flaxseed",
+      "calcium_mg": 255,
+      "fat_g": 42.16,
+      "fiber_g": 27.3,
+      "iron_mg": 5.73,
+      "sodium_mg": 30,
+      "vitamin_c_mg": 0.6,
+      "protein_g": 18.29,
+      "carbs_g": 28.88,
+      "kcal": 534,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp, whole",
+          "grams": 10.3
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, whole",
+          "grams": 168
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp, ground",
+          "grams": 7
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp, whole",
+          "grams": 3.4
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp, ground",
+          "grams": 2.5
+        }
+      ]
+    },
+    "chia": {
+      "key": "chia",
+      "fdc_id": 170554,
+      "description": "Seeds, chia seeds, dried",
+      "protein_g": 16.54,
+      "fiber_g": 34.4,
+      "iron_mg": 7.72,
+      "sodium_mg": 16,
+      "vitamin_c_mg": 1.6,
+      "fat_g": 30.74,
+      "carbs_g": 42.12,
+      "kcal": 486,
+      "calcium_mg": 631,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        }
+      ]
+    },
+    "ginger": {
+      "key": "ginger",
+      "fdc_id": 169231,
+      "description": "Ginger root, raw",
+      "calcium_mg": 16,
+      "fat_g": 0.75,
+      "vitamin_c_mg": 5,
+      "iron_mg": 0.6,
+      "sodium_mg": 13,
+      "protein_g": 1.82,
+      "carbs_g": 17.77,
+      "kcal": 80,
+      "fiber_g": 2,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 2
+        },
+        {
+          "amount": 0.25,
+          "unit": "undetermined",
+          "description": "cup slices (1\" dia)",
+          "grams": 24
+        },
+        {
+          "amount": 5,
+          "unit": "undetermined",
+          "description": "slices (1\" dia)",
+          "grams": 11
+        }
+      ]
+    },
+    "garlic": {
+      "key": "garlic",
+      "fdc_id": 169230,
+      "description": "Garlic, raw",
+      "carbs_g": 33.06,
+      "kcal": 149,
+      "vitamin_c_mg": 31.2,
+      "fiber_g": 2.1,
+      "iron_mg": 1.7,
+      "sodium_mg": 17,
+      "protein_g": 6.36,
+      "calcium_mg": 181,
+      "fat_g": 0.5,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 136
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 2.8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "clove",
+          "grams": 3
+        },
+        {
+          "amount": 3,
+          "unit": "undetermined",
+          "description": "cloves",
+          "grams": 9
+        }
+      ]
+    },
+    "coriander": {
+      "key": "coriander",
+      "fdc_id": 169997,
+      "description": "Coriander (cilantro) leaves, raw",
+      "protein_g": 2.13,
+      "carbs_g": 3.67,
+      "kcal": 23,
+      "calcium_mg": 67,
+      "vitamin_c_mg": 27,
+      "fiber_g": 2.8,
+      "iron_mg": 1.77,
+      "sodium_mg": 46,
+      "fat_g": 0.52,
+      "portions": [
+        {
+          "amount": 0.25,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 4
+        },
+        {
+          "amount": 9,
+          "unit": "undetermined",
+          "description": "sprigs",
+          "grams": 20
+        }
+      ]
+    },
+    "mint": {
+      "key": "mint",
+      "fdc_id": 173475,
+      "description": "Spearmint, fresh",
+      "fat_g": 0.73,
+      "carbs_g": 8.41,
+      "kcal": 44,
+      "calcium_mg": 199,
+      "protein_g": 3.29,
+      "fiber_g": 6.8,
+      "iron_mg": 11.87,
+      "sodium_mg": 30,
+      "vitamin_c_mg": 13.3,
+      "portions": [
+        {
+          "amount": 2,
+          "unit": "undetermined",
+          "description": "leaves",
+          "grams": 0.3
+        },
+        {
+          "amount": 2,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 11.4
+        }
+      ]
+    },
+    "green_chili": {
+      "key": "green_chili",
+      "fdc_id": 170497,
+      "description": "Peppers, hot chili, green, raw",
+      "fat_g": 0.2,
+      "carbs_g": 9.46,
+      "kcal": 40,
+      "calcium_mg": 18,
+      "fiber_g": 1.5,
+      "iron_mg": 1.2,
+      "sodium_mg": 7,
+      "vitamin_c_mg": 242.5,
+      "protein_g": 2,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "pepper",
+          "grams": 45
+        },
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "cup, chopped or diced",
+          "grams": 75
+        }
+      ]
+    },
+    "cumin": {
+      "key": "cumin",
+      "fdc_id": 170923,
+      "description": "Spices, cumin seed",
+      "protein_g": 17.81,
+      "fiber_g": 10.5,
+      "iron_mg": 66.36,
+      "sodium_mg": 168,
+      "vitamin_c_mg": 7.7,
+      "fat_g": 22.27,
+      "carbs_g": 44.24,
+      "kcal": 375,
+      "calcium_mg": 931,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp, whole",
+          "grams": 2.1
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp, whole",
+          "grams": 6
+        }
+      ]
+    },
+    "coriander_seed": {
+      "key": "coriander_seed",
+      "fdc_id": 170922,
+      "description": "Spices, coriander seed",
+      "fat_g": 17.77,
+      "carbs_g": 54.99,
+      "kcal": 298,
+      "calcium_mg": 709,
+      "iron_mg": 16.32,
+      "sodium_mg": 35,
+      "protein_g": 12.37,
+      "fiber_g": 41.9,
+      "vitamin_c_mg": 21,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 1.8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 5
+        }
+      ]
+    },
+    "turmeric": {
+      "key": "turmeric",
+      "fdc_id": 172231,
+      "description": "Spices, turmeric, ground",
+      "fat_g": 3.25,
+      "carbs_g": 67.14,
+      "kcal": 312,
+      "calcium_mg": 168,
+      "protein_g": 9.68,
+      "fiber_g": 22.7,
+      "iron_mg": 55,
+      "sodium_mg": 27,
+      "vitamin_c_mg": 0.7,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 3
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 9.4
+        }
+      ]
+    },
+    "cinnamon": {
+      "key": "cinnamon",
+      "fdc_id": 171320,
+      "description": "Spices, cinnamon, ground",
+      "iron_mg": 8.32,
+      "fiber_g": 53.1,
+      "protein_g": 3.99,
+      "vitamin_c_mg": 3.8,
+      "sodium_mg": 10,
+      "calcium_mg": 1002,
+      "fat_g": 1.24,
+      "carbs_g": 80.59,
+      "kcal": 247,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 2.6
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 7.8
+        }
+      ]
+    },
+    "cocoa": {
+      "key": "cocoa",
+      "fdc_id": 169593,
+      "description": "Cocoa, dry powder, unsweetened",
+      "carbs_g": 57.9,
+      "kcal": 228,
+      "fiber_g": 37,
+      "iron_mg": 13.86,
+      "sodium_mg": 21,
+      "protein_g": 19.6,
+      "vitamin_c_mg": 0,
+      "fat_g": 13.7,
+      "calcium_mg": 128,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 86
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 5.4
+        }
+      ]
+    },
+    "chocolate": {
+      "key": "chocolate",
+      "fdc_id": 170271,
+      "description": "Chocolate, dark, 45- 59% cacao solids",
+      "fat_g": 31.28,
+      "carbs_g": 61.17,
+      "kcal": 546,
+      "calcium_mg": 56,
+      "fiber_g": 7,
+      "iron_mg": 8.02,
+      "sodium_mg": 24,
+      "protein_g": 4.88,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "oz",
+          "grams": 28.35
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "bar",
+          "grams": 162
+        }
+      ],
+      "vitamin_c_mg": 0
+    },
+    "soy_sauce": {
+      "key": "soy_sauce",
+      "fdc_id": 174277,
+      "description": "Soy sauce made from soy and wheat (shoyu)",
+      "fat_g": 0.57,
+      "carbs_g": 4.93,
+      "calcium_mg": 33,
+      "protein_g": 8.14,
+      "iron_mg": 1.45,
+      "sodium_mg": 5493,
+      "kcal": 53,
+      "vitamin_c_mg": 0,
+      "fiber_g": 0.8,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 16
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 5.3
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 255
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "individual packet",
+          "grams": 8.9
+        }
+      ]
+    },
+    "ketchup": {
+      "key": "ketchup",
+      "fdc_id": 168556,
+      "description": "Catsup",
+      "sodium_mg": 907,
+      "protein_g": 1.04,
+      "fiber_g": 0.3,
+      "iron_mg": 0.35,
+      "vitamin_c_mg": 4.1,
+      "calcium_mg": 15,
+      "fat_g": 0.1,
+      "carbs_g": 27.4,
+      "kcal": 101,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 17
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "packet",
+          "grams": 9
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 240
+        }
+      ]
+    },
+    "tomato_paste": {
+      "key": "tomato_paste",
+      "fdc_id": 170459,
+      "description": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)",
+      "carbs_g": 18.91,
+      "kcal": 82,
+      "sodium_mg": 59,
+      "calcium_mg": 36,
+      "fat_g": 0.47,
+      "vitamin_c_mg": 21.9,
+      "iron_mg": 2.98,
+      "protein_g": 4.32,
+      "fiber_g": 4.1,
+      "portions": [
+        {
+          "amount": 0.25,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 66
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 262
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 16
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "can (6 oz)",
+          "grams": 170
+        }
+      ]
+    },
+    "soda": {
+      "key": "soda",
+      "fdc_id": 173205,
+      "description": "Beverages, carbonated, lemon-lime soda, no caffeine",
+      "fiber_g": 0,
+      "vitamin_c_mg": 0,
+      "fat_g": 0,
+      "carbs_g": 10.42,
+      "kcal": 41,
+      "calcium_mg": 2,
+      "protein_g": 0.09,
+      "iron_mg": 0.02,
+      "sodium_mg": 10,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fl oz",
+          "grams": 30.8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "drink (12 fl oz)",
+          "grams": 368
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "drink, small (16 fl oz)",
+          "grams": 491
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "drink, medium (22 fl oz)",
+          "grams": 675
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "drink, large (32 fl oz)",
+          "grams": 982
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "drink, extra large (44 fl oz)",
+          "grams": 1351
+        }
+      ]
+    },
+    "tamarind": {
+      "key": "tamarind",
+      "fdc_id": 167763,
+      "description": "Tamarinds, raw",
+      "fiber_g": 5.1,
+      "iron_mg": 2.8,
+      "protein_g": 2.8,
+      "sodium_mg": 28,
+      "vitamin_c_mg": 3.5,
+      "calcium_mg": 74,
+      "fat_g": 0.6,
+      "carbs_g": 62.5,
+      "kcal": 239,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, pulp",
+          "grams": 120
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit (3\" x 1\")",
+          "grams": 2
+        }
+      ]
+    },
+    "mustard": {
+      "key": "mustard",
+      "fdc_id": 172234,
+      "description": "Mustard, prepared, yellow",
+      "protein_g": 3.74,
+      "vitamin_c_mg": 0.3,
+      "fiber_g": 4,
+      "iron_mg": 1.61,
+      "sodium_mg": 1104,
+      "fat_g": 3.34,
+      "carbs_g": 5.83,
+      "kcal": 60,
+      "calcium_mg": 63,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp or 1 packet",
+          "grams": 5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 249
+        }
+      ]
+    },
+    "instant_coffee": {
+      "key": "instant_coffee",
+      "fdc_id": 171893,
+      "description": "Beverages, coffee, instant, regular, powder",
+      "protein_g": 12.2,
+      "fiber_g": 0,
+      "iron_mg": 4.41,
+      "sodium_mg": 37,
+      "vitamin_c_mg": 0,
+      "calcium_mg": 141,
+      "fat_g": 0.5,
+      "carbs_g": 75.4,
+      "kcal": 353,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tsp",
+          "grams": 1
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "packet",
+          "grams": 2
+        }
+      ]
+    },
+    "yeast": {
+      "key": "yeast",
+      "fdc_id": 175042,
+      "description": "Leavening agents, yeast, baker's, compressed",
+      "fiber_g": 8.1,
+      "calcium_mg": 19,
+      "fat_g": 1.9,
+      "carbs_g": 18.1,
+      "vitamin_c_mg": 0.1,
+      "protein_g": 8.4,
+      "iron_mg": 3.25,
+      "sodium_mg": 30,
+      "kcal": 105,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cake (0.6 oz)",
+          "grams": 17
+        }
+      ]
+    },
+    "olives": {
+      "key": "olives",
+      "fdc_id": 169094,
+      "description": "Olives, ripe, canned (small-extra large)",
+      "sodium_mg": 735,
+      "calcium_mg": 88,
+      "protein_g": 0.84,
+      "vitamin_c_mg": 0.9,
+      "fiber_g": 1.6,
+      "iron_mg": 6.28,
+      "fat_g": 10.9,
+      "carbs_g": 6.04,
+      "kcal": 116,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "tbsp",
+          "grams": 8.4
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large",
+          "grams": 4.4
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small",
+          "grams": 3.2
+        }
+      ]
+    },
+    "lettuce": {
+      "key": "lettuce",
+      "fdc_id": 169248,
+      "description": "Lettuce, iceberg (includes crisphead types), raw",
+      "carbs_g": 2.97,
+      "kcal": 14,
+      "vitamin_c_mg": 2.8,
+      "fiber_g": 1.2,
+      "iron_mg": 0.41,
+      "sodium_mg": 10,
+      "protein_g": 0.9,
+      "fat_g": 0.14,
+      "calcium_mg": 18,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup shredded",
+          "grams": 72
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, chopped (1/2\" pieces, loosely packed)",
+          "grams": 57
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head, large",
+          "grams": 755
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head, medium (6\" dia)",
+          "grams": 539
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "head, small",
+          "grams": 324
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf, large",
+          "grams": 15
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf, medium",
+          "grams": 8
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "leaf, small",
+          "grams": 5
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA Serving",
+          "grams": 89
+        }
+      ]
+    },
+    "dried_plums": {
+      "key": "dried_plums",
+      "fdc_id": 168162,
+      "description": "Plums, dried (prunes), uncooked",
+      "carbs_g": 63.88,
+      "kcal": 240,
+      "fiber_g": 7.1,
+      "iron_mg": 0.93,
+      "sodium_mg": 2,
+      "vitamin_c_mg": 0.6,
+      "protein_g": 2.18,
+      "calcium_mg": 43,
+      "fat_g": 0.38,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, pitted",
+          "grams": 174
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "prune, pitted",
+          "grams": 9.5
+        }
+      ]
+    },
+    "cherry": {
+      "key": "cherry",
+      "fdc_id": 171719,
+      "description": "Cherries, sweet, raw",
+      "carbs_g": 16.01,
+      "kcal": 63,
+      "calcium_mg": 13,
+      "fat_g": 0.2,
+      "vitamin_c_mg": 7,
+      "protein_g": 1.06,
+      "fiber_g": 2.1,
+      "iron_mg": 0.36,
+      "sodium_mg": 0,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, with pits, yields",
+          "grams": 138
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, without pits",
+          "grams": 154
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cherry",
+          "grams": 8.2
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 140
+        }
+      ]
+    },
+    "pomegranate": {
+      "key": "pomegranate",
+      "fdc_id": 169134,
+      "description": "Pomegranates, raw",
+      "protein_g": 1.67,
+      "fiber_g": 4,
+      "iron_mg": 0.3,
+      "sodium_mg": 3,
+      "vitamin_c_mg": 10.2,
+      "calcium_mg": 10,
+      "fat_g": 1.17,
+      "carbs_g": 18.7,
+      "kcal": 83,
+      "portions": [
+        {
+          "amount": 0.5,
+          "unit": "undetermined",
+          "description": "cup arils (seed/juice sacs)",
+          "grams": 87
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "pomegranate (4\" dia)",
+          "grams": 282
+        }
+      ]
+    },
+    "gelatin": {
+      "key": "gelatin",
+      "fdc_id": 169599,
+      "description": "Gelatins, dry powder, unsweetened",
+      "protein_g": 85.6,
+      "fiber_g": 0,
+      "iron_mg": 1.11,
+      "sodium_mg": 196,
+      "vitamin_c_mg": 0,
+      "fat_g": 0.1,
+      "carbs_g": 0,
+      "kcal": 335,
+      "calcium_mg": 55,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "envelope (1 tbsp)",
+          "grams": 7
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "package (1 oz)",
+          "grams": 28
+        }
+      ]
+    },
+    "tapioca": {
+      "key": "tapioca",
+      "fdc_id": 169717,
+      "description": "Tapioca, pearl, dry",
+      "protein_g": 0.19,
+      "fiber_g": 0.9,
+      "iron_mg": 1.58,
+      "sodium_mg": 1,
+      "vitamin_c_mg": 0,
+      "calcium_mg": 20,
+      "fat_g": 0.02,
+      "carbs_g": 88.69,
+      "kcal": 358,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 152
+        }
+      ]
+    },
+    "barley": {
+      "key": "barley",
+      "fdc_id": 170284,
+      "description": "Barley, pearled, raw",
+      "fat_g": 1.16,
+      "carbs_g": 77.72,
+      "kcal": 352,
+      "calcium_mg": 29,
+      "fiber_g": 15.6,
+      "iron_mg": 2.5,
+      "sodium_mg": 9,
+      "vitamin_c_mg": 0,
+      "protein_g": 9.91,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 200
+        }
+      ]
+    },
+    "kiwi": {
+      "key": "kiwi",
+      "fdc_id": 168153,
+      "description": "Kiwifruit, green, raw",
+      "protein_g": 1.14,
+      "fiber_g": 3,
+      "iron_mg": 0.31,
+      "vitamin_c_mg": 92.7,
+      "fat_g": 0.52,
+      "calcium_mg": 34,
+      "sodium_mg": 3,
+      "carbs_g": 14.66,
+      "kcal": 61,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup, sliced",
+          "grams": 180
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "fruit (2\" dia)",
+          "grams": 69
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 148
+        }
+      ]
+    },
+    "peach": {
+      "key": "peach",
+      "fdc_id": 169928,
+      "description": "Peaches, yellow, raw",
+      "carbs_g": 9.54,
+      "kcal": 39,
+      "sodium_mg": 0,
+      "vitamin_c_mg": 6.6,
+      "fiber_g": 1.5,
+      "iron_mg": 0.25,
+      "protein_g": 0.91,
+      "fat_g": 0.25,
+      "calcium_mg": 6,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup slices",
+          "grams": 154
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (2-1/2\" dia)",
+          "grams": 130
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (2-2/3\" dia)",
+          "grams": 150
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (2-3/4\" dia)",
+          "grams": 175
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "extra large (3\" dia)",
+          "grams": 224
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 147
+        }
+      ]
+    },
+    "grapes": {
+      "key": "grapes",
+      "fdc_id": 174683,
+      "description": "Grapes, red or green (European type, such as Thompson seedless), raw",
+      "calcium_mg": 10,
+      "fat_g": 0.16,
+      "protein_g": 0.72,
+      "fiber_g": 0.9,
+      "iron_mg": 0.36,
+      "sodium_mg": 2,
+      "carbs_g": 18.1,
+      "kcal": 69,
+      "vitamin_c_mg": 3.2,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "cup",
+          "grams": 151
+        },
+        {
+          "amount": 10,
+          "unit": "undetermined",
+          "description": "grapes",
+          "grams": 49
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "NLEA serving",
+          "grams": 126
+        }
+      ]
+    },
+    "figs": {
+      "key": "figs",
+      "fdc_id": 173021,
+      "description": "Figs, raw",
+      "fat_g": 0.3,
+      "carbs_g": 19.18,
+      "kcal": 74,
+      "calcium_mg": 35,
+      "protein_g": 0.75,
+      "iron_mg": 0.37,
+      "sodium_mg": 1,
+      "vitamin_c_mg": 2,
+      "fiber_g": 2.9,
+      "portions": [
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "large (2-1/2\" dia)",
+          "grams": 64
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "medium (2-1/4\" dia)",
+          "grams": 50
+        },
+        {
+          "amount": 1,
+          "unit": "undetermined",
+          "description": "small (1-1/2\" dia)",
+          "grams": 40
+        }
+      ]
+    }
+  }
+}

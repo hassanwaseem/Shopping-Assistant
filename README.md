@@ -6,7 +6,7 @@ A mobile-first Pakistani household meal planner with a regional recipe library, 
 
 - Today dashboard with meals, preparation cues, shopping status, and nutrition summary
 - Seven-day editable meal plan
-- 698 complete Pakistani, Afghan, and Pakistani-home-style recipe variants loaded from `data/pakistani-recipes.json`
+- 4,247 complete Pakistani, Afghan, and Pakistani-home-style recipe variants loaded from `data/pakistani-recipes.json`
 - Pakistani-focused filtering by region, dish type, main ingredient, dietary pattern, and cooking time
 - Balanced, pantry-first, quick-week, batch-cooking, and variety planning modes
 - Temporary protein, fibre, iron, calcium, and vitamin C focus
@@ -74,6 +74,14 @@ npm run merge:foodfusion
 ```
 
 The merge keeps the existing recipe schema, adds new dish families, and stores duplicate recipes as `alternate_methods`. It writes an auditable summary to `data/foodfusion-merge-report.json` and verifies that every accepted Food Fusion source record is represented exactly once.
+
+Food Fusion pages do not expose consistent standardized nutrition panels. To calculate rough per-serving planning estimates from the imported ingredient quantities, run:
+
+```bash
+npm run estimate:nutrition:foodfusion
+```
+
+The estimator uses the checked-in USDA FoodData Central SR Legacy reference in `data/usda-sr-legacy-nutrition-reference.json`. It updates the standalone Food Fusion collection and its primary variants in the merged collection, labels every result with a confidence and ingredient-coverage score, and writes an audit to `data/foodfusion-nutrition-estimate-report.json`. Estimates account for reported or inferred yield, but brands, frying absorption, unquantified garnishes, and cooking losses remain approximate.
 
 ## Deployment
 

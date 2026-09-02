@@ -1,0 +1,870 @@
+{
+  "generated_at": "2026-09-01T22:29:32.663Z",
+  "reference": {
+    "source": "USDA FoodData Central SR Legacy, April 2018 final release",
+    "url": "https://fdc.nal.usda.gov/download-datasets/",
+    "profiles": 118
+  },
+  "standalone_recipes_estimated": 3615,
+  "merged_primary_recipes_updated": 3549,
+  "recipes_using_ingredient_weight_serving_estimate": 1830,
+  "serving_estimates_changed_this_run": 0,
+  "confidence_counts": {
+    "low": 673,
+    "low-moderate": 1908,
+    "moderate": 1034
+  },
+  "average_ingredient_weight_coverage": 0.964,
+  "calorie_distribution_per_serving": {
+    "minimum": {
+      "id": "foodfusion-how-to-store-tomatoes-13645",
+      "name": "How to Store Tomatoes",
+      "kcal": 4,
+      "confidence": "low"
+    },
+    "p05": {
+      "id": "foodfusion-brain-cutlets-18592",
+      "name": "Brain Cutlets",
+      "kcal": 103,
+      "confidence": "moderate"
+    },
+    "median": {
+      "id": "foodfusion-stuffed-spinach-crepes-24246",
+      "name": "Stuffed Spinach Crepes",
+      "kcal": 349,
+      "confidence": "moderate"
+    },
+    "p95": {
+      "id": "foodfusion-chana-daal-biryani-12146",
+      "name": "Chana Daal Biryani",
+      "kcal": 791,
+      "confidence": "low-moderate"
+    },
+    "maximum": {
+      "id": "foodfusion-kababnum-inspired-magnum-cafe-2573",
+      "name": "KababNum (Inspired by Magnum Cafe)",
+      "kcal": 2502,
+      "confidence": "low-moderate"
+    }
+  },
+  "plausibility_flags": {
+    "below_5_kcal": [
+      {
+        "id": "foodfusion-how-to-store-tomatoes-13645",
+        "name": "How to Store Tomatoes",
+        "kcal": 4,
+        "confidence": "low"
+      }
+    ],
+    "above_2500_kcal": [
+      {
+        "id": "foodfusion-kababnum-inspired-magnum-cafe-2573",
+        "name": "KababNum (Inspired by Magnum Cafe)",
+        "kcal": 2502,
+        "confidence": "low-moderate"
+      }
+    ]
+  },
+  "top_unmatched_ingredients": [
+    {
+      "item": "Papri",
+      "count": 35
+    },
+    {
+      "item": "Nimco sev",
+      "count": 29
+    },
+    {
+      "item": "Tahini paste",
+      "count": 27
+    },
+    {
+      "item": "Dried rose petals",
+      "count": 26
+    },
+    {
+      "item": "Green chutney",
+      "count": 26
+    },
+    {
+      "item": "Melon seeds",
+      "count": 24
+    },
+    {
+      "item": "Edible silver leaf",
+      "count": 19
+    },
+    {
+      "item": "Rose syrup",
+      "count": 19
+    },
+    {
+      "item": "Sev nimco",
+      "count": 17
+    },
+    {
+      "item": "Bottle gourd",
+      "count": 16
+    },
+    {
+      "item": "French beans",
+      "count": 16
+    },
+    {
+      "item": "Edible silver leaves",
+      "count": 15
+    },
+    {
+      "item": "Red jelly cubes",
+      "count": 15
+    },
+    {
+      "item": "Caramel sauce",
+      "count": 14
+    },
+    {
+      "item": "Samosa sheets",
+      "count": 14
+    },
+    {
+      "item": "Beetroot",
+      "count": 13
+    },
+    {
+      "item": "Green jelly cubes",
+      "count": 13
+    },
+    {
+      "item": "Non-stick spray",
+      "count": 12
+    },
+    {
+      "item": "Wheat",
+      "count": 12
+    },
+    {
+      "item": "Tabasco sauce",
+      "count": 11
+    },
+    {
+      "item": "Multi sprinkles",
+      "count": 11
+    },
+    {
+      "item": "Prepared sauce",
+      "count": 11
+    },
+    {
+      "item": "Vanilla extract",
+      "count": 11
+    },
+    {
+      "item": "Nutella spread",
+      "count": 10
+    },
+    {
+      "item": "Tea leaves",
+      "count": 10
+    },
+    {
+      "item": "Edible gum",
+      "count": 10
+    },
+    {
+      "item": "Lotus seeds",
+      "count": 10
+    },
+    {
+      "item": "Salad leaf",
+      "count": 9
+    },
+    {
+      "item": "Radish",
+      "count": 9
+    },
+    {
+      "item": "Roll sheets",
+      "count": 9
+    },
+    {
+      "item": "Asafeotida",
+      "count": 9
+    },
+    {
+      "item": "Sapodilla",
+      "count": 9
+    },
+    {
+      "item": "Lal sharbat",
+      "count": 9
+    },
+    {
+      "item": "Simply sufi breast fillets",
+      "count": 8
+    },
+    {
+      "item": "Mixed nuts chopped",
+      "count": 8
+    },
+    {
+      "item": "Rose petals",
+      "count": 7
+    },
+    {
+      "item": "National Crushed Pickle",
+      "count": 7
+    },
+    {
+      "item": "Bitter gourd",
+      "count": 7
+    },
+    {
+      "item": "Khatti meethi chutney",
+      "count": 7
+    },
+    {
+      "item": "Stevia",
+      "count": 7
+    },
+    {
+      "item": "Curry powder",
+      "count": 7
+    },
+    {
+      "item": "Sprinkles",
+      "count": 7
+    },
+    {
+      "item": "Meethi chutney",
+      "count": 7
+    },
+    {
+      "item": "Nutella",
+      "count": 7
+    },
+    {
+      "item": "Soya",
+      "count": 6
+    },
+    {
+      "item": "Mixed pickle",
+      "count": 6
+    },
+    {
+      "item": "Mixed nuts sliced",
+      "count": 6
+    },
+    {
+      "item": "Dried",
+      "count": 6
+    },
+    {
+      "item": "Kisan banaspati",
+      "count": 6
+    },
+    {
+      "item": "Caramel syrup",
+      "count": 6
+    },
+    {
+      "item": "Kisan Banaspati",
+      "count": 6
+    },
+    {
+      "item": "Mixed fruit cocktail",
+      "count": 6
+    },
+    {
+      "item": "Soup bones",
+      "count": 6
+    },
+    {
+      "item": "Liver",
+      "count": 6
+    },
+    {
+      "item": "vanilla flavor",
+      "count": 6
+    },
+    {
+      "item": "Peach slices",
+      "count": 6
+    },
+    {
+      "item": "Fusion shortcut sauce",
+      "count": 6
+    },
+    {
+      "item": "Sunflower seeds",
+      "count": 6
+    },
+    {
+      "item": "Yellow jelly cubes",
+      "count": 6
+    },
+    {
+      "item": "Coleslaw",
+      "count": 5
+    },
+    {
+      "item": "Green sauce",
+      "count": 5
+    },
+    {
+      "item": "White sauce",
+      "count": 5
+    },
+    {
+      "item": "Prepared salad",
+      "count": 5
+    },
+    {
+      "item": "Hoisin sauce",
+      "count": 5
+    },
+    {
+      "item": "Canderel",
+      "count": 5
+    },
+    {
+      "item": "Dry nuts chopped",
+      "count": 5
+    },
+    {
+      "item": "Fat",
+      "count": 5
+    },
+    {
+      "item": "Corn flakes",
+      "count": 5
+    },
+    {
+      "item": "Fruit cocktail strained",
+      "count": 5
+    },
+    {
+      "item": "Prepared coffee base",
+      "count": 5
+    },
+    {
+      "item": "Samosa patti",
+      "count": 5
+    },
+    {
+      "item": "Colored jelly cubes",
+      "count": 5
+    },
+    {
+      "item": "Asafoetida",
+      "count": 5
+    },
+    {
+      "item": "Tutti frutti",
+      "count": 5
+    },
+    {
+      "item": "Cham cham",
+      "count": 5
+    },
+    {
+      "item": "Melon",
+      "count": 5
+    },
+    {
+      "item": "Marshmallows",
+      "count": 5
+    },
+    {
+      "item": "Allspice powder",
+      "count": 5
+    },
+    {
+      "item": "Plain cake cubes",
+      "count": 5
+    },
+    {
+      "item": "Dried tarragon leaves",
+      "count": 5
+    },
+    {
+      "item": "Java plum",
+      "count": 5
+    },
+    {
+      "item": "Lotus spread",
+      "count": 5
+    },
+    {
+      "item": "Fresh mustard leaves",
+      "count": 5
+    },
+    {
+      "item": "Filling of your choice",
+      "count": 4
+    },
+    {
+      "item": "Ridge gourd",
+      "count": 4
+    },
+    {
+      "item": "Apples",
+      "count": 4
+    },
+    {
+      "item": "Dried apricots",
+      "count": 4
+    },
+    {
+      "item": "Dried lemons",
+      "count": 4
+    },
+    {
+      "item": "Rose buds",
+      "count": 4
+    },
+    {
+      "item": "500g",
+      "count": 4
+    },
+    {
+      "item": "Shank",
+      "count": 4
+    },
+    {
+      "item": "Salad",
+      "count": 4
+    },
+    {
+      "item": "cubes",
+      "count": 4
+    },
+    {
+      "item": "Plain sponge cake",
+      "count": 4
+    },
+    {
+      "item": "Chili flakes",
+      "count": 4
+    },
+    {
+      "item": "Hari chutney",
+      "count": 4
+    },
+    {
+      "item": "Samosa sheet/Manda patti",
+      "count": 4
+    },
+    {
+      "item": "Beet root",
+      "count": 4
+    },
+    {
+      "item": "julienne cut",
+      "count": 4
+    },
+    {
+      "item": "Sweet corns boiled",
+      "count": 4
+    },
+    {
+      "item": "Maple syrup",
+      "count": 4
+    },
+    {
+      "item": "Vanilla flavor",
+      "count": 4
+    },
+    {
+      "item": "Spicy hari chutney",
+      "count": 4
+    },
+    {
+      "item": "Fajita seasoning",
+      "count": 4
+    },
+    {
+      "item": "Grewia",
+      "count": 4
+    },
+    {
+      "item": "Dry nuts sliced",
+      "count": 4
+    },
+    {
+      "item": "Oranges",
+      "count": 4
+    },
+    {
+      "item": "Instant jelly mix",
+      "count": 4
+    },
+    {
+      "item": "Hot",
+      "count": 4
+    },
+    {
+      "item": "Dulce de leche",
+      "count": 3
+    },
+    {
+      "item": "Chives chopped",
+      "count": 3
+    },
+    {
+      "item": "Whole green gram",
+      "count": 3
+    },
+    {
+      "item": "Prepared gravy",
+      "count": 3
+    },
+    {
+      "item": "Lotus root stem",
+      "count": 3
+    },
+    {
+      "item": "Chili Flakes",
+      "count": 3
+    },
+    {
+      "item": "Taro root",
+      "count": 3
+    },
+    {
+      "item": "Round gourd",
+      "count": 3
+    },
+    {
+      "item": "Plain cake slices",
+      "count": 3
+    },
+    {
+      "item": "Wheat bran",
+      "count": 3
+    },
+    {
+      "item": "Coal",
+      "count": 3
+    },
+    {
+      "item": "Charbi",
+      "count": 3
+    },
+    {
+      "item": "Cooking",
+      "count": 3
+    },
+    {
+      "item": "Fruit cocktail",
+      "count": 3
+    },
+    {
+      "item": "hot",
+      "count": 3
+    },
+    {
+      "item": "Corns kernels boiled",
+      "count": 3
+    },
+    {
+      "item": "Fruit jam",
+      "count": 3
+    },
+    {
+      "item": "Prepared red sauce",
+      "count": 3
+    },
+    {
+      "item": "Chips",
+      "count": 3
+    },
+    {
+      "item": "Edible Silver leaf",
+      "count": 3
+    },
+    {
+      "item": "Tea bags",
+      "count": 3
+    },
+    {
+      "item": "Bay leave",
+      "count": 3
+    },
+    {
+      "item": "Samosa sheet",
+      "count": 3
+    },
+    {
+      "item": "Salsa",
+      "count": 3
+    },
+    {
+      "item": "Taste maker",
+      "count": 3
+    },
+    {
+      "item": "Black eyed beans",
+      "count": 3
+    },
+    {
+      "item": "Spring roll sheets",
+      "count": 3
+    },
+    {
+      "item": "Mustard sauce",
+      "count": 3
+    },
+    {
+      "item": "Cornflakes crushed",
+      "count": 3
+    },
+    {
+      "item": "Celery chopped",
+      "count": 3
+    },
+    {
+      "item": "Tortillas",
+      "count": 3
+    },
+    {
+      "item": "Koyla",
+      "count": 3
+    },
+    {
+      "item": "Cajun powder",
+      "count": 3
+    },
+    {
+      "item": "Cubes",
+      "count": 3
+    },
+    {
+      "item": "Prepared green chutney",
+      "count": 3
+    },
+    {
+      "item": "Wonton wraps",
+      "count": 3
+    },
+    {
+      "item": "Coffee",
+      "count": 3
+    },
+    {
+      "item": "Falak Desi shakkar",
+      "count": 3
+    },
+    {
+      "item": "soaked",
+      "count": 3
+    },
+    {
+      "item": "Sweet corns",
+      "count": 3
+    },
+    {
+      "item": "300g",
+      "count": 3
+    },
+    {
+      "item": "Pickle",
+      "count": 3
+    },
+    {
+      "item": "Green gram whole",
+      "count": 3
+    },
+    {
+      "item": "Mortadella slices",
+      "count": 3
+    },
+    {
+      "item": "Dil",
+      "count": 3
+    },
+    {
+      "item": "Samosa/Manda patti",
+      "count": 3
+    },
+    {
+      "item": "Imli ki meethi chutney",
+      "count": 3
+    },
+    {
+      "item": "Red jelly",
+      "count": 3
+    },
+    {
+      "item": "Yellow jelly",
+      "count": 3
+    },
+    {
+      "item": "Instant jelly",
+      "count": 3
+    },
+    {
+      "item": "Silver edible leaf",
+      "count": 3
+    },
+    {
+      "item": "Carom powder",
+      "count": 3
+    },
+    {
+      "item": "Ferrero Rocher",
+      "count": 3
+    },
+    {
+      "item": "Cornmeal",
+      "count": 3
+    },
+    {
+      "item": "Plums",
+      "count": 3
+    },
+    {
+      "item": "Peach",
+      "count": 3
+    },
+    {
+      "item": "Fried nuts",
+      "count": 3
+    },
+    {
+      "item": "Stone flower",
+      "count": 3
+    },
+    {
+      "item": "Plain chips",
+      "count": 3
+    },
+    {
+      "item": "Tahini sauce",
+      "count": 3
+    },
+    {
+      "item": "Pheni",
+      "count": 3
+    },
+    {
+      "item": "Extra virgin",
+      "count": 3
+    },
+    {
+      "item": "Halved",
+      "count": 3
+    },
+    {
+      "item": "Turnip",
+      "count": 3
+    },
+    {
+      "item": "Cooked vegetables",
+      "count": 3
+    },
+    {
+      "item": "Baby corns",
+      "count": 3
+    },
+    {
+      "item": "Vanilla icecream 3 scoops",
+      "count": 3
+    },
+    {
+      "item": "Kashmiri tea leaves",
+      "count": 3
+    },
+    {
+      "item": "Asafoetida powder",
+      "count": 3
+    },
+    {
+      "item": "Green Chutney",
+      "count": 3
+    },
+    {
+      "item": "Spicy chips",
+      "count": 3
+    },
+    {
+      "item": "Gochujang paste",
+      "count": 3
+    },
+    {
+      "item": "Falooda sev",
+      "count": 3
+    },
+    {
+      "item": "Falooda sawaiyan",
+      "count": 3
+    },
+    {
+      "item": "Dry fruits chopped",
+      "count": 3
+    },
+    {
+      "item": "Samosa patti/Manda patti",
+      "count": 3
+    },
+    {
+      "item": "Homemade lemonade",
+      "count": 3
+    },
+    {
+      "item": "750g",
+      "count": 3
+    },
+    {
+      "item": "cubed",
+      "count": 3
+    },
+    {
+      "item": "white",
+      "count": 3
+    },
+    {
+      "item": "Walls king kulfa 2 scoops",
+      "count": 3
+    },
+    {
+      "item": "Muskmelon",
+      "count": 3
+    },
+    {
+      "item": "Khatai powder",
+      "count": 3
+    },
+    {
+      "item": "Plum",
+      "count": 3
+    },
+    {
+      "item": "Burger sauce",
+      "count": 2
+    },
+    {
+      "item": "Kachri powder",
+      "count": 2
+    },
+    {
+      "item": "Mixed nuts",
+      "count": 2
+    },
+    {
+      "item": "Cornflakes",
+      "count": 2
+    },
+    {
+      "item": "Imli chutney",
+      "count": 2
+    },
+    {
+      "item": "Manda patti",
+      "count": 2
+    },
+    {
+      "item": "Guava",
+      "count": 2
+    }
+  ]
+}
