@@ -56,3 +56,17 @@ test('missing nutrients are omitted rather than converted to zero', () => {
   assert.equal(totals.iron, 4);
   assert.equal(Object.hasOwn(totals, 'calcium'), false);
 });
+
+test('enforces course suitability for dinner, dessert, and tea', () => {
+  const dinner = { mealSlots: ['dinner'], eligibleMealSlots: ['dinner'], courseType: 'main', isCompleteMeal: true, canBeStandalone: true };
+  const iceCream = { mealSlots: ['dessert'], eligibleMealSlots: ['dessert'], courseType: 'dessert', isCompleteMeal: false, canBeStandalone: true };
+  const chai = { mealSlots: ['tea'], eligibleMealSlots: ['tea'], courseType: 'drink', isCompleteMeal: false, canBeStandalone: true };
+  const side = { mealSlots: ['dinner'], eligibleMealSlots: ['dinner'], courseType: 'side', isCompleteMeal: false, canBeStandalone: false };
+
+  assert.equal(engine.isRecipeEligible(dinner, 'dinner'), true);
+  assert.equal(engine.isRecipeEligible(iceCream, 'dinner'), false);
+  assert.equal(engine.isRecipeEligible(iceCream, 'dessert'), true);
+  assert.equal(engine.isRecipeEligible(chai, 'tea'), true);
+  assert.equal(engine.isRecipeEligible(chai, 'dinner'), false);
+  assert.equal(engine.isRecipeEligible(side, 'dinner'), false);
+});

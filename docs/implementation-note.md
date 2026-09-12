@@ -1,5 +1,13 @@
 # Specification implementation note
 
+## September 2026: cooking discovery and slot-safe planning
+
+- The recipe adapter now produces explicit `courseType`, `eligibleMealSlots`, `isCompleteMeal`, and `canBeStandalone` fields.
+- Strong dessert and beverage title/category signals override inaccurate imported broad dish types. This fixes imported ice creams that were previously eligible for dinner.
+- The weekly plan contains Breakfast, Lunch, Dinner, Dessert, and Tea slots. Dessert and Tea frequency are user-configurable and may remain empty.
+- Whole-plan regeneration produces balanced, quick, and pantry-first alternatives without replacing the active plan until one is accepted. The previous plan can be restored immediately.
+- Individual swaps show up to ten compatible choices, and the Cook view provides focused recipe discovery and planner insertion.
+
 ## Baseline reviewed
 
 The detailed Meal Planner and Shared Shopping Assistant specification was treated as the product baseline before implementation.

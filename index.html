@@ -36,6 +36,7 @@
 
     <main id="mainContent" tabindex="-1">
       <section id="view-today" class="app-view" data-view="today"><div class="empty-state"><h2>Loading recipes…</h2><p>Preparing the Pakistani recipe collection.</p></div></section>
+      <section id="view-cook" class="app-view" data-view="cook" hidden></section>
       <section id="view-plan" class="app-view" data-view="plan" hidden></section>
       <section id="view-recipes" class="app-view" data-view="recipes" hidden></section>
       <section id="view-nutrition" class="app-view" data-view="nutrition" hidden></section>
@@ -63,10 +64,23 @@
     <div id="recipeDialogContent"></div>
   </dialog>
 
+  <dialog id="swapDialog" class="dialog wide-dialog">
+    <div id="swapDialogContent"></div>
+  </dialog>
+
+  <dialog id="planAlternativesDialog" class="dialog plan-alternatives-dialog">
+    <div id="planAlternativesContent"></div>
+  </dialog>
+
+  <dialog id="addToPlanDialog" class="dialog">
+    <div id="addToPlanContent"></div>
+  </dialog>
+
   <script src="planner-engine.js"></script>
   <script src="data/pakistani-recipes-adapter.js"></script>
   <script src="app/app-core.js"></script>
   <script src="app/app-views-primary.js"></script>
+  <script src="app/app-views-cook.js"></script>
   <script src="app/app-views-lists.js"></script>
   <script src="app/app-views-recipes.js"></script>
   <script src="app/app-domain.js"></script>

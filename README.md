@@ -5,12 +5,14 @@ A mobile-first Pakistani household meal planner with a regional recipe library, 
 ## What is implemented in this branch
 
 - Today dashboard with meals, preparation cues, shopping status, and nutrition summary
-- Seven-day editable meal plan
+- Seven-day editable meal plan with Breakfast, Lunch, Dinner, optional Dessert, and optional Tea/drink slots
 - 4,247 complete Pakistani, Afghan, and Pakistani-home-style recipe variants loaded from `data/pakistani-recipes.json`
 - Pakistani-focused filtering by region, dish type, main ingredient, dietary pattern, and cooking time
 - Balanced, pantry-first, quick-week, batch-cooking, and variety planning modes
 - Temporary protein, fibre, iron, calcium, and vitamin C focus
-- Meal pinning, swapping, skipping, and household serving adjustment
+- Meal pinning, 10-option slot-safe swapping, skipping, and household serving adjustment
+- Three full-week alternatives with preview-before-replace and one-step undo
+- “What should we cook?” discovery with practical shortcuts, natural-language filters, and three distinct recommendations
 - Multiple person profiles with different portions and planning targets
 - Deterministic daily and weekly nutrition arithmetic
 - Visible nutrition completeness; missing nutrient values are not converted to zero

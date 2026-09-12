@@ -102,10 +102,23 @@ test('normalizes every recipe into the planner model', () => {
 });
 
 test('provides enough eligible recipes for every planned meal slot', () => {
-  for (const slot of ['breakfast', 'lunch', 'dinner']) {
+  for (const slot of ['breakfast', 'lunch', 'dinner', 'dessert', 'tea']) {
     const candidates = recipes.filter((recipe) => recipe.mealSlots.includes(slot));
     assert.ok(candidates.length >= 10, `${slot} has only ${candidates.length} candidates`);
   }
+});
+
+test('classifies desserts and drinks into dedicated planner slots', () => {
+  const iceCreams = recipes.filter((recipe) => /ice[ -]?cream/i.test(recipe.name));
+  assert.ok(iceCreams.length > 10);
+  assert.ok(iceCreams.every((recipe) => recipe.courseType === 'dessert'));
+  assert.ok(iceCreams.every((recipe) => recipe.mealSlots.includes('dessert')));
+  assert.ok(iceCreams.every((recipe) => !recipe.mealSlots.includes('dinner')));
+
+  const chai = recipes.find((recipe) => recipe.name === 'Kashmiri Chai');
+  assert.equal(chai.courseType, 'drink');
+  assert.deepEqual(chai.mealSlots, ['tea']);
+  assert.equal(chai.canBeStandalone, true);
 });
 
 test('recalculates dietary tags instead of trusting incorrect source tags', () => {

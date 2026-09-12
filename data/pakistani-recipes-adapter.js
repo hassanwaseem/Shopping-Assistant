@@ -83,12 +83,15 @@
   }
 
   function dishTypeFor(source) {
-    if (DISH_TYPES.includes(source.dish_type)) return source.dish_type;
     const category = searchable(source.category);
     const text = searchable(`${source.name} ${source.dish_family || ''} ${source.category || ''}`);
 
-    if (/beverage|drinks?/.test(category) || /\b(chai|tea|kahwa|kehwa|lassi|sharbat|drink)\b/.test(text)) return 'Drinks';
-    if (/dessert/.test(category) || /\b(halwa|kheer|kulfi|gulab jamun|jalebi|seviyan|sheer khurma|mithai|pudding|zarda|cake|rusk|biscuit|cookie|brownie|muffin|banana bread|trifle|tiramisu|sweet dish)\b/.test(text)) return 'Desserts';
+    // Strong title/category signals override imported broad dish types. Several
+    // imported ice creams were labelled "Main dishes", which made them dinner
+    // candidates before slot eligibility was normalized here.
+    if (/dessert|sweet/.test(category) || /\b(ice[ -]?cream|sundae|halwa|kheer|kulfi|gulab jamun|jalebi|seviyan|sheer khurma|mithai|pudding|zarda|cake|cupcake|rusk|biscuit|cookie|brownie|muffin|banana bread|trifle|tiramisu|mousse|custard|donut|doughnut|falooda|flan)\b/.test(text)) return 'Desserts';
+    if (/beverage|drinks?/.test(category) || /\b(chai|tea|kahwa|kehwa|coffee|lassi|sharbat|juice|smoothie|milkshake|shake|lemonade|mojito|cooler|soda|latte|hot chocolate|drink)\b/.test(text)) return 'Drinks';
+    if (DISH_TYPES.includes(source.dish_type)) return source.dish_type;
     if (/breakfast/.test(category) || /\b(nashta|breakfast|halwa puri|anda paratha|anday wala paratha|egg bhurji|khagina|omelette|omelet)\b/.test(text)) return 'Breakfast';
     if (/appetizer|snack|kebab/.test(category) || /\b(chaat|kebab|kabab|tikka|pakora|samosas?|gol gapp|bun kebab|fritter|cutlet)\b/.test(text)) return 'Snacks & street food';
     if (/naan|roti|bread/.test(category) || /\b(naan|roti|chapati|paratha|puri|sheermal|kulcha|flatbread)\b/.test(text)) return 'Breads';
@@ -252,9 +255,21 @@
 
   function mealSlotsFor(dishType, source) {
     if (dishType === 'Breakfast') return ['breakfast'];
+    if (dishType === 'Desserts') return ['dessert'];
+    if (dishType === 'Drinks') return ['tea'];
     if (['Main dishes', 'Curries & stews', 'Rice & biryani', 'Daal & legumes', 'Pasta, macaroni & lasagna'].includes(dishType)) return ['lunch', 'dinner'];
     if (dishType === 'Sides & vegetables' && /main course|vegetarian recipes|curries/i.test(String(source.category || ''))) return ['lunch', 'dinner'];
+    if (dishType === 'Snacks & street food' && /tea[ -]?time|evening snack/i.test(String(source.category || ''))) return ['tea'];
     return [];
+  }
+
+  function courseTypeFor(dishType) {
+    if (dishType === 'Breakfast') return 'breakfast';
+    if (dishType === 'Desserts') return 'dessert';
+    if (dishType === 'Drinks') return 'drink';
+    if (dishType === 'Snacks & street food') return 'snack';
+    if (['Breads', 'Sides & vegetables'].includes(dishType)) return 'side';
+    return 'main';
   }
 
   function primaryProteinFor(mainIngredient) {
@@ -332,6 +347,9 @@
     const activeTime = Number.isFinite(prep) && prep > 0 ? prep : Math.min(totalTime, 20);
     const servings = Number(source.servings) > 0 ? Number(source.servings) : 4;
     const mealSlots = mealSlotsFor(dishType, source);
+    const courseType = courseTypeFor(dishType);
+    const isCompleteMeal = courseType === 'main' || courseType === 'breakfast'
+      || (courseType === 'side' && mealSlots.some((slot) => ['lunch', 'dinner'].includes(slot)));
     const methodTags = Array.isArray(source.method?.tags) ? source.method.tags : [];
 
     return {
@@ -341,6 +359,10 @@
       alternateNames: Array.isArray(source.alternate_names) ? source.alternate_names : [],
       mealType: mealSlots[0] || 'snack',
       mealSlots,
+      eligibleMealSlots: mealSlots,
+      courseType,
+      isCompleteMeal,
+      canBeStandalone: isCompleteMeal || courseType === 'dessert' || courseType === 'drink',
       cuisine,
       region,
       authenticity: String(source.authenticity || 'traditional'),

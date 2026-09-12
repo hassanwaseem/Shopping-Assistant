@@ -152,9 +152,23 @@
     return round(score, 2);
   }
 
+  function isRecipeEligible(recipe, mealType) {
+    if (!recipe || !mealType) return false;
+    const slots = recipe.eligibleMealSlots || recipe.mealSlots || [];
+    if (!(slots.includes(mealType) || recipe.mealType === mealType)) return false;
+    if (mealType === 'dessert') return recipe.courseType === 'dessert' || recipe.dishType === 'Desserts';
+    if (mealType === 'tea') return ['drink', 'snack'].includes(recipe.courseType) || recipe.dishType === 'Drinks';
+    if (mealType === 'breakfast') return recipe.courseType === 'breakfast' || recipe.dishType === 'Breakfast';
+    if (mealType === 'lunch' || mealType === 'dinner') {
+      const mainCourse = recipe.courseType ? recipe.courseType === 'main' : !['Desserts', 'Drinks', 'Snacks & street food', 'Breads'].includes(recipe.dishType);
+      return mainCourse && recipe.isCompleteMeal !== false && recipe.canBeStandalone !== false;
+    }
+    return true;
+  }
+
   function chooseRecipe(recipes, options) {
     const eligible = recipes.filter((recipe) => {
-      if (!(recipe.mealSlots?.includes(options.mealType) || recipe.mealType === options.mealType)) return false;
+      if (!isRecipeEligible(recipe, options.mealType)) return false;
       if (options.diet && options.diet !== 'balanced' && !recipe.diets?.includes(options.diet)) return false;
       if (options.maxTime && options.strictTime && recipe.activeTime > options.maxTime) return false;
       const allergens = new Set(options.allergens || []);
@@ -174,6 +188,7 @@
     sumNutrition,
     completeness,
     scoreRecipe,
+    isRecipeEligible,
     chooseRecipe,
     round,
   };

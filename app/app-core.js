@@ -4,9 +4,11 @@ const engine = window.MealPlannerEngine;
 const STORAGE_KEY = 'mealPlannerSpecV3';
 const LEGACY_STORAGE_KEY = 'pamplonaPantryV2';
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const SLOTS = ['breakfast', 'lunch', 'dinner'];
+const SLOTS = ['breakfast', 'lunch', 'dinner', 'dessert', 'tea'];
+const SLOT_LABELS = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', dessert: 'Dessert', tea: 'Tea' };
 const NAV_ITEMS = [
   { id: 'today', label: 'Today', icon: '◉' },
+  { id: 'cook', label: 'Cook', icon: '⌕' },
   { id: 'plan', label: 'Plan', icon: '▦' },
   { id: 'recipes', label: 'Recipes', icon: '▤' },
   { id: 'nutrition', label: 'Nutrition', icon: '◌' },
@@ -37,7 +39,13 @@ let state = loadState();
 let activeView = 'today';
 let activeNutritionPerson = state.people[0]?.id || 'p1';
 let toastTimer;
+let cookSearchTimer;
 let pendingConfirmResolve = null;
+let planAlternatives = [];
+let planPreviewIndex = null;
+let undoPlanSnapshot = null;
+let swapContextId = null;
+let swapOptions = [];
 const recipeBrowser = {
   search: '',
   region: 'all',
@@ -47,6 +55,9 @@ const recipeBrowser = {
   maxTime: 'all',
   page: 0,
   pageSize: 24,
+};
+const cookBrowser = {
+  query: '', mealSlot: 'dinner', maxTime: 'all', diet: 'all', difficulty: 'all', pantryFirst: false, minimalShopping: false, resultOffset: 0,
 };
 
 function installRecipes(recipes) {
@@ -97,13 +108,16 @@ function weekDates(start = state.weekStart) {
 function defaultState() {
   const weekStart = isoDate(mondayOf());
   return {
-    version: 3,
+    version: 4,
     householdName: 'Our kitchen',
     people: [
       { id: 'p1', name: 'Person 1', targetKcal: 2100, proteinTarget: 85, fibreTarget: 30, ironTarget: 11, calciumTarget: 950, vitaminCTarget: 95, portion: 1 },
       { id: 'p2', name: 'Person 2', targetKcal: 1850, proteinTarget: 72, fibreTarget: 25, ironTarget: 16, calciumTarget: 950, vitaminCTarget: 95, portion: 0.85 },
     ],
-    preferences: { mode: 'balanced', diet: 'balanced', region: 'all', focus: 'none', focusStrength: 'moderate', maxTime: 35, strictTime: false, allergens: [] },
+    preferences: {
+      mode: 'balanced', diet: 'balanced', region: 'all', focus: 'none', focusStrength: 'moderate', maxTime: 35, strictTime: false,
+      allergens: [], dessertCount: 3, teaCount: 5, preservePinned: true,
+    },
     weekStart,
     plan: [],
     pantry: [
@@ -114,6 +128,8 @@ function defaultState() {
     ],
     shopping: { overrides: {}, suppressed: [], checked: [], states: {}, manualItems: [], selectedEntryIds: [] },
     selectedPlanDay: 0,
+    savedRecipeIds: [],
+    rejectedRecipeIds: [],
     audit: [],
   };
 }
@@ -138,14 +154,17 @@ function loadState() {
   const fallback = migrateLegacy(defaultState());
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (!saved || saved.version !== 3) return fallback;
+    if (!saved || ![3, 4].includes(saved.version)) return fallback;
     const merged = {
       ...fallback,
       ...saved,
+      version: 4,
       preferences: { ...fallback.preferences, ...saved.preferences },
       shopping: { ...fallback.shopping, ...saved.shopping },
     };
     if (!Array.isArray(merged.shopping.selectedEntryIds)) merged.shopping.selectedEntryIds = [];
+    if (!Array.isArray(merged.savedRecipeIds)) merged.savedRecipeIds = [];
+    if (!Array.isArray(merged.rejectedRecipeIds)) merged.rejectedRecipeIds = [];
     return merged;
   } catch {
     return fallback;
@@ -194,35 +213,39 @@ function focusWeight() {
   return { gentle: 1.25, moderate: 1.75, strong: 2.5 }[state.preferences.focusStrength] || 1.75;
 }
 
-function reasonFor(recipe) {
-  if (state.preferences.region && state.preferences.region !== 'all' && recipe.region === state.preferences.region) return `Matches the ${state.preferences.region} regional preference`;
-  if (state.preferences.focus !== 'none') return `Strong ${NUTRIENT_META[state.preferences.focus]?.label.toLowerCase() || state.preferences.focus} contribution`;
-  if (state.preferences.mode === 'pantry') return 'Prioritizes ingredients already recorded at home';
-  if (state.preferences.mode === 'quick') return `Fits the ${state.preferences.maxTime}-minute active-time preference`;
-  if (state.preferences.mode === 'batch') return recipe.batchFriendly ? 'Suitable for batch cooking and leftovers' : 'Best available fit';
+function reasonFor(recipe, preferences = state.preferences) {
+  if (preferences.region && preferences.region !== 'all' && recipe.region === preferences.region) return `Matches the ${preferences.region} regional preference`;
+  if (preferences.focus !== 'none') return `Strong ${NUTRIENT_META[preferences.focus]?.label.toLowerCase() || preferences.focus} contribution`;
+  if (preferences.mode === 'pantry') return 'Prioritizes ingredients already recorded at home';
+  if (preferences.mode === 'quick') return `Fits the ${preferences.maxTime}-minute active-time preference`;
+  if (preferences.mode === 'batch') return recipe.batchFriendly ? 'Suitable for batch cooking and leftovers' : 'Best available fit';
+  if (recipe.courseType === 'dessert') return 'A dessert selected for the dedicated dessert slot';
+  if (recipe.courseType === 'drink') return 'A drink selected for the dedicated tea slot';
   return 'Balances nutrition, variety and preparation effort';
 }
 
-function rankedRecipes(mealType, recentIds = []) {
+function rankedRecipes(mealType, recentIds = [], preferenceOverrides = {}) {
+  const preferences = { ...state.preferences, ...preferenceOverrides };
   const recentRecipes = recentIds.map((id) => RECIPE_MAP[id]).filter(Boolean);
   const recentRegionCounts = recentRecipes.reduce((map, recipe) => map.set(recipe.region, (map.get(recipe.region) || 0) + 1), new Map());
   const lastTwo = recentRecipes.slice(-2);
   return RECIPES
-    .filter((recipe) => recipe.mealSlots?.includes(mealType) || recipe.mealType === mealType)
-    .filter((recipe) => state.preferences.diet === 'balanced' || recipe.diets.includes(state.preferences.diet))
-    .filter((recipe) => !recipe.allergens.some((allergen) => state.preferences.allergens.includes(allergen)))
-    .filter((recipe) => !state.preferences.strictTime || recipe.activeTime <= state.preferences.maxTime)
+    .filter((recipe) => engine.isRecipeEligible(recipe, mealType))
+    .filter((recipe) => preferences.diet === 'balanced' || recipe.diets.includes(preferences.diet))
+    .filter((recipe) => !recipe.allergens.some((allergen) => preferences.allergens.includes(allergen)))
+    .filter((recipe) => !preferences.strictTime || recipe.activeTime <= preferences.maxTime)
+    .filter((recipe) => !state.rejectedRecipeIds.includes(recipe.id))
     .map((recipe) => {
       let score = engine.scoreRecipe(recipe, {
-        mode: state.preferences.mode,
-        focus: state.preferences.focus,
+        mode: preferences.mode,
+        focus: preferences.focus,
         focusWeight: focusWeight(),
-        diet: state.preferences.diet,
-        maxTime: state.preferences.maxTime,
+        diet: preferences.diet,
+        maxTime: preferences.maxTime,
         pantryItems: state.pantry,
         recentRecipeIds: recentIds,
       });
-      if (state.preferences.region && state.preferences.region !== 'all' && recipe.region === state.preferences.region) score += 42;
+      if (preferences.region && preferences.region !== 'all' && recipe.region === preferences.region) score += 42;
       if (recentIds.slice(-84).includes(recipe.id)) score -= 48;
       score -= (recentRegionCounts.get(recipe.region) || 0) * 4;
       if (lastTwo.some((item) => item.primaryProtein === recipe.primaryProtein && recipe.primaryProtein !== 'mixed')) score -= 16;
@@ -232,54 +255,77 @@ function rankedRecipes(mealType, recentIds = []) {
     .sort((a, b) => b.score - a.score || a.recipe.name.localeCompare(b.recipe.name));
 }
 
-function generatePlan({ preservePinned = true } = {}) {
+function optionalSlotDays(count, offset = 0) {
+  const safeCount = Math.max(0, Math.min(7, Number(count) || 0));
+  const days = new Set();
+  for (let index = 0; index < safeCount; index += 1) days.add((Math.floor((index * 7) / safeCount) + offset) % 7);
+  return days;
+}
+
+function buildPlanVariant({ preservePinned = true, mode = state.preferences.mode, dessertCount = state.preferences.dessertCount, teaCount = state.preferences.teaCount, offset = 0 } = {}) {
   const dates = weekDates();
   const previous = new Map(state.plan.map((entry) => [`${entry.day}|${entry.slot}`, entry]));
-  const previousRecipeIds = state.plan.filter((entry) => !entry.skipped && RECIPE_MAP[entry.recipeId]).map((entry) => entry.recipeId);
-  state.recipeHistory = [...(state.recipeHistory || []), ...previousRecipeIds].slice(-84);
-  state.generationCount = Number(state.generationCount || 0) + 1;
-  state.shopping.selectedEntryIds = [];
-  const recent = [...state.recipeHistory];
+  const recent = [...(state.recipeHistory || [])];
+  const dessertDays = optionalSlotDays(dessertCount, offset);
+  const teaDays = optionalSlotDays(teaCount, offset + 1);
+  const preferences = { ...state.preferences, mode };
   const next = [];
   for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
     for (const slot of SLOTS) {
       const key = `${isoDate(dates[dayIndex])}|${slot}`;
       const existing = previous.get(key);
       if (preservePinned && existing?.pinned && RECIPE_MAP[existing.recipeId]) {
-        next.push(existing);
+        next.push(structuredClone(existing));
         recent.push(existing.recipeId);
         continue;
       }
-      const ranked = rankedRecipes(slot, recent);
-      const pool = ranked.filter((item) => !recent.slice(-14).includes(item.recipe.id)).slice(0, 6);
-      const fallbackPool = ranked.filter((item) => !recent.slice(-3).includes(item.recipe.id)).slice(0, 6);
-      const candidates = pool.length ? pool : fallbackPool.length ? fallbackPool : ranked.slice(0, 6);
-      const choice = candidates[(state.generationCount + dayIndex + SLOTS.indexOf(slot)) % Math.max(candidates.length, 1)];
+      const ranked = rankedRecipes(slot, recent, preferences);
+      const pool = ranked.filter((item) => !recent.slice(-14).includes(item.recipe.id)).slice(0, 12);
+      const fallbackPool = ranked.filter((item) => !recent.slice(-3).includes(item.recipe.id)).slice(0, 12);
+      const candidates = pool.length ? pool : fallbackPool.length ? fallbackPool : ranked.slice(0, 12);
+      const choice = candidates[(Number(state.generationCount || 0) + offset + dayIndex + SLOTS.indexOf(slot)) % Math.max(candidates.length, 1)];
       if (!choice) continue;
       const people = Object.fromEntries(state.people.map((person) => [person.id, person.portion]));
       const cookServings = engine.round(Object.values(people).reduce((sum, value) => sum + Number(value), 0), 2);
+      const optionalSkipped = (slot === 'dessert' && !dessertDays.has(dayIndex)) || (slot === 'tea' && !teaDays.has(dayIndex));
       next.push({
         id: existing?.id || uid('meal'), day: isoDate(dates[dayIndex]), dayIndex, slot,
         recipeId: choice.recipe.id, pinned: false, type: 'recipe', people, cookServings,
-        reason: reasonFor(choice.recipe), skipped: false,
+        reason: reasonFor(choice.recipe, preferences), skipped: optionalSkipped,
       });
-      recent.push(choice.recipe.id);
+      if (!optionalSkipped) recent.push(choice.recipe.id);
     }
   }
+  return next;
+}
+
+function generatePlan({ preservePinned = true } = {}) {
+  const previousRecipeIds = state.plan.filter((entry) => !entry.skipped && RECIPE_MAP[entry.recipeId]).map((entry) => entry.recipeId);
+  state.recipeHistory = [...(state.recipeHistory || []), ...previousRecipeIds].slice(-84);
+  state.generationCount = Number(state.generationCount || 0) + 1;
+  state.shopping.selectedEntryIds = [];
+  const next = buildPlanVariant({ preservePinned, offset: state.generationCount });
   state.plan = next;
   audit('plan_generated', `${next.length} meal entries generated from ${RECIPES.length} recipes`);
   saveState('Plan updated');
   renderAll();
-  showToast('Weekly plan updated. Pinned meals were preserved.');
+  showToast(`Weekly plan updated${preservePinned ? '. Pinned meals were preserved.' : '.'}`);
 }
 
 function ensurePlan() {
-  const valid = state.plan.length === 21 && state.plan.every((entry) => RECIPE_MAP[entry.recipeId]);
+  const keys = new Set(state.plan.map((entry) => `${entry.dayIndex}|${entry.slot}`));
+  const valid = state.plan.length === 35
+    && SLOTS.every((slot) => DAYS.every((_, dayIndex) => keys.has(`${dayIndex}|${slot}`)))
+    && state.plan.every((entry) => RECIPE_MAP[entry.recipeId] && engine.isRecipeEligible(RECIPE_MAP[entry.recipeId], entry.slot));
   if (!valid) generatePlan({ preservePinned: false });
 }
 
-function planEntriesForDay(index) {
-  return state.plan.filter((entry) => entry.dayIndex === index).sort((a, b) => SLOTS.indexOf(a.slot) - SLOTS.indexOf(b.slot));
+function displayedPlan() {
+  return planPreviewIndex == null ? state.plan : (planAlternatives[planPreviewIndex]?.plan || state.plan);
+}
+
+function planEntriesForDay(index, entries = state.plan) {
+  return entries.filter((entry) => entry.dayIndex === index).sort((a, b) => SLOTS.indexOf(a.slot) - SLOTS.indexOf(b.slot));
 }
 
 function totalsForPerson(personId) {
