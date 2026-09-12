@@ -3,6 +3,7 @@
 function renderAll() {
   renderNav();
   renderToday();
+  renderCook();
   renderPlan();
   renderRecipes();
   renderNutrition();
@@ -26,16 +27,148 @@ function findEntry(id) {
 function swapMeal(id) {
   const entry = findEntry(id);
   if (!entry) return;
-  const ranked = rankedRecipes(entry.slot, [entry.recipeId]);
-  const currentIndex = ranked.findIndex((item) => item.recipe.id === entry.recipeId);
-  const next = ranked[(currentIndex + 1 + ranked.length) % ranked.length] || ranked.find((item) => item.recipe.id !== entry.recipeId);
-  if (!next) return showToast('No compatible alternative is available.');
-  entry.recipeId = next.recipe.id;
-  entry.reason = reasonFor(next.recipe);
+  swapContextId = id;
+  swapOptions = rankedRecipes(entry.slot, [entry.recipeId])
+    .filter((item) => item.recipe.id !== entry.recipeId)
+    .slice(0, 10);
+  if (!swapOptions.length) return showToast(`No compatible ${SLOT_LABELS[entry.slot].toLowerCase()} alternative is available.`);
+  renderSwapDialog();
+}
+
+function applySwap(recipeId) {
+  const entry = findEntry(swapContextId);
+  const next = RECIPE_MAP[recipeId];
+  if (!entry || !next || !engine.isRecipeEligible(next, entry.slot)) return showToast('That recipe is not compatible with this meal slot.');
+  entry.recipeId = next.id;
+  entry.reason = reasonFor(next);
   entry.pinned = false;
-  audit('meal_swapped', `${entry.day} ${entry.slot} changed to ${next.recipe.name}`);
+  entry.skipped = false;
+  audit('meal_swapped', `${entry.day} ${entry.slot} changed to ${next.name}`);
   saveState('Meal swapped');
+  document.getElementById('swapDialog')?.close();
   renderAll();
+}
+
+function pantryMatch(recipe) {
+  const pantryIds = new Set(state.pantry.map((item) => item.foodId).filter(Boolean));
+  const ingredients = recipe.ingredients || [];
+  const matched = ingredients.filter((item) => pantryIds.has(item.foodId)).length;
+  return { matched, missing: Math.max(0, ingredients.length - matched), percent: ingredients.length ? Math.round((matched / ingredients.length) * 100) : 0 };
+}
+
+function renderSwapDialog() {
+  const entry = findEntry(swapContextId);
+  if (!entry) return;
+  const dialog = document.getElementById('swapDialog');
+  document.getElementById('swapDialogContent').innerHTML = `
+    <div class="dialog-heading"><div><p class="eyebrow">Swap ${h(SLOT_LABELS[entry.slot])}</p><h2>Choose an alternative</h2><p>All options fit this meal slot and your current dietary settings.</p></div><button class="icon-button" type="button" data-action="close-swap" aria-label="Close alternatives">×</button></div>
+    <div class="swap-list">${swapOptions.map(({ recipe }, index) => {
+      const match = pantryMatch(recipe);
+      const label = index === 0 ? 'Best match' : index === 1 ? 'Quicker option' : index === 2 ? 'Pantry-friendly' : index === 3 ? 'Different direction' : 'More variety';
+      return `<article class="swap-option"><div><span class="recommendation-label">${h(label)}</span><h3>${h(recipe.name)}</h3><p>${h(recipe.region)} · ${recipe.activeTime} min active · ${match.percent}% pantry match · ${match.missing} missing</p></div><div class="button-row"><button class="button secondary small" type="button" data-action="view-recipe" data-recipe-id="${h(recipe.id)}">Recipe</button><button class="button small" type="button" data-action="apply-swap" data-recipe-id="${h(recipe.id)}">Choose</button></div></article>`;
+    }).join('')}</div>
+    <div class="button-row end"><button class="button secondary" type="button" data-action="more-swap-options" data-slot="${h(entry.slot)}">More options</button></div>`;
+  if (typeof dialog.showModal === 'function') dialog.showModal();
+  else dialog.setAttribute('open', '');
+}
+
+function planStats(plan) {
+  const active = plan.filter((entry) => !entry.skipped);
+  const recipes = active.map((entry) => RECIPE_MAP[entry.recipeId]).filter(Boolean);
+  const averageTime = recipes.length ? Math.round(recipes.reduce((sum, recipe) => sum + recipe.activeTime, 0) / recipes.length) : 0;
+  const pantry = recipes.map(pantryMatch);
+  return {
+    meals: active.length,
+    averageTime,
+    pantryPercent: pantry.length ? Math.round(pantry.reduce((sum, item) => sum + item.percent, 0) / pantry.length) : 0,
+    missing: pantry.reduce((sum, item) => sum + item.missing, 0),
+    desserts: active.filter((entry) => entry.slot === 'dessert').length,
+    teas: active.filter((entry) => entry.slot === 'tea').length,
+  };
+}
+
+function preparePlanAlternatives() {
+  const preservePinned = document.getElementById('preservePinned')?.checked !== false;
+  const dessertCount = Number(document.getElementById('dessertCount')?.value ?? state.preferences.dessertCount);
+  const teaCount = Number(document.getElementById('teaCount')?.value ?? state.preferences.teaCount);
+  state.preferences.dessertCount = dessertCount;
+  state.preferences.teaCount = teaCount;
+  state.preferences.preservePinned = preservePinned;
+  planPreviewIndex = null;
+  const definitions = [
+    { key: 'balanced', title: 'Best balanced plan', description: 'Balances variety, nutrition and preparation effort.' },
+    { key: 'quick', title: 'Quickest and easiest plan', description: 'Prioritizes lower active cooking time.' },
+    { key: 'pantry', title: 'Best pantry plan', description: 'Uses more ingredients already recorded at home.' },
+  ];
+  planAlternatives = definitions.map((definition, index) => {
+    const plan = buildPlanVariant({ preservePinned, mode: definition.key, dessertCount, teaCount, offset: index * 5 + 1 });
+    return { ...definition, plan, stats: planStats(plan) };
+  });
+  renderPlanAlternativesDialog();
+}
+
+function renderPlanAlternativesDialog() {
+  const dialog = document.getElementById('planAlternativesDialog');
+  document.getElementById('planAlternativesContent').innerHTML = `
+    <div class="dialog-heading"><div><p class="eyebrow">Whole-week alternatives</p><h2>Choose a direction</h2><p>Your current plan will remain unchanged until you accept a preview.</p></div><button class="icon-button" type="button" data-action="close-plan-alternatives" aria-label="Close alternatives">×</button></div>
+    <div class="alternative-grid">${planAlternatives.map((alternative, index) => `<article class="alternative-card"><span class="recommendation-label">Option ${index + 1}</span><h3>${h(alternative.title)}</h3><p>${h(alternative.description)}</p><dl><div><dt>Planned entries</dt><dd>${alternative.stats.meals}</dd></div><div><dt>Average active time</dt><dd>${alternative.stats.averageTime} min</dd></div><div><dt>Pantry match</dt><dd>${alternative.stats.pantryPercent}%</dd></div><div><dt>Missing ingredients</dt><dd>${alternative.stats.missing}</dd></div><div><dt>Desserts</dt><dd>${alternative.stats.desserts}</dd></div><div><dt>Tea/drinks</dt><dd>${alternative.stats.teas}</dd></div></dl><button class="button" type="button" data-action="preview-plan-alternative" data-index="${index}">Preview this plan</button></article>`).join('')}</div>`;
+  if (typeof dialog.showModal === 'function') dialog.showModal();
+  else dialog.setAttribute('open', '');
+}
+
+function previewPlanAlternative(index) {
+  if (!planAlternatives[index]) return;
+  planPreviewIndex = index;
+  document.getElementById('planAlternativesDialog')?.close();
+  renderAll();
+  document.getElementById('planGrid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function acceptPlanAlternative() {
+  const alternative = planAlternatives[planPreviewIndex];
+  if (!alternative) return;
+  const confirmed = await confirmAction('Replace the selected weekly plan?', 'The previewed meals will replace the current plan. You can undo this change immediately afterwards.', 'Use this plan');
+  if (!confirmed) return;
+  undoPlanSnapshot = { plan: structuredClone(state.plan), selectedEntryIds: [...state.shopping.selectedEntryIds] };
+  state.plan = structuredClone(alternative.plan);
+  state.shopping.selectedEntryIds = [];
+  state.generationCount = Number(state.generationCount || 0) + 1;
+  planPreviewIndex = null;
+  audit('whole_plan_replaced', alternative.title);
+  saveState('Alternative plan applied');
+  renderAll();
+  showToast('Weekly plan replaced. Undo is available above the planner.');
+}
+
+function undoFullPlan() {
+  if (!undoPlanSnapshot) return;
+  state.plan = undoPlanSnapshot.plan;
+  state.shopping.selectedEntryIds = undoPlanSnapshot.selectedEntryIds;
+  undoPlanSnapshot = null;
+  audit('whole_plan_undo', 'Previous weekly plan restored');
+  saveState('Previous plan restored');
+  renderAll();
+  showToast('Previous weekly plan restored.');
+}
+
+function cancelPlanPreview() {
+  planPreviewIndex = null;
+  renderAll();
+}
+
+function addRecipeToPlan(recipeId, dayIndex, slot) {
+  const recipe = RECIPE_MAP[recipeId];
+  if (!recipe || !engine.isRecipeEligible(recipe, slot)) return showToast(`This recipe is not suitable for ${SLOT_LABELS[slot].toLowerCase()}.`);
+  const entry = state.plan.find((item) => item.dayIndex === Number(dayIndex) && item.slot === slot);
+  if (!entry) return showToast('That planner slot is unavailable.');
+  entry.recipeId = recipe.id;
+  entry.skipped = false;
+  entry.pinned = false;
+  entry.reason = 'Chosen from What should we cook?';
+  saveState('Recipe added to plan');
+  document.getElementById('addToPlanDialog')?.close();
+  renderAll();
+  showToast(`${recipe.name} added to ${SLOT_LABELS[slot]}.`);
 }
 
 function adjustServing(id, delta) {

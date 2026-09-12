@@ -1,4 +1,4 @@
-const CACHE = 'meal-planner-v14';
+const CACHE = 'meal-planner-v15';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,6 +9,7 @@ const APP_SHELL = [
   './data/pakistani-recipes-adapter.js',
   './app/app-core.js',
   './app/app-views-primary.js',
+  './app/app-views-cook.js',
   './app/app-views-lists.js',
   './app/app-views-recipes.js',
   './app/app-domain.js',

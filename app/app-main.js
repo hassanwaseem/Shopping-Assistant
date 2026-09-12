@@ -11,8 +11,24 @@ document.addEventListener('click', async (event) => {
     state.preferences.region = document.getElementById('regionMode').value;
     state.preferences.focus = document.getElementById('nutrientFocus').value;
     state.preferences.focusStrength = document.getElementById('focusStrength').value;
-    return generatePlan({ preservePinned: true });
+    state.preferences.dessertCount = Number(document.getElementById('dessertCount').value);
+    state.preferences.teaCount = Number(document.getElementById('teaCount').value);
+    state.preferences.preservePinned = document.getElementById('preservePinned').checked;
+    return generatePlan({ preservePinned: state.preferences.preservePinned });
   }
+  if (action === 'regenerate-whole-plan') {
+    state.preferences.mode = document.getElementById('planningMode').value;
+    state.preferences.diet = document.getElementById('dietMode').value;
+    state.preferences.region = document.getElementById('regionMode').value;
+    state.preferences.focus = document.getElementById('nutrientFocus').value;
+    state.preferences.focusStrength = document.getElementById('focusStrength').value;
+    return preparePlanAlternatives();
+  }
+  if (action === 'preview-plan-alternative') return previewPlanAlternative(Number(target.dataset.index));
+  if (action === 'accept-plan-alternative') return acceptPlanAlternative();
+  if (action === 'cancel-plan-preview') return cancelPlanPreview();
+  if (action === 'undo-full-plan') return undoFullPlan();
+  if (action === 'close-plan-alternatives') return document.getElementById('planAlternativesDialog').close();
   if (action === 'select-day') {
     state.selectedPlanDay = Number(target.dataset.dayIndex);
     saveState();
@@ -29,6 +45,43 @@ document.addEventListener('click', async (event) => {
   if (action === 'view-recipe') return openRecipe(target.dataset.recipeId);
   if (action === 'recipe-page') { recipeBrowser.page = Math.max(0, Number(target.dataset.page) || 0); return renderRecipeResults(); }
   if (action === 'swap-meal') return swapMeal(target.dataset.entryId);
+  if (action === 'apply-swap') return applySwap(target.dataset.recipeId);
+  if (action === 'close-swap') return document.getElementById('swapDialog').close();
+  if (action === 'more-swap-options') {
+    cookBrowser.mealSlot = target.dataset.slot;
+    cookBrowser.query = '';
+    document.getElementById('swapDialog').close();
+    return navigate('cook');
+  }
+  if (action === 'cook-preset') {
+    const preset = target.dataset.preset;
+    if (preset === 'tonight') cookBrowser.mealSlot = 'dinner';
+    if (preset === 'quick') cookBrowser.maxTime = '20';
+    if (preset === 'pantry') cookBrowser.pantryFirst = true;
+    if (preset === 'minimal') cookBrowser.minimalShopping = true;
+    if (preset === 'healthy') state.preferences.focus = 'fibre';
+    if (preset === 'vegetarian') cookBrowser.diet = 'vegetarian';
+    if (preset === 'comfort') cookBrowser.query = 'curry rice';
+    if (preset === 'batch') state.preferences.mode = 'batch';
+    if (preset === 'dessert') cookBrowser.mealSlot = 'dessert';
+    if (preset === 'tea') cookBrowser.mealSlot = 'tea';
+    cookBrowser.resultOffset = 0;
+    return renderCook();
+  }
+  if (action === 'show-another-cook') { cookBrowser.resultOffset += 3; return renderCook(); }
+  if (action === 'open-add-to-plan') return openAddToPlanDialog(target.dataset.recipeId);
+  if (action === 'close-add-to-plan') return document.getElementById('addToPlanDialog').close();
+  if (action === 'save-recipe') {
+    state.savedRecipeIds = [...new Set([...state.savedRecipeIds, target.dataset.recipeId])];
+    saveState('Recipe saved');
+    showToast('Recipe saved for later.');
+    return renderCook();
+  }
+  if (action === 'reject-recipe') {
+    state.rejectedRecipeIds = [...new Set([...state.rejectedRecipeIds, target.dataset.recipeId])].slice(-200);
+    saveState('Recommendation hidden');
+    return renderCook();
+  }
   if (action === 'adjust-serving') return adjustServing(target.dataset.entryId, Number(target.dataset.delta));
   if (action === 'toggle-meal-shopping') return toggleMealShopping(target.dataset.entryId);
   if (action === 'toggle-skip') {
@@ -94,6 +147,12 @@ document.addEventListener('change', (event) => {
     recipeBrowser.page = 0;
     return renderRecipeResults();
   }
+  if (action === 'cook-filter') {
+    cookBrowser[target.dataset.field] = target.value;
+    cookBrowser.query = '';
+    cookBrowser.resultOffset = 0;
+    return renderCook();
+  }
   if (action === 'update-use-soon') {
     const item = state.pantry.find((row) => row.id === target.dataset.pantryId);
     if (item) item.useSoon = target.value || null;
@@ -137,6 +196,19 @@ document.addEventListener('change', (event) => {
 });
 
 document.addEventListener('input', (event) => {
+  if (event.target.id === 'cookQuery') {
+    cookBrowser.query = event.target.value;
+    cookBrowser.resultOffset = 0;
+    const cursor = event.target.selectionStart;
+    clearTimeout(cookSearchTimer);
+    cookSearchTimer = setTimeout(() => {
+      renderCook();
+      const input = document.getElementById('cookQuery');
+      input?.focus();
+      input?.setSelectionRange(cursor, cursor);
+    }, 180);
+    return;
+  }
   if (event.target.id === 'recipeSearch') {
     recipeBrowser.search = event.target.value;
     recipeBrowser.page = 0;
@@ -153,6 +225,10 @@ document.addEventListener('submit', (event) => {
   event.preventDefault();
   if (event.target.id === 'pantryForm') addPantry(event.target);
   if (event.target.id === 'manualShoppingForm') addManualShopping(event.target);
+  if (event.target.id === 'addToPlanForm') {
+    const data = new FormData(event.target);
+    addRecipeToPlan(event.target.dataset.recipeId, Number(data.get('dayIndex')), String(data.get('slot')));
+  }
 });
 
 document.addEventListener('change', (event) => {
@@ -173,6 +249,9 @@ document.getElementById('dialogCancel').addEventListener('click', () => closeCon
 document.getElementById('dialogConfirm').addEventListener('click', () => closeConfirmation(true));
 document.getElementById('confirmDialog').addEventListener('cancel', (event) => { event.preventDefault(); closeConfirmation(false); });
 document.getElementById('recipeDialog').addEventListener('cancel', (event) => { event.preventDefault(); event.currentTarget.close(); });
+document.getElementById('swapDialog').addEventListener('cancel', (event) => { event.preventDefault(); event.currentTarget.close(); });
+document.getElementById('planAlternativesDialog').addEventListener('cancel', (event) => { event.preventDefault(); event.currentTarget.close(); });
+document.getElementById('addToPlanDialog').addEventListener('cancel', (event) => { event.preventDefault(); event.currentTarget.close(); });
 document.getElementById('shareHouseholdBtn').addEventListener('click', () => shareData('pantry'));
 window.addEventListener('online', updateOnlineState);
 window.addEventListener('offline', updateOnlineState);

@@ -2,7 +2,7 @@
 
 function renderNav() {
   const desktop = NAV_ITEMS.map((item) => navButton(item)).join('');
-  const mobileOrder = ['today', 'plan', 'shop', 'pantry', 'more'];
+  const mobileOrder = ['today', 'cook', 'plan', 'pantry', 'shop', 'more'];
   const mobileItems = mobileOrder.map((id) => NAV_ITEMS.find((item) => item.id === id));
   document.getElementById('desktopNav').innerHTML = desktop;
   document.getElementById('mobileNav').innerHTML = mobileItems.map((item) => navButton(item)).join('');
@@ -38,7 +38,7 @@ function renderToday() {
       <section class="panel">
         <div class="panel-header"><div><h3>Meals</h3><p>Portions reflect each person profile.</p></div></div>
         <div class="today-meals">
-          ${entries.map((entry) => {
+          ${entries.filter((entry) => !entry.skipped).map((entry) => {
             const recipe = RECIPE_MAP[entry.recipeId];
             const servings = Object.values(entry.people).reduce((sum, value) => sum + Number(value), 0);
             return `<article class="today-meal"><div class="slot">${h(entry.slot)}</div><div><strong>${h(recipe.name)}</strong><span>${servings.toFixed(1)} household servings · ${recipe.activeTime} min active</span></div><div class="meal-kcal">${recipe.nutrition.kcal} kcal/serving<br><button class="text-button" type="button" data-action="view-recipe" data-recipe-id="${h(recipe.id)}">View recipe</button></div></article>`;
@@ -48,7 +48,7 @@ function renderToday() {
       <section class="panel soft-panel">
         <div class="panel-header"><div><h3>Preparation</h3><p>Practical cues derived from the current recipes.</p></div></div>
         <div class="stack">
-          ${entries.map((entry) => {
+          ${entries.filter((entry) => !entry.skipped).map((entry) => {
             const recipe = RECIPE_MAP[entry.recipeId];
             const prep = recipe.batchFriendly ? 'Consider cooking extra for leftovers.' : `Allow about ${recipe.activeTime} minutes of active preparation.`;
             return `<div class="data-quality"><span aria-hidden="true">→</span><div><strong>${h(recipe.name)}</strong><br>${h(prep)}</div></div>`;
@@ -64,11 +64,15 @@ function renderToday() {
 
 function renderPlan() {
   const dates = weekDates();
-  const totalMeals = state.plan.filter((entry) => !entry.skipped).length;
-  const cookingEvents = state.plan.filter((entry) => !entry.skipped && entry.type !== 'leftover').length;
+  const visiblePlan = displayedPlan();
+  const previewing = planPreviewIndex != null;
+  const totalMeals = visiblePlan.filter((entry) => !entry.skipped).length;
+  const cookingEvents = visiblePlan.filter((entry) => !entry.skipped && entry.type !== 'leftover').length;
   const shoppingMeals = selectedShoppingEntries().filter((entry) => !entry.skipped).length;
   document.getElementById('view-plan').innerHTML = `
-    <div class="view-header"><div><p class="eyebrow">Pakistani weekly planner</p><h2>Choose meals first, then build your shopping list</h2><p>Suggestions remain editable. Ingredients are added only for the recipes you select.</p></div></div>
+    <div class="view-header"><div><p class="eyebrow">Pakistani weekly planner</p><h2>Choose meals first, then build your shopping list</h2><p>Breakfast, lunch and dinner are planned as complete meals. Dessert and tea remain optional.</p></div><button class="button secondary" type="button" data-action="navigate" data-view="cook">What should we cook?</button></div>
+    ${previewing ? `<section class="preview-banner" role="status"><div><strong>Previewing: ${h(planAlternatives[planPreviewIndex].title)}</strong><span>Your saved weekly plan has not changed.</span></div><div class="button-row"><button class="button secondary small" type="button" data-action="cancel-plan-preview">Back to current plan</button><button class="button small" type="button" data-action="accept-plan-alternative">Use this plan</button></div></section>` : ''}
+    ${undoPlanSnapshot ? `<section class="undo-banner" role="status"><span>The whole plan was replaced. Shopping selections need refreshing.</span><button class="button secondary small" type="button" data-action="undo-full-plan">Undo plan change</button></section>` : ''}
     <section class="panel soft-panel">
       <div class="plan-controls">
         <label>Planning mode<select id="planningMode">
@@ -78,9 +82,13 @@ function renderPlan() {
         <label>Regional preference<select id="regionMode">${option('all', 'Any region', state.preferences.region || 'all')}${REGIONS.map((region) => option(region, region, state.preferences.region || 'all')).join('')}</select></label>
         <label>Nutrient focus<select id="nutrientFocus">${option('none', 'No temporary focus', state.preferences.focus)}${option('protein', 'Protein', state.preferences.focus)}${option('fibre', 'Fibre', state.preferences.focus)}${option('iron', 'Iron', state.preferences.focus)}${option('calcium', 'Calcium', state.preferences.focus)}${option('vitaminC', 'Vitamin C', state.preferences.focus)}</select></label>
         <label>Focus strength<select id="focusStrength">${option('gentle', 'Gentle', state.preferences.focusStrength)}${option('moderate', 'Moderate', state.preferences.focusStrength)}${option('strong', 'Strong', state.preferences.focusStrength)}</select></label>
+        <label>Desserts this week<select id="dessertCount">${[0,1,2,3,4,5,6,7].map((count) => option(String(count), String(count), String(state.preferences.dessertCount))).join('')}</select></label>
+        <label>Tea/drinks this week<select id="teaCount">${[0,1,2,3,4,5,6,7].map((count) => option(String(count), String(count), String(state.preferences.teaCount))).join('')}</select></label>
+        <label class="check-label"><input id="preservePinned" type="checkbox" ${state.preferences.preservePinned !== false ? 'checked' : ''} /> Preserve pinned meals</label>
         <button class="button" type="button" data-action="generate-plan">Suggest meals</button>
+        <button class="button secondary" type="button" data-action="regenerate-whole-plan">Regenerate whole plan</button>
       </div>
-      <p class="help">Generating a new plan clears recipe shopping selections. Manual shopping items remain unchanged.</p>
+      <p class="help">Suggest meals updates the current plan. Regenerate whole plan lets you compare three complete alternatives before replacing anything.</p>
     </section>
     <div class="week-strip" role="tablist" aria-label="Week days">
       ${dates.map((date, index) => `<button type="button" class="day-tab ${state.selectedPlanDay === index ? 'active' : ''}" data-action="select-day" data-day-index="${index}" role="tab" aria-selected="${state.selectedPlanDay === index}"><span>${h(formatDate(date, { weekday: 'short' }))}</span><strong>${h(formatDate(date, { day: 'numeric' }))}</strong></button>`).join('')}
@@ -89,7 +97,7 @@ function renderPlan() {
       ${dates.map((date, dayIndex) => `
         <article class="day-column" id="plan-day-${dayIndex}">
           <h3>${h(formatDate(date, { weekday: 'short' }))}<span>${h(formatDate(date, { day: 'numeric', month: 'short' }))}</span></h3>
-          ${planEntriesForDay(dayIndex).map((entry) => mealCard(entry)).join('')}
+          ${planEntriesForDay(dayIndex, visiblePlan).map((entry) => mealCard(entry, previewing)).join('')}
         </article>`).join('')}
     </section>
     <section class="panel" style="margin-top:18px">
@@ -98,19 +106,20 @@ function renderPlan() {
         <article class="stat-card"><small>Planned entries</small><strong>${totalMeals}</strong><span>Across seven days</span></article>
         <article class="stat-card"><small>Cooking events</small><strong>${cookingEvents}</strong><span>Leftovers can reduce this later</span></article>
         <article class="stat-card"><small>Shopping selections</small><strong>${shoppingMeals}</strong><span>Recipes currently contributing ingredients</span></article>
-        <article class="stat-card"><small>Nutrition data</small><strong>${engine.completeness(state.plan, RECIPE_MAP).score}%</strong><span>${h(engine.completeness(state.plan, RECIPE_MAP).status)}</span></article>
+        <article class="stat-card"><small>Nutrition data</small><strong>${engine.completeness(visiblePlan, RECIPE_MAP).score}%</strong><span>${h(engine.completeness(visiblePlan, RECIPE_MAP).status)}</span></article>
       </div>
     </section>`;
 }
 
-function mealCard(entry) {
+function mealCard(entry, previewing = false) {
   const recipe = RECIPE_MAP[entry.recipeId];
   const totalServings = Object.values(entry.people).reduce((sum, value) => sum + Number(value), 0);
   const inShoppingList = mealIsInShoppingList(entry.id);
   return `<div class="meal-card ${entry.skipped ? 'muted' : ''}" data-entry-id="${h(entry.id)}">
-    <div class="meal-card-header"><span class="meal-slot">${h(entry.slot)}</span><button type="button" class="icon-button ${entry.pinned ? 'active' : ''}" data-action="toggle-pin" data-entry-id="${h(entry.id)}" aria-label="${entry.pinned ? 'Unpin' : 'Pin'} ${h(recipe.name)}">${entry.pinned ? '◆' : '◇'}</button></div>
-    <strong class="meal-name">${h(entry.skipped ? 'Meal skipped' : recipe.name)}</strong>
-    ${entry.skipped ? '<span class="meal-meta">No ingredients or nutrition allocated</span>' : `<span class="meal-meta">${h(recipe.region)} · ${recipe.activeTime} min active · ${recipe.nutrition.kcal} kcal/serving</span><span class="reason">${h(entry.reason || reasonFor(recipe))}</span>`}
+    <div class="meal-card-header"><span class="meal-slot">${h(SLOT_LABELS[entry.slot] || entry.slot)}</span>${previewing ? '' : `<button type="button" class="icon-button ${entry.pinned ? 'active' : ''}" data-action="toggle-pin" data-entry-id="${h(entry.id)}" aria-label="${entry.pinned ? 'Unpin' : 'Pin'} ${h(recipe.name)}">${entry.pinned ? '◆' : '◇'}</button>`}</div>
+    <strong class="meal-name">${h(entry.skipped ? `No ${SLOT_LABELS[entry.slot].toLowerCase()} planned` : recipe.name)}</strong>
+    ${entry.skipped ? `<span class="meal-meta">Optional slot left empty</span>` : `<span class="meal-meta">${h(recipe.region)} · ${recipe.activeTime} min active · ${recipe.nutrition.kcal} kcal/serving</span><span class="reason">${h(entry.reason || reasonFor(recipe))}</span>`}
+    ${previewing ? '' : `
     <div class="portion-control" aria-label="Household serving adjustment">
       <button type="button" data-action="adjust-serving" data-entry-id="${h(entry.id)}" data-delta="-0.25" aria-label="Reduce servings">−</button>
       <span>${totalServings.toFixed(2)} servings</span>
@@ -121,7 +130,7 @@ function mealCard(entry) {
       <button class="button secondary small" type="button" data-action="swap-meal" data-entry-id="${h(entry.id)}">Swap</button>
       <button class="button ghost small" type="button" data-action="toggle-skip" data-entry-id="${h(entry.id)}">${entry.skipped ? 'Restore' : 'Skip'}</button>
     </div>
-    ${entry.skipped ? '' : `<button class="button small shopping-select ${inShoppingList ? 'selected' : ''}" type="button" data-action="toggle-meal-shopping" data-entry-id="${h(entry.id)}" aria-pressed="${inShoppingList}">${inShoppingList ? '✓ Added to shopping list' : 'Add to shopping list'}</button>`}
+    ${entry.skipped ? '' : `<button class="button small shopping-select ${inShoppingList ? 'selected' : ''}" type="button" data-action="toggle-meal-shopping" data-entry-id="${h(entry.id)}" aria-pressed="${inShoppingList}">${inShoppingList ? '✓ Added to shopping list' : 'Add to shopping list'}</button>`}`}
   </div>`;
 }
 
