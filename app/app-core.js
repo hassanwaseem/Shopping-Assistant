@@ -262,7 +262,7 @@ function optionalSlotDays(count, offset = 0) {
   return days;
 }
 
-function buildPlanVariant({ preservePinned = true, mode = state.preferences.mode, dessertCount = state.preferences.dessertCount, teaCount = state.preferences.teaCount, offset = 0 } = {}) {
+function buildPlanVariant({ preservePinned = true, preserveExisting = false, mode = state.preferences.mode, dessertCount = state.preferences.dessertCount, teaCount = state.preferences.teaCount, offset = 0 } = {}) {
   const dates = weekDates();
   const previous = new Map(state.plan.map((entry) => [`${entry.day}|${entry.slot}`, entry]));
   const recent = [...(state.recipeHistory || [])];
@@ -274,7 +274,9 @@ function buildPlanVariant({ preservePinned = true, mode = state.preferences.mode
     for (const slot of SLOTS) {
       const key = `${isoDate(dates[dayIndex])}|${slot}`;
       const existing = previous.get(key);
-      if (preservePinned && existing?.pinned && RECIPE_MAP[existing.recipeId]) {
+      const existingRecipe = RECIPE_MAP[existing?.recipeId];
+      const canKeepExisting = existingRecipe && engine.isRecipeEligible(existingRecipe, slot);
+      if (canKeepExisting && (preserveExisting || (preservePinned && existing.pinned))) {
         next.push(structuredClone(existing));
         recent.push(existing.recipeId);
         continue;
@@ -317,7 +319,13 @@ function ensurePlan() {
   const valid = state.plan.length === 35
     && SLOTS.every((slot) => DAYS.every((_, dayIndex) => keys.has(`${dayIndex}|${slot}`)))
     && state.plan.every((entry) => RECIPE_MAP[entry.recipeId] && engine.isRecipeEligible(RECIPE_MAP[entry.recipeId], entry.slot));
-  if (!valid) generatePlan({ preservePinned: false });
+  if (!valid) {
+    const existingCount = state.plan.length;
+    state.plan = buildPlanVariant({ preservePinned: true, preserveExisting: true, offset: state.generationCount });
+    audit('plan_upgraded', `${existingCount} existing entries checked; valid meals preserved and new slots added`);
+    saveState('Plan upgraded');
+    renderAll();
+  }
 }
 
 function displayedPlan() {
