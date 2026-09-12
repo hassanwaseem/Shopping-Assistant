@@ -16,6 +16,12 @@ test('planner declares five ordered daily slots and optional counts', () => {
   assert.match(primary, /Tea\/drinks this week/);
 });
 
+test('legacy plans preserve compatible meals while new slots are added', () => {
+  assert.match(core, /preserveExisting = false/);
+  assert.match(core, /engine\.isRecipeEligible\(existingRecipe, slot\)/);
+  assert.match(core, /buildPlanVariant\(\{ preservePinned: true, preserveExisting: true/);
+});
+
 test('whole-plan alternatives are previewed before being accepted and can be undone', () => {
   assert.match(primary, /Regenerate whole plan/);
   assert.match(domain, /Your current plan will remain unchanged until you accept a preview/);
