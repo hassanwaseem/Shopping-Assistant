@@ -119,6 +119,18 @@ test('classifies desserts and drinks into dedicated planner slots', () => {
   assert.equal(chai.courseType, 'drink');
   assert.deepEqual(chai.mealSlots, ['tea']);
   assert.equal(chai.canBeStandalone, true);
+
+  for (const name of [
+    'Quick Strawberry Nutella Hand Pies',
+    'Quick Whole Wheat Chocolate Muffins',
+    'Apple Puff Pastry Tart',
+    'Chocolate Lasagna',
+  ]) {
+    const dessert = recipes.find((recipe) => recipe.name === name);
+    assert.ok(dessert, `${name} is missing`);
+    assert.equal(dessert.courseType, 'dessert');
+    assert.deepEqual(dessert.mealSlots, ['dessert']);
+  }
 });
 
 test('keeps components, collections, and suspect source categories out of automatic suggestions', () => {

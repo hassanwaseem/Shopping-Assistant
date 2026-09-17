@@ -11,7 +11,7 @@
 ## September 2026: recommendation integrity repair
 
 - Automatic planning now excludes components, guides, remedies, multi-recipe collections, implausible timing records, and suspect serving yields while keeping every recipe available in search.
-- 995 of 4,247 records are currently marked `review-required`; 3,252 remain eligible for automatic recommendations. Even with a 35-minute active-time ceiling, every meal slot retains at least 70 safe candidates.
+- 998 of 4,247 records are currently marked `review-required`; 3,249 remain eligible for automatic recommendations. Even with a 35-minute active-time ceiling, every meal slot retains at least 70 safe candidates.
 - Imported times that only describe one timed instruction are replaced by conservative estimates based on ingredient count, method length, cooking processes, and required chilling or resting.
 - Ingredient normalization uses the ingredient name rather than recipe-section labels. Pantry coverage uses unique required ingredients, ignores water and optional ingredients, and distinguishes missing from insufficient stock.
 - Cook shortcuts are mutually explicit and reversible. Natural-language requests support positive ingredients, exclusions, total and active time, meal intent, and warm/cold drinks without silently changing global planner preferences. Healthy suggestions apply energy, protein/fibre, and sodium gates instead of a ranking bonus alone.
