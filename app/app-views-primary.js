@@ -19,6 +19,7 @@ function renderToday() {
   const entries = planEntriesForDay(index);
   const firstPerson = state.people[0];
   const shopping = shoppingRows();
+  const shoppingMealCount = selectedShoppingEntries().filter((entry) => !entry.skipped).length;
   const unchecked = shopping.filter((item) => !item.checked && item.state !== 'skipped').length;
   const useSoon = state.pantry.filter((item) => item.useSoon && item.useSoon <= isoDate(new Date(Date.now() + 3 * 86400000))).length;
   const avg = averageDaily(firstPerson.id);
@@ -30,7 +31,7 @@ function renderToday() {
     </div>
     <div class="stat-grid">
       <article class="stat-card"><small>Planned meals</small><strong>${entries.filter((entry) => !entry.skipped).length}</strong><span>${entries.some((entry) => entry.pinned) ? 'Includes pinned choices' : 'All editable'}</span></article>
-      <article class="stat-card"><small>Shopping remaining</small><strong>${unchecked}</strong><span>${shopping.length ? 'Across the active list' : 'Nothing currently required'}</span></article>
+      <article class="stat-card"><small>Shopping remaining</small><strong>${unchecked}</strong><span>${shopping.length ? 'Across the active list' : shoppingMealCount ? 'Selected recipes need no additional recorded items' : 'No planned recipes selected yet'}</span></article>
       <article class="stat-card"><small>Pantry use-soon</small><strong>${useSoon}</strong><span>Based on household-entered dates</span></article>
       <article class="stat-card"><small>Average energy</small><strong>${Math.round(avg.kcal || 0)}</strong><span>kcal/day for ${h(firstPerson.name)}</span></article>
     </div>
@@ -82,13 +83,13 @@ function renderPlan() {
         <label>Regional preference<select id="regionMode">${option('all', 'Any region', state.preferences.region || 'all')}${REGIONS.map((region) => option(region, region, state.preferences.region || 'all')).join('')}</select></label>
         <label>Nutrient focus<select id="nutrientFocus">${option('none', 'No temporary focus', state.preferences.focus)}${option('protein', 'Protein', state.preferences.focus)}${option('fibre', 'Fibre', state.preferences.focus)}${option('iron', 'Iron', state.preferences.focus)}${option('calcium', 'Calcium', state.preferences.focus)}${option('vitaminC', 'Vitamin C', state.preferences.focus)}</select></label>
         <label>Focus strength<select id="focusStrength">${option('gentle', 'Gentle', state.preferences.focusStrength)}${option('moderate', 'Moderate', state.preferences.focusStrength)}${option('strong', 'Strong', state.preferences.focusStrength)}</select></label>
+        <label>Maximum active time<select id="maxPlanTime">${option('20', '20 minutes', String(state.preferences.maxTime))}${option('30', '30 minutes', String(state.preferences.maxTime))}${option('45', '45 minutes', String(state.preferences.maxTime))}${option('60', '60 minutes', String(state.preferences.maxTime))}</select></label>
         <label>Desserts this week<select id="dessertCount">${[0,1,2,3,4,5,6,7].map((count) => option(String(count), String(count), String(state.preferences.dessertCount))).join('')}</select></label>
         <label>Tea/drinks this week<select id="teaCount">${[0,1,2,3,4,5,6,7].map((count) => option(String(count), String(count), String(state.preferences.teaCount))).join('')}</select></label>
         <label class="check-label"><input id="preservePinned" type="checkbox" ${state.preferences.preservePinned !== false ? 'checked' : ''} /> Preserve pinned meals</label>
-        <button class="button" type="button" data-action="generate-plan">Suggest meals</button>
-        <button class="button secondary" type="button" data-action="regenerate-whole-plan">Regenerate whole plan</button>
+        <button class="button" type="button" data-action="regenerate-whole-plan">Regenerate whole plan</button>
       </div>
-      <p class="help">Suggest meals updates the current plan. Regenerate whole plan lets you compare three complete alternatives before replacing anything.</p>
+      <p class="help">Compare three complete alternatives before replacing anything. Your current plan remains unchanged until you accept a preview.</p>
     </section>
     <div class="week-strip" role="tablist" aria-label="Week days">
       ${dates.map((date, index) => `<button type="button" class="day-tab ${state.selectedPlanDay === index ? 'active' : ''}" data-action="select-day" data-day-index="${index}" role="tab" aria-selected="${state.selectedPlanDay === index}"><span>${h(formatDate(date, { weekday: 'short' }))}</span><strong>${h(formatDate(date, { day: 'numeric' }))}</strong></button>`).join('')}
@@ -113,6 +114,14 @@ function renderPlan() {
 
 function mealCard(entry, previewing = false) {
   const recipe = RECIPE_MAP[entry.recipeId];
+  if (entry.skipped) {
+    return `<div class="meal-card muted empty-meal-card" data-entry-id="${h(entry.id)}">
+      <div class="meal-card-header"><span class="meal-slot">${h(SLOT_LABELS[entry.slot] || entry.slot)}</span></div>
+      <strong class="meal-name">No ${h(SLOT_LABELS[entry.slot].toLowerCase())} planned</strong>
+      <span class="meal-meta">Optional slot left empty</span>
+      ${previewing ? '' : `<div class="meal-actions"><button class="button secondary small" type="button" data-action="toggle-skip" data-entry-id="${h(entry.id)}">Restore suggestion</button></div>`}
+    </div>`;
+  }
   const totalServings = Object.values(entry.people).reduce((sum, value) => sum + Number(value), 0);
   const inShoppingList = mealIsInShoppingList(entry.id);
   return `<div class="meal-card ${entry.skipped ? 'muted' : ''}" data-entry-id="${h(entry.id)}">

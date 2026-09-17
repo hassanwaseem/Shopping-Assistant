@@ -84,7 +84,7 @@ function recipeCard(recipe) {
   </article>`;
 }
 
-function openRecipe(recipeId) {
+function openRecipe(recipeId, { cooking = false } = {}) {
   const recipe = RECIPE_MAP[recipeId];
   if (!recipe) return showToast('Recipe details are unavailable.');
   const dialog = document.getElementById('recipeDialog');
@@ -94,11 +94,13 @@ function openRecipe(recipeId) {
       <summary>${h(method.label || `Alternate method ${index + 1}`)}</summary>
       <ol class="instruction-list">${(method.instructions || []).map((step) => `<li>${h(step)}</li>`).join('')}</ol>
     </details>`).join('');
+  const warningPanel = recipe.dataWarnings?.length ? `<div class="data-warning" role="note"><strong>Manual review recommended</strong><ul>${recipe.dataWarnings.map((warning) => `<li>${h(warning)}</li>`).join('')}</ul><span>This recipe remains searchable but is excluded from automatic suggestions.</span></div>` : '';
   content.innerHTML = `
     <div class="recipe-dialog-header">
-      <div><p class="eyebrow">${h(recipe.region)} · ${h(recipe.dishType)}</p><h2>${h(recipe.name)}</h2><p>${h(recipe.description)}</p></div>
+      <div><p class="eyebrow">${cooking ? 'Cooking now · ' : ''}${h(recipe.region)} · ${h(recipe.dishType)}</p><h2>${h(recipe.name)}</h2><p>${h(recipe.description)}</p></div>
       <button id="recipeDialogClose" class="icon-button" type="button" aria-label="Close recipe">×</button>
     </div>
+    ${warningPanel}
     <div class="recipe-summary-grid">
       <div><small>Servings</small><strong>${recipe.servings}</strong></div>
       <div><small>Active time</small><strong>${recipe.activeTime} min</strong></div>
@@ -112,7 +114,7 @@ function openRecipe(recipeId) {
       </section>
       <section>
         <h3>Instructions</h3>
-        <ol class="instruction-list">${recipe.instructions.map((step) => `<li>${h(step)}</li>`).join('')}</ol>
+        <ol class="instruction-list ${cooking ? 'cooking-list' : ''}">${recipe.instructions.map((step, index) => `<li>${cooking ? `<label><input type="checkbox" /> <span>${h(step)}</span></label>` : h(step)}</li>`).join('')}</ol>
         ${alternateMethods}
       </section>
     </div>

@@ -12,7 +12,8 @@ A mobile-first Pakistani household meal planner with a regional recipe library, 
 - Temporary protein, fibre, iron, calcium, and vitamin C focus
 - Meal pinning, 10-option slot-safe swapping, skipping, and household serving adjustment
 - Three full-week alternatives with preview-before-replace and one-step undo
-- “What should we cook?” discovery with practical shortcuts, natural-language filters, and three distinct recommendations
+- “What should we cook?” discovery with visible shortcuts, ingredient exclusions, active/total time filters, saved recipes, feedback, and three diverse recommendations
+- Automatic-suggestion quality gates for recipe collections, components, suspect yields, and implausible source timing
 - Multiple person profiles with different portions and planning targets
 - Deterministic daily and weekly nutrition arithmetic
 - Visible nutrition completeness; missing nutrient values are not converted to zero
@@ -57,7 +58,7 @@ Open `http://localhost:8000`.
 npm test
 ```
 
-The tests cover Pakistani dataset adaptation, filter taxonomy, dietary-tag correction, explicit meal selection for shopping, unit normalization, ingredient aggregation, pantry subtraction, and missing-nutrient semantics.
+The tests cover Pakistani dataset adaptation, course safety, recommendation quality gates, natural-language query parsing, dietary-tag correction, explicit meal selection for shopping, unit normalization, ingredient aggregation, quantity-aware pantry coverage, pantry subtraction, and missing-nutrient semantics.
 
 ## Food Fusion import
 

@@ -102,6 +102,62 @@
     });
   }
 
+  function pantryCoverage(recipe, pantryItems) {
+    const ignored = new Set(['water', 'ice', 'ice-cubes']);
+    const required = new Map();
+    for (const ingredient of recipe?.ingredients || []) {
+      if (ingredient.optional || ignored.has(ingredient.foodId)) continue;
+      const key = ingredient.foodId || String(ingredient.name || '').toLowerCase();
+      if (!key) continue;
+      if (!required.has(key)) required.set(key, { ...ingredient, key, quantities: [] });
+      required.get(key).quantities.push({ quantity: ingredient.quantity, unit: ingredient.unit, conversion: ingredient.conversion });
+    }
+
+    const usablePantry = (pantryItems || []).filter((item) => !item.deleted && item.status !== 'out');
+    const matched = [];
+    const missing = [];
+    const partial = [];
+    for (const ingredient of required.values()) {
+      const pantryMatches = usablePantry.filter((item) => (
+        item.foodId ? item.foodId === ingredient.foodId : String(item.name).toLowerCase() === String(ingredient.name).toLowerCase()
+      ));
+      if (!pantryMatches.length) {
+        missing.push(ingredient.name);
+        continue;
+      }
+
+      const needed = ingredient.quantities
+        .map((item) => normalizeQuantity(item.quantity, item.unit, item.conversion))
+        .filter(Boolean);
+      const comparableNeeded = needed.length && needed.every((item) => item.unit === needed[0].unit)
+        ? needed.reduce((sum, item) => sum + item.value, 0)
+        : null;
+      const comparableAvailable = pantryMatches
+        .map((item) => normalizeQuantity(item.quantity, item.unit, item.conversion))
+        .filter((item) => item && (!needed[0] || item.unit === needed[0].unit))
+        .reduce((sum, item) => sum + item.value, 0);
+      const hasApproximateStock = pantryMatches.some((item) => item.mode === 'status' || item.quantity == null);
+
+      if (comparableNeeded != null && !hasApproximateStock && comparableAvailable < comparableNeeded) {
+        partial.push(ingredient.name);
+      } else {
+        matched.push(ingredient.name);
+      }
+    }
+
+    const total = required.size;
+    const covered = matched.length + partial.length;
+    return {
+      total,
+      matched: matched.length,
+      recorded: covered,
+      missing: missing.length + partial.length,
+      unrecorded: missing,
+      partial,
+      percent: total ? Math.round((covered / total) * 100) : 0,
+    };
+  }
+
   function sumNutrition(entries, recipeMap, personId) {
     const totals = {};
     for (const entry of entries) {
@@ -141,13 +197,20 @@
     if (mode === 'batch' && recipe.batchFriendly) score += 25;
     if (mode === 'variety' && !options.recentRecipeIds?.includes(recipe.id)) score += 20;
     if (mode === 'pantry') {
-      const matching = recipe.ingredients.filter((ingredient) => pantryFoodIds.has(ingredient.foodId)).length;
+      const matching = new Set(recipe.ingredients.filter((ingredient) => pantryFoodIds.has(ingredient.foodId)).map((ingredient) => ingredient.foodId)).size;
       score += matching * 7;
     }
-    if (focus !== 'none' && recipe.nutrition?.[focus] != null) score += Number(recipe.nutrition[focus]) * Number(options.focusWeight || 1.75);
+    if (focus !== 'none' && recipe.nutrition?.[focus] != null) {
+      const reference = { protein: 30, fibre: 10, iron: 8, calcium: 400, vitaminC: 60 }[focus] || 10;
+      score += Math.min(30, (Number(recipe.nutrition[focus]) / reference) * 20 * (Number(options.focusWeight || 1.75) / 1.75));
+    }
     score += Math.min(Number(recipe.nutrition?.protein || 0), 35) * 0.25;
     score += Math.min(Number(recipe.nutrition?.fibre || 0), 15) * 0.5;
     score -= Number(recipe.activeTime || 0) * 0.08;
+    if (options.mealType) {
+      const target = { breakfast: 450, lunch: 600, dinner: 650, dessert: 250, tea: 120 }[options.mealType];
+      if (target) score -= Math.abs(Number(recipe.nutrition?.kcal || target) - target) / target * 14;
+    }
     if (options.recentRecipeIds?.includes(recipe.id)) score -= 12;
     return round(score, 2);
   }
@@ -164,6 +227,20 @@
       return mainCourse && recipe.isCompleteMeal !== false && recipe.canBeStandalone !== false;
     }
     return true;
+  }
+
+  function isRecipeRecommendable(recipe, mealType) {
+    if (!isRecipeEligible(recipe, mealType) || recipe.recommendationEligible === false) return false;
+    const kcal = Number(recipe.nutrition?.kcal);
+    if (!Number.isFinite(kcal) || kcal <= 0) return false;
+    const automaticEnergyCeilings = {
+      breakfast: 900,
+      lunch: 1200,
+      dinner: 1200,
+      dessert: 700,
+      tea: 450,
+    };
+    return kcal <= (automaticEnergyCeilings[mealType] || Infinity);
   }
 
   function chooseRecipe(recipes, options) {
@@ -185,10 +262,12 @@
     filterSelectedPlanEntries,
     aggregateIngredients,
     subtractPantry,
+    pantryCoverage,
     sumNutrition,
     completeness,
     scoreRecipe,
     isRecipeEligible,
+    isRecipeRecommendable,
     chooseRecipe,
     round,
   };

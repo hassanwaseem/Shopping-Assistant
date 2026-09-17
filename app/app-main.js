@@ -22,6 +22,7 @@ document.addEventListener('click', async (event) => {
     state.preferences.region = document.getElementById('regionMode').value;
     state.preferences.focus = document.getElementById('nutrientFocus').value;
     state.preferences.focusStrength = document.getElementById('focusStrength').value;
+    state.preferences.maxTime = Number(document.getElementById('maxPlanTime').value);
     return preparePlanAlternatives();
   }
   if (action === 'preview-plan-alternative') return previewPlanAlternative(Number(target.dataset.index));
@@ -43,6 +44,7 @@ document.addEventListener('click', async (event) => {
     return renderAll();
   }
   if (action === 'view-recipe') return openRecipe(target.dataset.recipeId);
+  if (action === 'cook-now') return openRecipe(target.dataset.recipeId, { cooking: true });
   if (action === 'recipe-page') { recipeBrowser.page = Math.max(0, Number(target.dataset.page) || 0); return renderRecipeResults(); }
   if (action === 'swap-meal') return swapMeal(target.dataset.entryId);
   if (action === 'apply-swap') return applySwap(target.dataset.recipeId);
@@ -54,32 +56,34 @@ document.addEventListener('click', async (event) => {
     return navigate('cook');
   }
   if (action === 'cook-preset') {
-    const preset = target.dataset.preset;
-    if (preset === 'tonight') cookBrowser.mealSlot = 'dinner';
-    if (preset === 'quick') cookBrowser.maxTime = '20';
-    if (preset === 'pantry') cookBrowser.pantryFirst = true;
-    if (preset === 'minimal') cookBrowser.minimalShopping = true;
-    if (preset === 'healthy') state.preferences.focus = 'fibre';
-    if (preset === 'vegetarian') cookBrowser.diet = 'vegetarian';
-    if (preset === 'comfort') cookBrowser.query = 'curry rice';
-    if (preset === 'batch') state.preferences.mode = 'batch';
-    if (preset === 'dessert') cookBrowser.mealSlot = 'dessert';
-    if (preset === 'tea') cookBrowser.mealSlot = 'tea';
-    cookBrowser.resultOffset = 0;
+    applyCookPreset(target.dataset.preset);
     return renderCook();
   }
+  if (action === 'clear-cook-filters') { resetCookFilters(); return renderCook(); }
   if (action === 'show-another-cook') { cookBrowser.resultOffset += 3; return renderCook(); }
   if (action === 'open-add-to-plan') return openAddToPlanDialog(target.dataset.recipeId);
   if (action === 'close-add-to-plan') return document.getElementById('addToPlanDialog').close();
   if (action === 'save-recipe') {
-    state.savedRecipeIds = [...new Set([...state.savedRecipeIds, target.dataset.recipeId])];
+    state.savedRecipeIds = state.savedRecipeIds.includes(target.dataset.recipeId)
+      ? state.savedRecipeIds.filter((id) => id !== target.dataset.recipeId)
+      : [...new Set([...state.savedRecipeIds, target.dataset.recipeId])];
     saveState('Recipe saved');
-    showToast('Recipe saved for later.');
+    showToast(state.savedRecipeIds.includes(target.dataset.recipeId) ? 'Recipe saved for later.' : 'Recipe removed from saved recipes.');
     return renderCook();
   }
   if (action === 'reject-recipe') {
+    const recipe = RECIPE_MAP[target.dataset.recipeId];
+    lastRejectedRecipe = recipe ? { id: recipe.id, name: recipe.name } : null;
     state.rejectedRecipeIds = [...new Set([...state.rejectedRecipeIds, target.dataset.recipeId])].slice(-200);
+    state.feedbackByRecipeId[target.dataset.recipeId] = target.dataset.reason || 'not-interested';
     saveState('Recommendation hidden');
+    return renderCook();
+  }
+  if (action === 'undo-rejected-recipe' && lastRejectedRecipe) {
+    state.rejectedRecipeIds = state.rejectedRecipeIds.filter((id) => id !== lastRejectedRecipe.id);
+    delete state.feedbackByRecipeId[lastRejectedRecipe.id];
+    lastRejectedRecipe = null;
+    saveState('Recommendation restored');
     return renderCook();
   }
   if (action === 'adjust-serving') return adjustServing(target.dataset.entryId, Number(target.dataset.delta));
@@ -149,7 +153,9 @@ document.addEventListener('change', (event) => {
   }
   if (action === 'cook-filter') {
     cookBrowser[target.dataset.field] = target.value;
-    cookBrowser.query = '';
+    cookBrowser.overrideFields = [...new Set([...(cookBrowser.overrideFields || []), target.dataset.field])];
+    cookBrowser.preset = null;
+    cookBrowser.tonight = false;
     cookBrowser.resultOffset = 0;
     return renderCook();
   }
@@ -198,6 +204,8 @@ document.addEventListener('change', (event) => {
 document.addEventListener('input', (event) => {
   if (event.target.id === 'cookQuery') {
     cookBrowser.query = event.target.value;
+    cookBrowser.overrideFields = [];
+    cookBrowser.preset = null;
     cookBrowser.resultOffset = 0;
     const cursor = event.target.selectionStart;
     clearTimeout(cookSearchTimer);
