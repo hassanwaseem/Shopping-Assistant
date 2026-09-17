@@ -90,6 +90,18 @@ function temperatureMatches(recipe, temperature) {
   return temperature === 'warm' ? warm && !cold : cold;
 }
 
+function isHealthyChoice(recipe, mealSlot) {
+  const kcalLimit = { breakfast: 600, lunch: 750, dinner: 750, dessert: 350, tea: 250 }[mealSlot] || 750;
+  const kcal = Number(recipe.nutrition?.kcal || 0);
+  const protein = Number(recipe.nutrition?.protein || 0);
+  const fibre = Number(recipe.nutrition?.fibre || 0);
+  const sodium = Number(recipe.nutrition?.sodium || 0);
+  const usefulNutrition = mealSlot === 'dessert' || mealSlot === 'tea'
+    ? fibre >= 2 || protein >= 5
+    : fibre >= 4 || protein >= 18;
+  return kcal > 0 && kcal <= kcalLimit && usefulNutrition && (!sodium || sodium <= 900);
+}
+
 function cookCandidateRecipes() {
   const filters = effectiveCookFilters();
   return RECIPES.filter((recipe) => engine.isRecipeRecommendable(recipe, filters.mealSlot))
@@ -102,6 +114,7 @@ function cookCandidateRecipes() {
     .filter((recipe) => !state.rejectedRecipeIds.includes(recipe.id))
     .filter((recipe) => !cookBrowser.savedOnly || state.savedRecipeIds.includes(recipe.id))
     .filter((recipe) => !cookBrowser.batchOnly || recipe.batchFriendly)
+    .filter((recipe) => !filters.healthy || isHealthyChoice(recipe, filters.mealSlot))
     .filter((recipe) => temperatureMatches(recipe, filters.parsed.temperature))
     .filter((recipe) => {
       const haystack = cookSearchText(recipe);
@@ -124,7 +137,11 @@ function cookCandidateRecipes() {
         mealType: filters.mealSlot,
       });
       score += match.percent * 0.3 - match.missing * 2.5 - difficultyPenalty - recipe.totalTime * 0.03;
-      if (filters.healthy) score += Math.min(Number(recipe.nutrition?.fibre || 0), 12) * 2 + Math.min(Number(recipe.nutrition?.protein || 0), 35) * 0.35;
+      if (filters.healthy) {
+        score += Math.min(Number(recipe.nutrition?.fibre || 0), 12) * 2
+          + Math.min(Number(recipe.nutrition?.protein || 0), 35) * 0.35
+          - Math.max(0, Number(recipe.nutrition?.kcal || 0) - 550) * 0.04;
+      }
       if (cookBrowser.comfort && /\b(curry|karahi|biryani|pulao|stew|soup|pasta|haleem|nihari|korma)\b/i.test(recipe.name)) score += 24;
       if (state.savedRecipeIds.includes(recipe.id)) score += 8;
       return { recipe, match, score };
@@ -145,12 +162,19 @@ function chooseDiverse(items, used, selected, value) {
 
 function cookRecommendations() {
   const candidates = cookCandidateRecipes();
+  const hasPantry = state.pantry.some((item) => item.status !== 'out');
   const offset = cookBrowser.resultOffset % Math.max(candidates.length, 1);
   const rotate = (items) => items.length ? [...items.slice(offset % items.length), ...items.slice(0, offset % items.length)] : [];
   const groups = [
     { label: 'Best overall match', items: rotate([...candidates]), value: (item) => item.score },
     { label: 'Fastest and easiest', items: rotate([...candidates]), value: (item) => 120 - item.recipe.activeTime * 2 - item.recipe.totalTime * 0.5 - ({ easy: 0, medium: 20, hard: 45 }[item.recipe.difficulty] || 20) },
-    { label: 'Uses the most pantry ingredients', items: rotate([...candidates]), value: (item) => item.match.percent * 2 - item.match.missing * 8 + item.score * 0.1 },
+    {
+      label: hasPantry ? 'Best pantry match' : 'Fewest missing ingredients',
+      items: rotate([...candidates]),
+      value: (item) => hasPantry
+        ? item.match.percent * 2 - item.match.missing * 8 + item.score * 0.1
+        : 120 - item.match.missing * 10 + item.score * 0.1,
+    },
   ];
   const used = new Set();
   const selected = [];
@@ -166,7 +190,8 @@ function cookRecommendations() {
 
 function cookReason(result) {
   if (result.label.includes('Fastest')) return `${result.recipe.activeTime} min active, ${result.recipe.totalTime} min total and rated ${result.recipe.difficulty}.`;
-  if (result.label.includes('pantry')) return `${result.match.recorded} of ${result.match.total} required ingredients are recorded in your pantry.`;
+  if (result.label.toLowerCase().includes('pantry')) return `${result.match.recorded} of ${result.match.total} required ingredients are recorded in your pantry.`;
+  if (result.label.includes('missing')) return `${result.match.missing} required ingredients are not yet recorded at home.`;
   const facts = [];
   if (result.match.percent) facts.push(`${result.match.percent}% pantry coverage`);
   if (result.recipe.batchFriendly) facts.push('suitable for leftovers');
@@ -193,6 +218,12 @@ function cookFilterSummary(filters) {
   if (filters.parsed.includeTerms.length) parts.push(`includes ${filters.parsed.includeTerms.join(', ')}`);
   if (filters.parsed.excludeTerms.length) parts.push(`excludes ${filters.parsed.excludeTerms.join(', ')}`);
   if (filters.parsed.temperature) parts.push(filters.parsed.temperature);
+  if (cookBrowser.pantryFirst) parts.push('only complete pantry matches');
+  if (cookBrowser.minimalShopping) parts.push('maximum 5 missing ingredients');
+  if (filters.healthy) parts.push('lighter complete meals');
+  if (cookBrowser.comfort) parts.push('comfort food');
+  if (cookBrowser.batchOnly) parts.push('batch-friendly');
+  if (cookBrowser.savedOnly) parts.push('saved recipes only');
   return parts.join(' · ');
 }
 
@@ -223,7 +254,7 @@ function renderCook() {
       </div>
     </section>
     <section class="recommendation-section">
-      <div class="panel-header"><div><h3>Three useful directions</h3><p>${recommendations.length ? `Suitable ${h(SLOT_LABELS[filters.mealSlot].toLowerCase())} ideas with visibly different strengths.` : h(cookNoMatchMessage(filters))}</p></div>${recommendations.length ? '<button class="button secondary small" type="button" data-action="show-another-cook">Show another set</button>' : ''}</div>
+      <div class="panel-header"><div><h3>Three useful directions</h3><p>${recommendations.length ? `Suitable ${h(SLOT_LABELS[filters.mealSlot].toLowerCase())} ideas with visibly different strengths.` : 'Adjust the filters to see compatible recipes.'}</p></div>${recommendations.length ? '<button class="button secondary small" type="button" data-action="show-another-cook">Show another set</button>' : ''}</div>
       <div class="recommendation-grid">${recommendations.map((result) => cookRecommendationCard(result, filters.mealSlot)).join('') || `<div class="empty-state"><h3>No compatible recipes found</h3><p>${h(cookNoMatchMessage(filters))}</p><button class="button secondary" type="button" data-action="clear-cook-filters">Clear filters</button></div>`}</div>
     </section>`;
 }
@@ -232,7 +263,8 @@ function cookRecommendationCard(result, selectedSlot) {
   const recipe = result.recipe;
   const mainIngredients = [...new Set(recipe.ingredients.filter((item) => !item.optional && !['water', 'salt', 'ice'].includes(item.foodId)).map((item) => item.name))].slice(0, 4);
   const missingNames = [...result.match.unrecorded, ...result.match.partial].slice(0, 3);
-  return `<article class="recommendation-card"><span class="recommendation-label">${h(result.label)}</span><h3>${h(recipe.name)}</h3><p>${h(recipe.region)} · Suitable for ${h(SLOT_LABELS[selectedSlot])} · ${h(recipe.courseType)}</p><div class="recipe-card-meta"><span>${recipe.activeTime} min active</span><span>${recipe.totalTime} min total</span><span>${h(recipe.difficulty)}</span></div><p><strong>Main ingredients:</strong> ${h(mainIngredients.join(', ') || 'See recipe')}</p><p class="recommendation-reason">${h(cookReason(result))}</p><div class="pantry-meter"><strong>${result.match.percent}% pantry coverage</strong><span>${result.match.missing ? `${result.match.missing} still needed${missingNames.length ? `: ${missingNames.join(', ')}` : ''}` : 'All required ingredients recorded'}</span></div><p class="help">${recipe.batchFriendly ? 'Good leftover potential.' : 'Best cooked for the selected meal.'}</p><div class="button-row"><button class="button" type="button" data-action="cook-now" data-recipe-id="${h(recipe.id)}">Cook now</button><button class="button secondary" type="button" data-action="view-recipe" data-recipe-id="${h(recipe.id)}">View recipe</button><button class="button secondary" type="button" data-action="open-add-to-plan" data-recipe-id="${h(recipe.id)}">Add to planner</button><button class="button ghost" type="button" data-action="save-recipe" data-recipe-id="${h(recipe.id)}">${state.savedRecipeIds.includes(recipe.id) ? 'Remove saved' : 'Save for later'}</button></div><details class="feedback-menu"><summary>Not interested</summary><div class="button-row"><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="not-interested">Not interested</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="too-difficult">Too difficult</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="too-long">Takes too long</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="too-many-missing">Too many missing ingredients</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="never">Do not suggest again</button></div></details></article>`;
+  const drink = recipe.courseType === 'drink';
+  return `<article class="recommendation-card"><span class="recommendation-label">${h(result.label)}</span><h3>${h(recipe.name)}</h3><p>${h(recipe.region)} · Suitable for ${h(SLOT_LABELS[selectedSlot])} · ${h(recipe.courseType)}</p><div class="recipe-card-meta"><span>${recipe.activeTime} min active</span><span>${recipe.totalTime} min total</span><span>${h(recipe.difficulty)}</span></div><p><strong>Main ingredients:</strong> ${h(mainIngredients.join(', ') || 'See recipe')}</p><p class="recommendation-reason">${h(cookReason(result))}</p><div class="pantry-meter"><strong>${result.match.percent}% pantry coverage</strong><span>${result.match.missing ? `${result.match.missing} still needed${missingNames.length ? `: ${missingNames.join(', ')}` : ''}` : 'All required ingredients recorded'}</span></div><p class="help">${recipe.batchFriendly ? 'Good leftover potential.' : drink ? 'Ready to make for the selected drink slot.' : 'Best suited to the selected meal.'}</p><div class="button-row"><button class="button" type="button" data-action="cook-now" data-recipe-id="${h(recipe.id)}">${drink ? 'Make now' : 'Cook now'}</button><button class="button secondary" type="button" data-action="view-recipe" data-recipe-id="${h(recipe.id)}">View recipe</button><button class="button secondary" type="button" data-action="open-add-to-plan" data-recipe-id="${h(recipe.id)}">Add to planner</button><button class="button ghost" type="button" data-action="save-recipe" data-recipe-id="${h(recipe.id)}">${state.savedRecipeIds.includes(recipe.id) ? 'Remove saved' : 'Save for later'}</button></div><details class="feedback-menu"><summary>Not interested</summary><div class="button-row"><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="not-interested">Not interested</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="too-difficult">Too difficult</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="too-long">Takes too long</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="too-many-missing">Too many missing ingredients</button><button class="button ghost small" type="button" data-action="reject-recipe" data-recipe-id="${h(recipe.id)}" data-reason="never">Do not suggest again</button></div></details></article>`;
 }
 
 function openAddToPlanDialog(recipeId) {
@@ -250,4 +282,4 @@ function openAddToPlanDialog(recipeId) {
   else dialog.setAttribute('open', '');
 }
 
-if (typeof module === 'object' && module.exports) module.exports = { parseCookQuery };
+if (typeof module === 'object' && module.exports) module.exports = { parseCookQuery, isHealthyChoice };

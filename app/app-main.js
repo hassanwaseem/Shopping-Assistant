@@ -11,6 +11,8 @@ document.addEventListener('click', async (event) => {
     state.preferences.region = document.getElementById('regionMode').value;
     state.preferences.focus = document.getElementById('nutrientFocus').value;
     state.preferences.focusStrength = document.getElementById('focusStrength').value;
+    state.preferences.maxTime = Number(document.getElementById('maxPlanTime').value);
+    state.preferences.strictTime = true;
     state.preferences.dessertCount = Number(document.getElementById('dessertCount').value);
     state.preferences.teaCount = Number(document.getElementById('teaCount').value);
     state.preferences.preservePinned = document.getElementById('preservePinned').checked;
@@ -23,6 +25,7 @@ document.addEventListener('click', async (event) => {
     state.preferences.focus = document.getElementById('nutrientFocus').value;
     state.preferences.focusStrength = document.getElementById('focusStrength').value;
     state.preferences.maxTime = Number(document.getElementById('maxPlanTime').value);
+    state.preferences.strictTime = true;
     return preparePlanAlternatives();
   }
   if (action === 'preview-plan-alternative') return previewPlanAlternative(Number(target.dataset.index));

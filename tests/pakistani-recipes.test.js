@@ -136,6 +136,31 @@ test('keeps components, collections, and suspect source categories out of automa
   assert.equal(compilation.recommendationEligible, false);
   assert.deepEqual(steakPlatter.mealSlots, ['lunch', 'dinner']);
   assert.equal(steakPlatter.courseType, 'main');
+
+  for (const name of [
+    'Homemade Khoya',
+    'Ginger Paste',
+    'Homemade Strawberry Syrup',
+    'Homemade Chocolate Peanut Butter',
+    'Homemade Kataifi Pastry (Kunafa Dough)',
+    'Mango Jam',
+    'Strawberry Jam',
+  ]) {
+    const component = recipes.find((recipe) => recipe.name === name);
+    assert.ok(component, `${name} is missing`);
+    assert.equal(component.recommendationEligible, false, `${name} must not be recommended as a meal`);
+  }
+});
+
+test('infers conservative times when imported records only time one method step', () => {
+  const pasta = recipes.find((recipe) => recipe.name === 'Tandoori Chicken pasta');
+  const mousse = recipes.find((recipe) => recipe.name === 'Chocolate Mousse Cups');
+  assert.ok(pasta.activeTime >= 15);
+  assert.ok(pasta.totalTime >= 25);
+  assert.equal(pasta.timeConfidence, 'inferred');
+  assert.ok(mousse.activeTime >= 10);
+  assert.ok(mousse.totalTime >= 40);
+  assert.equal(mousse.timeConfidence, 'inferred');
 });
 
 test('ingredient section labels do not corrupt pantry identities', () => {
