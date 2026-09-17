@@ -28,9 +28,32 @@ function swapMeal(id) {
   const entry = findEntry(id);
   if (!entry) return;
   swapContextId = id;
-  swapOptions = rankedRecipes(entry.slot, [entry.recipeId])
+  const current = RECIPE_MAP[entry.recipeId];
+  const candidates = rankedRecipes(entry.slot, [entry.recipeId])
     .filter((item) => item.recipe.id !== entry.recipeId)
-    .slice(0, 10);
+    .map((item) => ({ ...item, match: pantryMatch(item.recipe) }));
+  const selected = [];
+  const used = new Set();
+  const add = (label, items) => {
+    const choice = items.find((item) => !used.has(item.recipe.id));
+    if (!choice) return;
+    used.add(choice.recipe.id);
+    selected.push({ ...choice, label });
+  };
+  add('Best overall match', candidates);
+  add('Similar but quicker', [...candidates].filter((item) => item.recipe.activeTime < current.activeTime).sort((a, b) => a.recipe.activeTime - b.recipe.activeTime));
+  add('Uses more pantry ingredients', [...candidates].sort((a, b) => b.match.percent - a.match.percent || a.match.missing - b.match.missing));
+  add('Fewer missing ingredients', [...candidates].sort((a, b) => a.match.missing - b.match.missing || b.score - a.score));
+  add('Different region', candidates.filter((item) => item.recipe.region !== current.region));
+  add('Different main ingredient', candidates.filter((item) => item.recipe.mainIngredient !== current.mainIngredient));
+  for (const item of candidates) {
+    if (selected.length >= 10) break;
+    if (!used.has(item.recipe.id)) {
+      used.add(item.recipe.id);
+      selected.push({ ...item, label: 'More variety' });
+    }
+  }
+  swapOptions = selected;
   if (!swapOptions.length) return showToast(`No compatible ${SLOT_LABELS[entry.slot].toLowerCase()} alternative is available.`);
   renderSwapDialog();
 }
@@ -50,10 +73,7 @@ function applySwap(recipeId) {
 }
 
 function pantryMatch(recipe) {
-  const pantryIds = new Set(state.pantry.map((item) => item.foodId).filter(Boolean));
-  const ingredients = recipe.ingredients || [];
-  const matched = ingredients.filter((item) => pantryIds.has(item.foodId)).length;
-  return { matched, missing: Math.max(0, ingredients.length - matched), percent: ingredients.length ? Math.round((matched / ingredients.length) * 100) : 0 };
+  return engine.pantryCoverage(recipe, state.pantry);
 }
 
 function renderSwapDialog() {
@@ -62,10 +82,8 @@ function renderSwapDialog() {
   const dialog = document.getElementById('swapDialog');
   document.getElementById('swapDialogContent').innerHTML = `
     <div class="dialog-heading"><div><p class="eyebrow">Swap ${h(SLOT_LABELS[entry.slot])}</p><h2>Choose an alternative</h2><p>All options fit this meal slot and your current dietary settings.</p></div><button class="icon-button" type="button" data-action="close-swap" aria-label="Close alternatives">×</button></div>
-    <div class="swap-list">${swapOptions.map(({ recipe }, index) => {
-      const match = pantryMatch(recipe);
-      const label = index === 0 ? 'Best match' : index === 1 ? 'Quicker option' : index === 2 ? 'Pantry-friendly' : index === 3 ? 'Different direction' : 'More variety';
-      return `<article class="swap-option"><div><span class="recommendation-label">${h(label)}</span><h3>${h(recipe.name)}</h3><p>${h(recipe.region)} · ${recipe.activeTime} min active · ${match.percent}% pantry match · ${match.missing} missing</p></div><div class="button-row"><button class="button secondary small" type="button" data-action="view-recipe" data-recipe-id="${h(recipe.id)}">Recipe</button><button class="button small" type="button" data-action="apply-swap" data-recipe-id="${h(recipe.id)}">Choose</button></div></article>`;
+    <div class="swap-list">${swapOptions.map(({ recipe, match, label }) => {
+      return `<article class="swap-option"><div><span class="recommendation-label">${h(label)}</span><h3>${h(recipe.name)}</h3><p>${h(recipe.region)} · ${recipe.activeTime} min active · ${match.percent}% pantry coverage · ${match.missing} still needed</p></div><div class="button-row"><button class="button secondary small" type="button" data-action="view-recipe" data-recipe-id="${h(recipe.id)}">Recipe</button><button class="button small" type="button" data-action="apply-swap" data-recipe-id="${h(recipe.id)}">Choose</button></div></article>`;
     }).join('')}</div>
     <div class="button-row end"><button class="button secondary" type="button" data-action="more-swap-options" data-slot="${h(entry.slot)}">More options</button></div>`;
   if (typeof dialog.showModal === 'function') dialog.showModal();
@@ -77,11 +95,12 @@ function planStats(plan) {
   const recipes = active.map((entry) => RECIPE_MAP[entry.recipeId]).filter(Boolean);
   const averageTime = recipes.length ? Math.round(recipes.reduce((sum, recipe) => sum + recipe.activeTime, 0) / recipes.length) : 0;
   const pantry = recipes.map(pantryMatch);
+  const missingIngredients = new Set(pantry.flatMap((item) => [...item.unrecorded, ...item.partial]));
   return {
     meals: active.length,
     averageTime,
     pantryPercent: pantry.length ? Math.round(pantry.reduce((sum, item) => sum + item.percent, 0) / pantry.length) : 0,
-    missing: pantry.reduce((sum, item) => sum + item.missing, 0),
+    missing: missingIngredients.size,
     desserts: active.filter((entry) => entry.slot === 'dessert').length,
     teas: active.filter((entry) => entry.slot === 'tea').length,
   };
@@ -96,13 +115,21 @@ function preparePlanAlternatives() {
   state.preferences.preservePinned = preservePinned;
   planPreviewIndex = null;
   const definitions = [
-    { key: 'balanced', title: 'Best balanced plan', description: 'Balances variety, nutrition and preparation effort.' },
-    { key: 'quick', title: 'Quickest and easiest plan', description: 'Prioritizes lower active cooking time.' },
-    { key: 'pantry', title: 'Best pantry plan', description: 'Uses more ingredients already recorded at home.' },
+    { key: 'balanced', title: 'Best balanced plan', description: 'Balances variety, nutrition and preparation effort.', overrides: {} },
+    { key: 'quick', title: 'Quickest and easiest plan', description: `Keeps active cooking within ${state.preferences.maxTime} minutes where compatible recipes exist.`, overrides: { strictTime: true } },
+    { key: 'pantry', title: 'Best pantry plan', description: 'Uses more ingredients already recorded at home and reduces missing items.', overrides: {} },
   ];
-  planAlternatives = definitions.map((definition, index) => {
-    const plan = buildPlanVariant({ preservePinned, mode: definition.key, dessertCount, teaCount, offset: index * 5 + 1 });
-    return { ...definition, plan, stats: planStats(plan) };
+  planAlternatives = [];
+  definitions.forEach((definition, index) => {
+    let bestPlan = null;
+    let lowestOverlap = Infinity;
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const plan = buildPlanVariant({ preservePinned, mode: definition.key, dessertCount, teaCount, offset: index * 11 + attempt * 7 + 1, preferenceOverrides: definition.overrides });
+      const activeIds = new Set(plan.filter((entry) => !entry.skipped).map((entry) => entry.recipeId));
+      const overlap = planAlternatives.reduce((sum, previous) => sum + previous.plan.filter((entry) => !entry.skipped && activeIds.has(entry.recipeId)).length, 0);
+      if (overlap < lowestOverlap) { bestPlan = plan; lowestOverlap = overlap; }
+    }
+    planAlternatives.push({ ...definition, plan: bestPlan, stats: planStats(bestPlan) });
   });
   renderPlanAlternativesDialog();
 }

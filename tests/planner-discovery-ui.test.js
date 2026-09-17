@@ -20,6 +20,7 @@ test('legacy plans preserve compatible meals while new slots are added', () => {
   assert.match(core, /preserveExisting = false/);
   assert.match(core, /engine\.isRecipeEligible\(existingRecipe, slot\)/);
   assert.match(core, /buildPlanVariant\(\{ preservePinned: true, preserveExisting: true/);
+  assert.match(core, /week_rolled_forward/);
 });
 
 test('whole-plan alternatives are previewed before being accepted and can be undone', () => {
@@ -34,6 +35,9 @@ test('cook discovery and expanded swap interfaces are wired into the application
   assert.match(cook, /What should we cook\?/);
   assert.match(cook, /Best overall match/);
   assert.match(cook, /Fastest and easiest/);
-  assert.match(cook, /Uses the most pantry items/);
-  assert.match(domain, /slice\(0, 10\)/);
+  assert.match(cook, /Uses the most pantry ingredients/);
+  assert.match(cook, /Suitable for/);
+  assert.match(cook, /Clear filters/);
+  assert.match(domain, /selected\.length >= 10/);
+  assert.match(domain, /Similar but quicker/);
 });

@@ -51,6 +51,25 @@ test('unknown pantry states are flagged instead of precisely subtracted', () => 
   assert.equal(result[0].checkPantry, true);
 });
 
+test('pantry coverage uses unique ingredients and reports insufficient quantities', () => {
+  const recipe = {
+    ingredients: [
+      { foodId: 'onions', name: 'Onions', quantity: 3, unit: 'count' },
+      { foodId: 'onions', name: 'Onions', quantity: 1, unit: 'count' },
+      { foodId: 'chicken', name: 'Chicken', quantity: 500, unit: 'g' },
+      { foodId: 'water', name: 'Water', quantity: 500, unit: 'ml' },
+    ],
+  };
+  const coverage = engine.pantryCoverage(recipe, [
+    { foodId: 'onions', name: 'Onions', mode: 'count', quantity: 2, unit: 'count', status: 'low' },
+  ]);
+  assert.equal(coverage.total, 2);
+  assert.equal(coverage.percent, 50);
+  assert.deepEqual(coverage.partial, ['Onions']);
+  assert.deepEqual(coverage.unrecorded, ['Chicken']);
+  assert.equal(coverage.missing, 2);
+});
+
 test('missing nutrients are omitted rather than converted to zero', () => {
   const totals = engine.sumNutrition([{ recipeId: 'stew', people: { a: 1 } }], recipes, 'a');
   assert.equal(totals.iron, 4);
@@ -69,4 +88,11 @@ test('enforces course suitability for dinner, dessert, and tea', () => {
   assert.equal(engine.isRecipeEligible(chai, 'tea'), true);
   assert.equal(engine.isRecipeEligible(chai, 'dinner'), false);
   assert.equal(engine.isRecipeEligible(side, 'dinner'), false);
+});
+
+test('automatic recommendations reject review-required and extreme-energy records', () => {
+  const dinner = { mealSlots: ['dinner'], courseType: 'main', isCompleteMeal: true, canBeStandalone: true, recommendationEligible: true, nutrition: { kcal: 600 } };
+  assert.equal(engine.isRecipeRecommendable(dinner, 'dinner'), true);
+  assert.equal(engine.isRecipeRecommendable({ ...dinner, recommendationEligible: false }, 'dinner'), false);
+  assert.equal(engine.isRecipeRecommendable({ ...dinner, nutrition: { kcal: 1500 } }, 'dinner'), false);
 });

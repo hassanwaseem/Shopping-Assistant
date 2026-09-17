@@ -46,6 +46,7 @@ let planPreviewIndex = null;
 let undoPlanSnapshot = null;
 let swapContextId = null;
 let swapOptions = [];
+let lastRejectedRecipe = null;
 const recipeBrowser = {
   search: '',
   region: 'all',
@@ -57,7 +58,9 @@ const recipeBrowser = {
   pageSize: 24,
 };
 const cookBrowser = {
-  query: '', mealSlot: 'dinner', maxTime: 'all', diet: 'all', difficulty: 'all', pantryFirst: false, minimalShopping: false, resultOffset: 0,
+  query: '', mealSlot: 'dinner', maxTime: 'all', maxActiveTime: 'all', diet: 'all', difficulty: 'all', region: 'all',
+  pantryFirst: false, minimalShopping: false, healthy: false, batchOnly: false, comfort: false, savedOnly: false,
+  preset: null, tonight: false, overrideFields: [], resultOffset: 0,
 };
 
 function installRecipes(recipes) {
@@ -108,7 +111,7 @@ function weekDates(start = state.weekStart) {
 function defaultState() {
   const weekStart = isoDate(mondayOf());
   return {
-    version: 4,
+    version: 5,
     householdName: 'Our kitchen',
     people: [
       { id: 'p1', name: 'Person 1', targetKcal: 2100, proteinTarget: 85, fibreTarget: 30, ironTarget: 11, calciumTarget: 950, vitaminCTarget: 95, portion: 1 },
@@ -120,16 +123,12 @@ function defaultState() {
     },
     weekStart,
     plan: [],
-    pantry: [
-      { id: 'pantry-oil', foodId: 'olive-oil', name: 'Olive oil', mode: 'exact', quantity: 450, unit: 'ml', storage: 'Cupboard', status: 'enough' },
-      { id: 'pantry-rice', foodId: 'basmati-rice', name: 'Basmati rice', mode: 'exact', quantity: 500, unit: 'g', storage: 'Cupboard', status: 'enough' },
-      { id: 'pantry-onions', foodId: 'onions', name: 'Onions', mode: 'count', quantity: 3, unit: 'count', storage: 'Cupboard', status: 'low' },
-      { id: 'pantry-spinach', foodId: 'spinach', name: 'Spinach', mode: 'status', quantity: null, unit: 'g', storage: 'Freezer', status: 'low' },
-    ],
+    pantry: [],
     shopping: { overrides: {}, suppressed: [], checked: [], states: {}, manualItems: [], selectedEntryIds: [] },
     selectedPlanDay: 0,
     savedRecipeIds: [],
     rejectedRecipeIds: [],
+    feedbackByRecipeId: {},
     audit: [],
   };
 }
@@ -154,17 +153,24 @@ function loadState() {
   const fallback = migrateLegacy(defaultState());
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (!saved || ![3, 4].includes(saved.version)) return fallback;
+    if (!saved || ![3, 4, 5].includes(saved.version)) return fallback;
     const merged = {
       ...fallback,
       ...saved,
-      version: 4,
+      version: 5,
       preferences: { ...fallback.preferences, ...saved.preferences },
       shopping: { ...fallback.shopping, ...saved.shopping },
     };
     if (!Array.isArray(merged.shopping.selectedEntryIds)) merged.shopping.selectedEntryIds = [];
     if (!Array.isArray(merged.savedRecipeIds)) merged.savedRecipeIds = [];
     if (!Array.isArray(merged.rejectedRecipeIds)) merged.rejectedRecipeIds = [];
+    if (!merged.feedbackByRecipeId || typeof merged.feedbackByRecipeId !== 'object') merged.feedbackByRecipeId = {};
+    if (saved.version < 5) {
+      const defaultPantrySignature = ['basmati-rice', 'olive-oil', 'onions', 'spinach'];
+      const savedSignature = (merged.pantry || []).map((item) => item.foodId).filter(Boolean).sort();
+      const pantryWasEdited = (merged.audit || []).some((entry) => String(entry.action).startsWith('pantry_'));
+      if (!pantryWasEdited && JSON.stringify(savedSignature) === JSON.stringify(defaultPantrySignature)) merged.pantry = [];
+    }
     return merged;
   } catch {
     return fallback;
@@ -230,7 +236,7 @@ function rankedRecipes(mealType, recentIds = [], preferenceOverrides = {}) {
   const recentRegionCounts = recentRecipes.reduce((map, recipe) => map.set(recipe.region, (map.get(recipe.region) || 0) + 1), new Map());
   const lastTwo = recentRecipes.slice(-2);
   return RECIPES
-    .filter((recipe) => engine.isRecipeEligible(recipe, mealType))
+    .filter((recipe) => engine.isRecipeRecommendable(recipe, mealType))
     .filter((recipe) => preferences.diet === 'balanced' || recipe.diets.includes(preferences.diet))
     .filter((recipe) => !recipe.allergens.some((allergen) => preferences.allergens.includes(allergen)))
     .filter((recipe) => !preferences.strictTime || recipe.activeTime <= preferences.maxTime)
@@ -244,6 +250,7 @@ function rankedRecipes(mealType, recentIds = [], preferenceOverrides = {}) {
         maxTime: preferences.maxTime,
         pantryItems: state.pantry,
         recentRecipeIds: recentIds,
+        mealType,
       });
       if (preferences.region && preferences.region !== 'all' && recipe.region === preferences.region) score += 42;
       if (recentIds.slice(-84).includes(recipe.id)) score -= 48;
@@ -262,20 +269,22 @@ function optionalSlotDays(count, offset = 0) {
   return days;
 }
 
-function buildPlanVariant({ preservePinned = true, preserveExisting = false, mode = state.preferences.mode, dessertCount = state.preferences.dessertCount, teaCount = state.preferences.teaCount, offset = 0 } = {}) {
+function buildPlanVariant({ preservePinned = true, preserveExisting = false, mode = state.preferences.mode, dessertCount = state.preferences.dessertCount, teaCount = state.preferences.teaCount, offset = 0, preferenceOverrides = {} } = {}) {
   const dates = weekDates();
   const previous = new Map(state.plan.map((entry) => [`${entry.day}|${entry.slot}`, entry]));
   const recent = [...(state.recipeHistory || [])];
   const dessertDays = optionalSlotDays(dessertCount, offset);
   const teaDays = optionalSlotDays(teaCount, offset + 1);
-  const preferences = { ...state.preferences, mode };
+  const preferences = { ...state.preferences, ...preferenceOverrides, mode };
   const next = [];
   for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
     for (const slot of SLOTS) {
       const key = `${isoDate(dates[dayIndex])}|${slot}`;
       const existing = previous.get(key);
       const existingRecipe = RECIPE_MAP[existing?.recipeId];
-      const canKeepExisting = existingRecipe && engine.isRecipeEligible(existingRecipe, slot);
+      const canKeepExisting = existingRecipe && (existing?.pinned
+        ? engine.isRecipeEligible(existingRecipe, slot)
+        : engine.isRecipeRecommendable(existingRecipe, slot));
       if (canKeepExisting && (preserveExisting || (preservePinned && existing.pinned))) {
         next.push(structuredClone(existing));
         recent.push(existing.recipeId);
@@ -315,10 +324,19 @@ function generatePlan({ preservePinned = true } = {}) {
 }
 
 function ensurePlan() {
+  const currentWeekStart = isoDate(mondayOf());
+  if (state.weekStart !== currentWeekStart) {
+    state.weekStart = currentWeekStart;
+    const dates = weekDates(currentWeekStart);
+    state.plan = state.plan.map((entry) => ({ ...entry, day: isoDate(dates[entry.dayIndex] || dates[0]) }));
+    audit('week_rolled_forward', `Plan dates moved to the week of ${currentWeekStart}`);
+  }
   const keys = new Set(state.plan.map((entry) => `${entry.dayIndex}|${entry.slot}`));
   const valid = state.plan.length === 35
     && SLOTS.every((slot) => DAYS.every((_, dayIndex) => keys.has(`${dayIndex}|${slot}`)))
-    && state.plan.every((entry) => RECIPE_MAP[entry.recipeId] && engine.isRecipeEligible(RECIPE_MAP[entry.recipeId], entry.slot));
+    && state.plan.every((entry) => RECIPE_MAP[entry.recipeId] && (entry.pinned
+      ? engine.isRecipeEligible(RECIPE_MAP[entry.recipeId], entry.slot)
+      : engine.isRecipeRecommendable(RECIPE_MAP[entry.recipeId], entry.slot)));
   if (!valid) {
     const existingCount = state.plan.length;
     state.plan = buildPlanVariant({ preservePinned: true, preserveExisting: true, offset: state.generationCount });

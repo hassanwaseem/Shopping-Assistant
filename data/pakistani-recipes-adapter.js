@@ -82,17 +82,61 @@
     ].join(' '));
   }
 
+  const DESSERT_SIGNAL = /\b(ice[ -]?cream|sundae|halwa|panjeeri|pinjiri|kheer|kulfi|gulab jamun|jalebi|seviyan|sheer khurma|mithai|pudding|zarda|cake|cupcake|rusk|biscuit|cookie|brownie|muffin|banana bread|trifle|tiramisu|mousse|custard|donut|doughnut|falooda|flan|rabri|barfi|laddu|ladoo|rasmalai|baklava|kunafa)\b/;
+  const DRINK_SIGNAL = /\b(chai|tea|kahwa|kehwa|qahwa|coffee|lassi|sharbat|juice|smoothie|milkshake|shake|lemonade|mojito|mocktail|punch|cooler|soda|latte|frappuccino|hot chocolate|golden milk|drink|champagne)\b/;
+  const BREAKFAST_SIGNAL = /\b(nashta|breakfast|halwa puri|anda paratha|anday wala paratha|egg bhurji|khagina|omelette|omelet)\b/;
+  const COLLECTION_SIGNAL = /\b(\d+\s*(?:ways|uses|recipes|home remedies)|ways to|recipe collection|recipes from leftover|lunch box ideas?)\b/;
+  const COMPONENT_SIGNAL = /\b(spice mix|masala powder|cooking sauce|dipping sauce|seasoning|marinade|premix|home remedies?|how to cook|how to make|homemade .* masala)\b/;
+  const SAVOURY_MAIN_SIGNAL = /\b(chicken|beef|mutton|lamb|goat|fish|prawn|shrimp|steak|biryani|pulao|pilaf|curry|karahi|handi|qorma|korma|nihari|haleem|burger|calzone|dumpling|pasta|macaroni|lasagna|rice bowl|rice platter|sajji|gosht|qeema|keema|samosa|chaat|kebab|kabab|tikka|paratha|sandwich|pizza|noodles|soup|roast|cutlet|shawarma|wrap)\b/;
+
+  function recipeTitle(source) {
+    return searchable(`${source.name || ''} ${source.dish_family || ''}`);
+  }
+
+  function automaticDataQuality(source) {
+    const title = recipeTitle(source);
+    const totalTime = Number(source.times_minutes?.total);
+    const ingredientCount = (source.ingredients || []).length;
+    const instructionCount = (source.instructions || []).length;
+    const servings = Number(source.servings);
+    const warnings = [];
+    if (COLLECTION_SIGNAL.test(title)) warnings.push('Contains several recipes or ideas rather than one cookable dish');
+    if (COMPONENT_SIGNAL.test(title)) warnings.push('Appears to be a component, guide, remedy or seasoning rather than a complete meal');
+    const explicitlyQuick = /\b(?:\d+|five|ten)[ -]?minute\b/.test(title) || /\b(mug cake|instant pot)\b/.test(title);
+    const implausibleTime = Number.isFinite(totalTime) && ingredientCount >= 12 && !explicitlyQuick
+      && (totalTime <= 5 || (totalTime <= 10 && instructionCount >= 6));
+    if (implausibleTime) {
+      warnings.push('Reported total time is not credible for the listed ingredients and method');
+    }
+    if (Number.isFinite(servings) && servings >= 20 && Number(source.nutrition_per_serving?.kcal || 0) < 150) {
+      warnings.push('Reported yield appears inconsistent with the recipe and nutrition values');
+    }
+    return { warnings, recommendationEligible: warnings.length === 0 };
+  }
+
   function dishTypeFor(source) {
     const category = searchable(source.category);
-    const text = searchable(`${source.name} ${source.dish_family || ''} ${source.category || ''}`);
+    const title = recipeTitle(source);
+    const text = searchable(`${title} ${source.category || ''}`);
 
     // Strong title/category signals override imported broad dish types. Several
     // imported ice creams were labelled "Main dishes", which made them dinner
     // candidates before slot eligibility was normalized here.
-    if (/dessert|sweet/.test(category) || /\b(ice[ -]?cream|sundae|halwa|kheer|kulfi|gulab jamun|jalebi|seviyan|sheer khurma|mithai|pudding|zarda|cake|cupcake|rusk|biscuit|cookie|brownie|muffin|banana bread|trifle|tiramisu|mousse|custard|donut|doughnut|falooda|flan)\b/.test(text)) return 'Desserts';
-    if (/beverage|drinks?/.test(category) || /\b(chai|tea|kahwa|kehwa|coffee|lassi|sharbat|juice|smoothie|milkshake|shake|lemonade|mojito|cooler|soda|latte|hot chocolate|drink)\b/.test(text)) return 'Drinks';
+    if (DESSERT_SIGNAL.test(title)) return 'Desserts';
+    if (DRINK_SIGNAL.test(title)) return 'Drinks';
+    if (BREAKFAST_SIGNAL.test(title)) return 'Breakfast';
+    if (COMPONENT_SIGNAL.test(title) || /^how to\b/.test(title)) return 'Sides & vegetables';
+    if (SAVOURY_MAIN_SIGNAL.test(title)) {
+      if (/\b(samosa|chaat|kebab|kabab|tikka|cutlet)\b/.test(title)) return 'Snacks & street food';
+      if (/\b(biryani|pulao|pilaf|rice bowl|rice platter)\b/.test(title)) return 'Rice & biryani';
+      if (/\b(karahi|handi|curry|salan|shorba|qorma|korma|nihari|haleem|gosht|dampukht|bhuna|stew)\b/.test(title)) return 'Curries & stews';
+      if (/\b(pasta|macaroni|spaghetti|lasagna|lasagne|fettuccine|penne)\b/.test(title)) return 'Pasta, macaroni & lasagna';
+      return 'Main dishes';
+    }
+    if (/dessert|sweet/.test(category)) return 'Desserts';
+    if (/beverage|drinks?/.test(category)) return 'Drinks';
     if (DISH_TYPES.includes(source.dish_type)) return source.dish_type;
-    if (/breakfast/.test(category) || /\b(nashta|breakfast|halwa puri|anda paratha|anday wala paratha|egg bhurji|khagina|omelette|omelet)\b/.test(text)) return 'Breakfast';
+    if (/breakfast/.test(category)) return 'Breakfast';
     if (/appetizer|snack|kebab/.test(category) || /\b(chaat|kebab|kabab|tikka|pakora|samosas?|gol gapp|bun kebab|fritter|cutlet)\b/.test(text)) return 'Snacks & street food';
     if (/naan|roti|bread/.test(category) || /\b(naan|roti|chapati|paratha|puri|sheermal|kulcha|flatbread)\b/.test(text)) return 'Breads';
     if (/\b(pasta|macaroni|spaghetti|lasagna|lasagne|fettuccine|penne)\b/.test(text)) return 'Pasta, macaroni & lasagna';
@@ -127,7 +171,10 @@
   function canonicalIngredientName(source) {
     const item = String(source.item || '').trim();
     const preparation = String(source.preparation || '').trim();
-    const text = searchable(`${item} ${preparation}`);
+    // Section labels such as "for Curry (Chicken & Khattay Pyaz)" describe the
+    // recipe part, not the ingredient. Including them caused almost every row
+    // in that recipe to normalize to Onions and produced false pantry matches.
+    const text = searchable(item || preparation || source.text);
 
     const aliases = [
       [/adrak[- ]?lehsan|adrak lahsun|ginger[- ]?garlic/, 'Ginger-garlic paste'],
@@ -351,6 +398,7 @@
     const isCompleteMeal = courseType === 'main' || courseType === 'breakfast'
       || (courseType === 'side' && mealSlots.some((slot) => ['lunch', 'dinner'].includes(slot)));
     const methodTags = Array.isArray(source.method?.tags) ? source.method.tags : [];
+    const quality = automaticDataQuality(source);
 
     return {
       id: String(source.id),
@@ -363,6 +411,9 @@
       courseType,
       isCompleteMeal,
       canBeStandalone: isCompleteMeal || courseType === 'dessert' || courseType === 'drink',
+      recommendationEligible: quality.recommendationEligible,
+      dataWarnings: quality.warnings,
+      classificationConfidence: quality.recommendationEligible ? 'moderate' : 'review-required',
       cuisine,
       region,
       authenticity: String(source.authenticity || 'traditional'),
@@ -421,6 +472,7 @@
     cuisineFor,
     dietaryTagsFor,
     dishTypeFor,
+    automaticDataQuality,
     load,
     mainIngredientFor,
     regionFor,

@@ -121,6 +121,32 @@ test('classifies desserts and drinks into dedicated planner slots', () => {
   assert.equal(chai.canBeStandalone, true);
 });
 
+test('keeps components, collections, and suspect source categories out of automatic suggestions', () => {
+  const panjeeri = recipes.find((recipe) => recipe.name === 'Moong Daal Panjeeri');
+  const masala = recipes.find((recipe) => recipe.name === 'Homemade Korma & Biryani Masala');
+  const riceGuide = recipes.find((recipe) => recipe.name === 'How To Cook Basmati Rice');
+  const steakPlatter = recipes.find((recipe) => recipe.name === 'Creamy Steak Rice Platter');
+  const compilation = recipes.find((recipe) => recipe.name === '5 Uses Of Leftover Daal');
+
+  assert.equal(panjeeri.courseType, 'dessert');
+  assert.deepEqual(panjeeri.mealSlots, ['dessert']);
+  assert.deepEqual(masala.mealSlots, []);
+  assert.equal(masala.recommendationEligible, false);
+  assert.deepEqual(riceGuide.mealSlots, []);
+  assert.equal(compilation.recommendationEligible, false);
+  assert.deepEqual(steakPlatter.mealSlots, ['lunch', 'dinner']);
+  assert.equal(steakPlatter.courseType, 'main');
+});
+
+test('ingredient section labels do not corrupt pantry identities', () => {
+  const recipe = recipes.find((item) => item.name === 'Chicken Pickled Onion (Khattay Pyaz)');
+  const names = recipe.ingredients.map((ingredient) => ingredient.name);
+  assert.equal(names.filter((name) => name === 'Onions').length, 2);
+  assert.ok(names.includes('Chicken'));
+  assert.ok(names.includes('Plain yogurt'));
+  assert.ok(names.includes('Turmeric'));
+});
+
 test('recalculates dietary tags instead of trusting incorrect source tags', () => {
   const meatRecipe = recipes.find((recipe) => recipe.name === 'Punjabi Achar Gosht');
   assert.ok(meatRecipe);
