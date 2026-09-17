@@ -107,6 +107,7 @@ function openRecipe(recipeId, { cooking = false } = {}) {
       <div><small>Total time</small><strong>${recipe.totalTime} min</strong></div>
       <div><small>Difficulty</small><strong>${h(recipe.difficulty)}</strong></div>
     </div>
+    ${recipe.timeConfidence === 'inferred' ? '<p class="help">Times are conservative estimates inferred from the ingredients and full method, rather than only the timed steps.</p>' : ''}
     <div class="recipe-detail-grid">
       <section>
         <h3>Ingredients</h3>

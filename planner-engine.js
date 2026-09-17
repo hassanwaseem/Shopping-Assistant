@@ -177,7 +177,7 @@
   }
 
   function completeness(entries, recipeMap) {
-    const recipes = entries.map((entry) => recipeMap[entry.recipeId]).filter(Boolean);
+    const recipes = entries.filter((entry) => !entry.skipped).map((entry) => recipeMap[entry.recipeId]).filter(Boolean);
     if (!recipes.length) return { score: 0, status: 'Nutrition unavailable', missing: 0 };
     const scores = recipes.map((recipe) => Number(recipe.completeness ?? 0));
     const score = Math.round(scores.reduce((sum, value) => sum + value, 0) / scores.length);

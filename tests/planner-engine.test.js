@@ -76,6 +76,19 @@ test('missing nutrients are omitted rather than converted to zero', () => {
   assert.equal(Object.hasOwn(totals, 'calcium'), false);
 });
 
+test('nutrition completeness ignores skipped optional slots', () => {
+  const map = {
+    complete: { completeness: 100 },
+    partial: { completeness: 60 },
+  };
+  const result = engine.completeness([
+    { recipeId: 'complete', skipped: false },
+    { recipeId: 'partial', skipped: true },
+  ], map);
+  assert.equal(result.score, 100);
+  assert.equal(result.missing, 0);
+});
+
 test('enforces course suitability for dinner, dessert, and tea', () => {
   const dinner = { mealSlots: ['dinner'], eligibleMealSlots: ['dinner'], courseType: 'main', isCompleteMeal: true, canBeStandalone: true };
   const iceCream = { mealSlots: ['dessert'], eligibleMealSlots: ['dessert'], courseType: 'dessert', isCompleteMeal: false, canBeStandalone: true };

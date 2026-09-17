@@ -86,7 +86,8 @@
   const DRINK_SIGNAL = /\b(chai|tea|kahwa|kehwa|qahwa|coffee|lassi|sharbat|juice|smoothie|milkshake|shake|lemonade|mojito|mocktail|punch|cooler|soda|latte|frappuccino|hot chocolate|golden milk|drink|champagne)\b/;
   const BREAKFAST_SIGNAL = /\b(nashta|breakfast|halwa puri|anda paratha|anday wala paratha|egg bhurji|khagina|omelette|omelet)\b/;
   const COLLECTION_SIGNAL = /\b(\d+\s*(?:ways|uses|recipes|home remedies)|ways to|recipe collection|recipes from leftover|lunch box ideas?)\b/;
-  const COMPONENT_SIGNAL = /\b(spice mix|masala powder|cooking sauce|dipping sauce|seasoning|marinade|premix|home remedies?|how to cook|how to make|homemade .* masala)\b/;
+  const COMPONENT_SIGNAL = /\b(spice mix|masala powder|cooking sauce|dipping sauce|seasoning|marinade|premix|home remedies?|how to cook|how to make|homemade .* masala|garam masala recipe|chaat masala recipe|kunafa dough|kataifi pastry|sauce recipe|powder for (?:kids|babies))\b/;
+  const STANDALONE_COMPONENT_SIGNAL = /^(?:homemade\s+)?(?:[a-z& -]+\s+)?(?:paste|stock|syrup|jam|chutney|sauce|dough|khoya|peanut butter|powder|seasoning|marinade|premix|breadcrumbs?|mayonnaise|pickle)(?:\s+recipe)?$/;
   const SAVOURY_MAIN_SIGNAL = /\b(chicken|beef|mutton|lamb|goat|fish|prawn|shrimp|steak|biryani|pulao|pilaf|curry|karahi|handi|qorma|korma|nihari|haleem|burger|calzone|dumpling|pasta|macaroni|lasagna|rice bowl|rice platter|sajji|gosht|qeema|keema|samosa|chaat|kebab|kabab|tikka|paratha|sandwich|pizza|noodles|soup|roast|cutlet|shawarma|wrap)\b/;
 
   function recipeTitle(source) {
@@ -95,13 +96,14 @@
 
   function automaticDataQuality(source) {
     const title = recipeTitle(source);
+    const name = searchable(source.name);
     const totalTime = Number(source.times_minutes?.total);
     const ingredientCount = (source.ingredients || []).length;
     const instructionCount = (source.instructions || []).length;
     const servings = Number(source.servings);
     const warnings = [];
     if (COLLECTION_SIGNAL.test(title)) warnings.push('Contains several recipes or ideas rather than one cookable dish');
-    if (COMPONENT_SIGNAL.test(title)) warnings.push('Appears to be a component, guide, remedy or seasoning rather than a complete meal');
+    if (COMPONENT_SIGNAL.test(title) || STANDALONE_COMPONENT_SIGNAL.test(name)) warnings.push('Appears to be a component, guide, remedy or seasoning rather than a complete meal');
     const explicitlyQuick = /\b(?:\d+|five|ten)[ -]?minute\b/.test(title) || /\b(mug cake|instant pot)\b/.test(title);
     const implausibleTime = Number.isFinite(totalTime) && ingredientCount >= 12 && !explicitlyQuick
       && (totalTime <= 5 || (totalTime <= 10 && instructionCount >= 6));
@@ -117,6 +119,7 @@
   function dishTypeFor(source) {
     const category = searchable(source.category);
     const title = recipeTitle(source);
+    const name = searchable(source.name);
     const text = searchable(`${title} ${source.category || ''}`);
 
     // Strong title/category signals override imported broad dish types. Several
@@ -125,7 +128,7 @@
     if (DESSERT_SIGNAL.test(title)) return 'Desserts';
     if (DRINK_SIGNAL.test(title)) return 'Drinks';
     if (BREAKFAST_SIGNAL.test(title)) return 'Breakfast';
-    if (COMPONENT_SIGNAL.test(title) || /^how to\b/.test(title)) return 'Sides & vegetables';
+    if (COMPONENT_SIGNAL.test(title) || STANDALONE_COMPONENT_SIGNAL.test(name) || /^how to\b/.test(title)) return 'Sides & vegetables';
     if (SAVOURY_MAIN_SIGNAL.test(title)) {
       if (/\b(samosa|chaat|kebab|kabab|tikka|cutlet)\b/.test(title)) return 'Snacks & street food';
       if (/\b(biryani|pulao|pilaf|rice bowl|rice platter)\b/.test(title)) return 'Rice & biryani';
@@ -380,18 +383,45 @@
     return `${recipeNameFor(source)} is a ${place} ${typeLabel}${ingredient}.`;
   }
 
+  function conservativeTimeEstimate(source, dishType) {
+    const prep = Number(source.times_minutes?.prep);
+    const cook = Number(source.times_minutes?.cook);
+    const statedTotal = Number(source.times_minutes?.total);
+    const ingredientCount = (source.ingredients || []).length;
+    const instructionCount = (source.instructions || []).length;
+    const method = searchable((source.instructions || []).join(' '));
+    const isDrink = dishType === 'Drinks';
+    const complexityMinutes = Math.ceil(
+      ingredientCount * (isDrink ? 0.3 : 0.55)
+      + instructionCount * (isDrink ? 0.65 : 1.25),
+    );
+    const minimumActive = isDrink ? 3 : dishType === 'Desserts' ? 8 : 10;
+    const inferredActive = Math.max(minimumActive, Math.ceil(complexityMinutes / 5) * 5);
+    const statedActive = Number.isFinite(prep) && prep > 0 ? prep : 0;
+    const activeTime = Math.max(statedActive, inferredActive);
+
+    let processFloor = activeTime;
+    if (/\b(boil|cook|fry|bake|roast|simmer|steam|grill|saute|sauté)\b/.test(method)) processFloor += isDrink ? 3 : 10;
+    if (/\b(chill|chilled|refrigerat|freeze|set aside to set)\b/.test(method)) processFloor += 30;
+    if (/\b(marinat|soak|proof|rise|ferment|rest for)\b/.test(method)) processFloor += 30;
+    if (/\bovernight\b/.test(method)) processFloor = Math.max(processFloor, 480);
+
+    const reportedTotal = Number.isFinite(statedTotal) && statedTotal > 0
+      ? statedTotal
+      : (Number.isFinite(prep) ? prep : 0) + (Number.isFinite(cook) ? cook : 0);
+    const totalTime = Math.max(reportedTotal || 0, processFloor, activeTime);
+    const adjusted = totalTime > (reportedTotal || 0) || activeTime > statedActive;
+    return { activeTime, totalTime, adjusted, reportedTotal: reportedTotal || null };
+  }
+
   function adaptRecipe(source) {
     const cuisine = cuisineFor(source);
     const region = regionFor(source, cuisine);
     const dishType = dishTypeFor(source);
     const mainIngredient = mainIngredientFor(source);
-    const prep = Number(source.times_minutes?.prep);
-    const cook = Number(source.times_minutes?.cook);
-    const statedTotal = Number(source.times_minutes?.total);
-    const totalTime = Number.isFinite(statedTotal) && statedTotal > 0
-      ? statedTotal
-      : (Number.isFinite(prep) ? prep : 0) + (Number.isFinite(cook) ? cook : 0) || 30;
-    const activeTime = Number.isFinite(prep) && prep > 0 ? prep : Math.min(totalTime, 20);
+    const time = conservativeTimeEstimate(source, dishType);
+    const totalTime = time.totalTime;
+    const activeTime = time.activeTime;
     const servings = Number(source.servings) > 0 ? Number(source.servings) : 4;
     const mealSlots = mealSlotsFor(dishType, source);
     const courseType = courseTypeFor(dishType);
@@ -424,6 +454,8 @@
       servings,
       activeTime,
       totalTime,
+      timeConfidence: time.adjusted ? 'inferred' : 'reported',
+      reportedTotalTime: time.reportedTotal,
       difficulty: ['easy', 'medium', 'hard'].includes(source.difficulty) ? source.difficulty : 'medium',
       batchFriendly: servings >= 4 && ['Main dishes', 'Curries & stews', 'Rice & biryani', 'Daal & legumes', 'Pasta, macaroni & lasagna'].includes(dishType),
       freezerFriendly: ['Curries & stews', 'Daal & legumes'].includes(dishType),

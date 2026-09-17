@@ -40,9 +40,12 @@ function swapMeal(id) {
     used.add(choice.recipe.id);
     selected.push({ ...choice, label });
   };
+  const hasPantry = state.pantry.some((item) => item.status !== 'out');
   add('Best overall match', candidates);
   add('Similar but quicker', [...candidates].filter((item) => item.recipe.activeTime < current.activeTime).sort((a, b) => a.recipe.activeTime - b.recipe.activeTime));
-  add('Uses more pantry ingredients', [...candidates].sort((a, b) => b.match.percent - a.match.percent || a.match.missing - b.match.missing));
+  if (hasPantry && candidates.some((item) => item.match.percent > 0)) {
+    add('Uses more pantry ingredients', [...candidates].filter((item) => item.match.percent > 0).sort((a, b) => b.match.percent - a.match.percent || a.match.missing - b.match.missing));
+  }
   add('Fewer missing ingredients', [...candidates].sort((a, b) => a.match.missing - b.match.missing || b.score - a.score));
   add('Different region', candidates.filter((item) => item.recipe.region !== current.region));
   add('Different main ingredient', candidates.filter((item) => item.recipe.mainIngredient !== current.mainIngredient));
@@ -114,10 +117,13 @@ function preparePlanAlternatives() {
   state.preferences.teaCount = teaCount;
   state.preferences.preservePinned = preservePinned;
   planPreviewIndex = null;
+  const hasPantry = state.pantry.some((item) => item.status !== 'out');
   const definitions = [
     { key: 'balanced', title: 'Best balanced plan', description: 'Balances variety, nutrition and preparation effort.', overrides: {} },
     { key: 'quick', title: 'Quickest and easiest plan', description: `Keeps active cooking within ${state.preferences.maxTime} minutes where compatible recipes exist.`, overrides: { strictTime: true } },
-    { key: 'pantry', title: 'Best pantry plan', description: 'Uses more ingredients already recorded at home and reduces missing items.', overrides: {} },
+    hasPantry
+      ? { key: 'pantry', title: 'Best pantry plan', description: 'Prioritizes ingredients already recorded at home.', overrides: {} }
+      : { key: 'variety', title: 'High-variety plan', description: 'Offers a different mix of regions, proteins and cooking methods.', overrides: {} },
   ];
   planAlternatives = [];
   definitions.forEach((definition, index) => {

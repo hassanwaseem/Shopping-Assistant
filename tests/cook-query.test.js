@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { parseCookQuery } = require('../app/app-views-cook.js');
+const { parseCookQuery, isHealthyChoice } = require('../app/app-views-cook.js');
 
 test('parses positive ingredients, time and meal intent', () => {
   const parsed = parseCookQuery('Something with chicken and rice under 30 minutes for dinner');
@@ -20,4 +20,12 @@ test('captures warm drink intent', () => {
   assert.equal(parsed.mealSlot, 'tea');
   assert.equal(parsed.temperature, 'warm');
   assert.deepEqual(parsed.includeTerms, []);
+});
+
+test('healthy choices must be complete, moderate-energy and nutritionally useful', () => {
+  const base = { nutrition: { kcal: 620, protein: 28, fibre: 5, sodium: 700 } };
+  assert.equal(isHealthyChoice(base, 'dinner'), true);
+  assert.equal(isHealthyChoice({ nutrition: { ...base.nutrition, kcal: 920 } }, 'dinner'), false);
+  assert.equal(isHealthyChoice({ nutrition: { kcal: 500, protein: 5, fibre: 1, sodium: 300 } }, 'dinner'), false);
+  assert.equal(isHealthyChoice({ nutrition: { kcal: 500, protein: 25, fibre: 5, sodium: 1200 } }, 'dinner'), false);
 });

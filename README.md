@@ -13,7 +13,8 @@ A mobile-first Pakistani household meal planner with a regional recipe library, 
 - Meal pinning, 10-option slot-safe swapping, skipping, and household serving adjustment
 - Three full-week alternatives with preview-before-replace and one-step undo
 - “What should we cook?” discovery with visible shortcuts, ingredient exclusions, active/total time filters, saved recipes, feedback, and three diverse recommendations
-- Automatic-suggestion quality gates for recipe collections, components, suspect yields, and implausible source timing
+- Automatic-suggestion quality gates for recipe collections, standalone components, suspect yields, and implausible source timing
+- Conservative preparation-time estimates derived from the complete method when imported timing covers only one step
 - Multiple person profiles with different portions and planning targets
 - Deterministic daily and weekly nutrition arithmetic
 - Visible nutrition completeness; missing nutrient values are not converted to zero

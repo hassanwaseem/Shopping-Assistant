@@ -31,7 +31,7 @@ function renderToday() {
     </div>
     <div class="stat-grid">
       <article class="stat-card"><small>Planned meals</small><strong>${entries.filter((entry) => !entry.skipped).length}</strong><span>${entries.some((entry) => entry.pinned) ? 'Includes pinned choices' : 'All editable'}</span></article>
-      <article class="stat-card"><small>Shopping remaining</small><strong>${unchecked}</strong><span>${shopping.length ? 'Across the active list' : shoppingMealCount ? 'Selected recipes need no additional recorded items' : 'No planned recipes selected yet'}</span></article>
+      <article class="stat-card"><small>Recipes in shopping list</small><strong>${shoppingMealCount}</strong><span>${shoppingMealCount ? `${unchecked} item${unchecked === 1 ? '' : 's'} remaining` : shopping.length ? `${unchecked} manual item${unchecked === 1 ? '' : 's'} remaining` : 'Add meals from the weekly plan'}</span></article>
       <article class="stat-card"><small>Pantry use-soon</small><strong>${useSoon}</strong><span>Based on household-entered dates</span></article>
       <article class="stat-card"><small>Average energy</small><strong>${Math.round(avg.kcal || 0)}</strong><span>kcal/day for ${h(firstPerson.name)}</span></article>
     </div>
@@ -83,13 +83,13 @@ function renderPlan() {
         <label>Regional preference<select id="regionMode">${option('all', 'Any region', state.preferences.region || 'all')}${REGIONS.map((region) => option(region, region, state.preferences.region || 'all')).join('')}</select></label>
         <label>Nutrient focus<select id="nutrientFocus">${option('none', 'No temporary focus', state.preferences.focus)}${option('protein', 'Protein', state.preferences.focus)}${option('fibre', 'Fibre', state.preferences.focus)}${option('iron', 'Iron', state.preferences.focus)}${option('calcium', 'Calcium', state.preferences.focus)}${option('vitaminC', 'Vitamin C', state.preferences.focus)}</select></label>
         <label>Focus strength<select id="focusStrength">${option('gentle', 'Gentle', state.preferences.focusStrength)}${option('moderate', 'Moderate', state.preferences.focusStrength)}${option('strong', 'Strong', state.preferences.focusStrength)}</select></label>
-        <label>Maximum active time<select id="maxPlanTime">${option('20', '20 minutes', String(state.preferences.maxTime))}${option('30', '30 minutes', String(state.preferences.maxTime))}${option('45', '45 minutes', String(state.preferences.maxTime))}${option('60', '60 minutes', String(state.preferences.maxTime))}</select></label>
+        <label>Maximum active time<select id="maxPlanTime">${option('20', '20 minutes', String(state.preferences.maxTime))}${option('30', '30 minutes', String(state.preferences.maxTime))}${option('35', '35 minutes', String(state.preferences.maxTime))}${option('45', '45 minutes', String(state.preferences.maxTime))}${option('60', '60 minutes', String(state.preferences.maxTime))}</select></label>
         <label>Desserts this week<select id="dessertCount">${[0,1,2,3,4,5,6,7].map((count) => option(String(count), String(count), String(state.preferences.dessertCount))).join('')}</select></label>
         <label>Tea/drinks this week<select id="teaCount">${[0,1,2,3,4,5,6,7].map((count) => option(String(count), String(count), String(state.preferences.teaCount))).join('')}</select></label>
         <label class="check-label"><input id="preservePinned" type="checkbox" ${state.preferences.preservePinned !== false ? 'checked' : ''} /> Preserve pinned meals</label>
         <button class="button" type="button" data-action="regenerate-whole-plan">Regenerate whole plan</button>
       </div>
-      <p class="help">Compare three complete alternatives before replacing anything. Your current plan remains unchanged until you accept a preview.</p>
+      <p class="help">Compare three complete alternatives before replacing anything. Unpinned suggestions stay within the active-time limit; pinned meals are preserved when requested.</p>
     </section>
     <div class="week-strip" role="tablist" aria-label="Week days">
       ${dates.map((date, index) => `<button type="button" class="day-tab ${state.selectedPlanDay === index ? 'active' : ''}" data-action="select-day" data-day-index="${index}" role="tab" aria-selected="${state.selectedPlanDay === index}"><span>${h(formatDate(date, { weekday: 'short' }))}</span><strong>${h(formatDate(date, { day: 'numeric' }))}</strong></button>`).join('')}

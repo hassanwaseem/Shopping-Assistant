@@ -11,9 +11,10 @@
 ## September 2026: recommendation integrity repair
 
 - Automatic planning now excludes components, guides, remedies, multi-recipe collections, implausible timing records, and suspect serving yields while keeping every recipe available in search.
-- 841 of 4,247 records are currently marked `review-required`; 3,406 remain eligible for automatic recommendations. Every meal slot still has more than 80 safe candidates.
+- 933 of 4,247 records are currently marked `review-required`; 3,314 remain eligible for automatic recommendations. Even with a 35-minute active-time ceiling, every meal slot retains at least 72 safe candidates.
+- Imported times that only describe one timed instruction are replaced by conservative estimates based on ingredient count, method length, cooking processes, and required chilling or resting.
 - Ingredient normalization uses the ingredient name rather than recipe-section labels. Pantry coverage uses unique required ingredients, ignores water and optional ingredients, and distinguishes missing from insufficient stock.
-- Cook shortcuts are mutually explicit and reversible. Natural-language requests support positive ingredients, exclusions, total and active time, meal intent, and warm/cold drinks without silently changing global planner preferences.
+- Cook shortcuts are mutually explicit and reversible. Natural-language requests support positive ingredients, exclusions, total and active time, meal intent, and warm/cold drinks without silently changing global planner preferences. Healthy suggestions apply energy, protein/fibre, and sodium gates instead of a ranking bonus alone.
 - The three Cook results now use different ranking objectives with cross-result diversity. Cards show the selected destination slot, course type, main ingredients, pantry gaps, difficulty, timing, and leftover suitability.
 - Saved recipes are discoverable, recommendation feedback records a reason and can be undone, and “Cook now” provides a checkable cooking view.
 - Existing saved weeks roll forward without losing meal choices, suspicious unpinned suggestions are replaced, empty optional slots no longer expose hidden meal controls, and new households start with an empty pantry.

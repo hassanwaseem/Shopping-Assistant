@@ -118,7 +118,7 @@ function defaultState() {
       { id: 'p2', name: 'Person 2', targetKcal: 1850, proteinTarget: 72, fibreTarget: 25, ironTarget: 16, calciumTarget: 950, vitaminCTarget: 95, portion: 0.85 },
     ],
     preferences: {
-      mode: 'balanced', diet: 'balanced', region: 'all', focus: 'none', focusStrength: 'moderate', maxTime: 35, strictTime: false,
+      mode: 'balanced', diet: 'balanced', region: 'all', focus: 'none', focusStrength: 'moderate', maxTime: 35, strictTime: true,
       allergens: [], dessertCount: 3, teaCount: 5, preservePinned: true,
     },
     weekStart,
@@ -165,6 +165,7 @@ function loadState() {
     if (!Array.isArray(merged.savedRecipeIds)) merged.savedRecipeIds = [];
     if (!Array.isArray(merged.rejectedRecipeIds)) merged.rejectedRecipeIds = [];
     if (!merged.feedbackByRecipeId || typeof merged.feedbackByRecipeId !== 'object') merged.feedbackByRecipeId = {};
+    merged.preferences.strictTime = true;
     if (saved.version < 5) {
       const defaultPantrySignature = ['basmati-rice', 'olive-oil', 'onions', 'spinach'];
       const savedSignature = (merged.pantry || []).map((item) => item.foodId).filter(Boolean).sort();
@@ -284,7 +285,7 @@ function buildPlanVariant({ preservePinned = true, preserveExisting = false, mod
       const existingRecipe = RECIPE_MAP[existing?.recipeId];
       const canKeepExisting = existingRecipe && (existing?.pinned
         ? engine.isRecipeEligible(existingRecipe, slot)
-        : engine.isRecipeRecommendable(existingRecipe, slot));
+        : engine.isRecipeRecommendable(existingRecipe, slot) && existingRecipe.activeTime <= preferences.maxTime);
       if (canKeepExisting && (preserveExisting || (preservePinned && existing.pinned))) {
         next.push(structuredClone(existing));
         recent.push(existing.recipeId);
@@ -336,7 +337,8 @@ function ensurePlan() {
     && SLOTS.every((slot) => DAYS.every((_, dayIndex) => keys.has(`${dayIndex}|${slot}`)))
     && state.plan.every((entry) => RECIPE_MAP[entry.recipeId] && (entry.pinned
       ? engine.isRecipeEligible(RECIPE_MAP[entry.recipeId], entry.slot)
-      : engine.isRecipeRecommendable(RECIPE_MAP[entry.recipeId], entry.slot)));
+      : engine.isRecipeRecommendable(RECIPE_MAP[entry.recipeId], entry.slot)
+        && RECIPE_MAP[entry.recipeId].activeTime <= state.preferences.maxTime));
   if (!valid) {
     const existingCount = state.plan.length;
     state.plan = buildPlanVariant({ preservePinned: true, preserveExisting: true, offset: state.generationCount });
