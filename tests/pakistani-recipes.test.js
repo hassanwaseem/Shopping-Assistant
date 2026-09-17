@@ -145,6 +145,19 @@ test('keeps components, collections, and suspect source categories out of automa
     'Homemade Kataifi Pastry (Kunafa Dough)',
     'Mango Jam',
     'Strawberry Jam',
+    'Condensed Milk',
+    'Homemade Mascarpone Cheese',
+    'Homemade Tomato Puree',
+    'How to Store Tomatoes',
+    'Ginger,Garlic & Onion Powder',
+    'Homemade Butter and Ghee',
+    'Homemade Dahi/Yogurt',
+    'Beef Paye Cleaning Method',
+    '2 Homemade Nimko Recipes',
+    'Apricot Jam (Hunza Special)',
+    'Homemade Chicken Spread',
+    'Homemade Puff Pastry',
+    'Ricotta Cheese',
   ]) {
     const component = recipes.find((recipe) => recipe.name === name);
     assert.ok(component, `${name} is missing`);
